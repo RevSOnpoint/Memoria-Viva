@@ -71,3 +71,4 @@ def get_audit_logs(
             "created_at": l.created_at
         })
     return results
+

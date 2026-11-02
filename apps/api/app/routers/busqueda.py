@@ -108,3 +108,4 @@ def search(
         "aportes": aportes_encontrados,
         "entidades": entidades_encontradas
     }
+

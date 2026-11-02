@@ -160,3 +160,4 @@ class BitacoraAuditoria(Base):
     created_at = Column(DateTime, default=datetime.utcnow)
 
     usuario = relationship("User", back_populates="auditorias")
+

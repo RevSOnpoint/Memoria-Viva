@@ -142,3 +142,4 @@ def get_single_aporte(
             "version_validada": aporte.procesamiento.version_validada
         }
     return out
+

@@ -152,3 +152,4 @@ def test_full_acceptance_criterion_flow(db_session):
         created_by_id=digi.id
     )
     assert can_view_memoria(usuario, mem_priv) is False
+

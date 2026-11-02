@@ -24,3 +24,4 @@
 - Visibilidad privada no se expone a usuarios generales.
 - Aislamiento estricto por `memoria_id` (las bases de conocimiento nunca se cruzan).
 - Todas las reglas validadas al 100% mediante suite en `apps/api/tests/test_privacy.py`.
+

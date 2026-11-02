@@ -27,3 +27,4 @@ class VoiceInterface(ABC):
     def get_voice_config(self) -> Dict[str, Any]:
         """Retorna configuración para la síntesis de voz del navegador (Web Speech API)."""
         pass
+

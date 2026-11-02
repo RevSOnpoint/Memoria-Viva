@@ -138,3 +138,4 @@ def get_validated_knowledge_for_memory(db: Session, memoria_id: int, user: Optio
         "aportes_validados": aportes_validados,
         "entidades": entidades
     }
+

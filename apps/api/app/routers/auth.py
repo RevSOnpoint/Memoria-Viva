@@ -49,3 +49,4 @@ def get_me(current_user: User = Depends(get_current_user)):
 def list_demo_users(db: Session = Depends(get_db)):
     """Lista los 4 usuarios del sistema para cambio rápido de rol en la demostración."""
     return db.query(User).filter(User.is_active == True).all()
+

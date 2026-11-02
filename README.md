@@ -68,3 +68,4 @@ Para ejecutar las pruebas de dominio y criterios de aceptación:
 apps\api\venv\Scripts\pytest.exe apps/api/tests
 ```
 Resultado: **8 tests pasados al 100%**.
+

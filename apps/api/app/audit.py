@@ -27,3 +27,4 @@ def log_audit(
     except Exception as e:
         db.rollback()
         print(f"Error registrando auditoría: {e}")
+

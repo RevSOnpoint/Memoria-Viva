@@ -153,3 +153,4 @@ def update_memoria(
 
     out = MemoriaOut.model_validate(memoria)
     return out
+

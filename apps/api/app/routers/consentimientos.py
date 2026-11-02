@@ -83,3 +83,4 @@ def get_consent_for_memoria(
     if not consent:
         raise HTTPException(status_code=404, detail="No se ha registrado consentimiento para esta memoria")
     return consent
+

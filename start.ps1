@@ -14,3 +14,4 @@ Write-Host "`nAplicacion levantada correctamente:" -ForegroundColor Yellow
 Write-Host "- Frontend Web: http://localhost:5173" -ForegroundColor White
 Write-Host "- Backend API:  http://localhost:8000" -ForegroundColor White
 Write-Host "- Swagger Docs: http://localhost:8000/docs`n" -ForegroundColor White
+
