@@ -115,11 +115,6 @@ export const MemoriasView: React.FC<MemoriasViewProps> = ({ onNavigate, onSelect
     return matchesSearch && matchesVis;
   });
 
-  // Métricas de acervo
-  const totalMemorias = memorias.length;
-  const conConsentimiento = memorias.filter(m => m.consentimiento?.evidencia_hash).length;
-  const totalAportesValidados = memorias.reduce((acc, m) => acc + (m.aportes_validados || 0), 0);
-
   return (
     <div className="space-y-6">
       {/* Encabezado Institucional Cálido */}
@@ -148,42 +143,6 @@ export const MemoriasView: React.FC<MemoriasViewProps> = ({ onNavigate, onSelect
               <span>Registrar Nueva Persona & Contrato</span>
             </button>
           )}
-        </div>
-      </div>
-
-      {/* Resumen Cuantitativo en Tono Madera y Ámbar */}
-      <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
-        <div className="bg-white p-5 rounded border border-[#d8ccba] border-l-4 border-l-[#442a17] shadow-2xs">
-          <div className="text-xs font-bold uppercase tracking-wider text-[#665546] font-serif">
-            Expedientes en Custodia
-          </div>
-          <div className="text-3xl font-bold font-serif text-[#261b12] mt-1">{totalMemorias}</div>
-          <div className="text-xs text-[#665546] mt-1 flex items-center gap-1.5">
-            <BookOpen className="w-4 h-4 text-[#8c6239]" />
-            <span>Autorizados para el rol '{activeRole}'</span>
-          </div>
-        </div>
-
-        <div className="bg-white p-5 rounded border border-[#d8ccba] border-l-4 border-l-[#1b6e39] shadow-2xs">
-          <div className="text-xs font-bold uppercase tracking-wider text-[#665546] font-serif">
-            Con Consentimiento Acreditado
-          </div>
-          <div className="text-3xl font-bold font-serif text-[#1b6e39] mt-1">{conConsentimiento}</div>
-          <div className="text-xs text-[#665546] mt-1 flex items-center gap-1.5">
-            <ShieldCheck className="w-4 h-4 text-[#1b6e39]" />
-            <span>Certificados con huella SHA-256</span>
-          </div>
-        </div>
-
-        <div className="bg-white p-5 rounded border border-[#d8ccba] border-l-4 border-l-[#c05600] shadow-2xs">
-          <div className="text-xs font-bold uppercase tracking-wider text-[#665546] font-serif">
-            Vivencias & Aportes Validados
-          </div>
-          <div className="text-3xl font-bold font-serif text-[#c05600] mt-1">{totalAportesValidados}</div>
-          <div className="text-xs text-[#665546] mt-1 flex items-center gap-1.5">
-            <CheckCircle2 className="w-4 h-4 text-[#c05600]" />
-            <span>Alimentan el conocimiento y narración</span>
-          </div>
         </div>
       </div>
 
