@@ -178,17 +178,17 @@ export const MemoriasView: React.FC<MemoriasViewProps> = ({ onNavigate }) => {
         </div>
       </div>
 
-      {/* Barra de Filtros Fiori (FilterBar) */}
-      <div className="sap-card p-4 flex flex-col md:flex-row items-center justify-between gap-3 bg-white">
-        <div className="flex flex-1 items-center space-x-3 w-full md:w-auto">
-          <div className="relative flex-1 max-w-md">
+      {/* Barra de Filtros Fiori (FilterBar Mobile-First) */}
+      <div className="sap-card p-3 sm:p-4 flex flex-col md:flex-row items-stretch md:items-center justify-between gap-3 bg-white">
+        <div className="flex flex-col sm:flex-row flex-1 items-stretch sm:items-center gap-2 sm:gap-3 w-full">
+          <div className="relative flex-1">
             <Search className="w-4 h-4 text-slate-400 absolute left-3 top-3.5" />
             <input
               type="text"
               value={searchTerm}
               onChange={e => setSearchTerm(e.target.value)}
               placeholder="Buscar por titular, alias, lugar o relato..."
-              className="w-full h-11 pl-9 pr-4 text-sm border border-sap-border rounded focus:border-sap-blue focus:ring-1 focus:ring-sap-blue"
+              className="w-full h-11 pl-9 pr-4 text-xs sm:text-sm border border-sap-border rounded focus:border-sap-blue focus:ring-1 focus:ring-sap-blue"
             />
           </div>
 
@@ -197,7 +197,7 @@ export const MemoriasView: React.FC<MemoriasViewProps> = ({ onNavigate }) => {
             <select
               value={filterVisibilidad}
               onChange={e => setFilterVisibilidad(e.target.value)}
-              className="h-11 px-3 text-sm border border-sap-border rounded bg-white font-medium text-slate-700"
+              className="h-11 px-3 text-xs sm:text-sm border border-sap-border rounded bg-white font-medium text-slate-700 w-full sm:w-auto"
             >
               <option value="todos">Todas las visibilidades</option>
               <option value="publico">Público</option>
@@ -208,24 +208,24 @@ export const MemoriasView: React.FC<MemoriasViewProps> = ({ onNavigate }) => {
         </div>
 
         {/* Selector de Vista (Cuadrícula / Tabla) */}
-        <div className="flex items-center space-x-1 border border-sap-border rounded p-1 bg-slate-50">
+        <div className="flex items-center justify-end space-x-1 border border-sap-border rounded p-1 bg-slate-50 self-end md:self-auto">
           <button
             onClick={() => setViewMode('grid')}
-            className={`p-1.5 rounded text-sm flex items-center gap-1.5 font-semibold transition ${
+            className={`p-1.5 rounded text-xs sm:text-sm flex items-center gap-1.5 font-semibold transition ${
               viewMode === 'grid' ? 'bg-white shadow text-sap-blue' : 'text-slate-600 hover:text-slate-900'
             }`}
           >
             <LayoutGrid className="w-4 h-4" />
-            <span className="hidden sm:inline">Tarjetas</span>
+            <span>Tarjetas</span>
           </button>
           <button
             onClick={() => setViewMode('table')}
-            className={`p-1.5 rounded text-sm flex items-center gap-1.5 font-semibold transition ${
+            className={`p-1.5 rounded text-xs sm:text-sm flex items-center gap-1.5 font-semibold transition ${
               viewMode === 'table' ? 'bg-white shadow text-sap-blue' : 'text-slate-600 hover:text-slate-900'
             }`}
           >
             <TableIcon className="w-4 h-4" />
-            <span className="hidden sm:inline">Tabla Fiori</span>
+            <span>Tabla Fiori</span>
           </button>
         </div>
       </div>
@@ -466,9 +466,9 @@ export const MemoriasView: React.FC<MemoriasViewProps> = ({ onNavigate }) => {
 
       {/* Modal: Registrar Nueva Memoria (SAP Object Creation Dialog) */}
       {showCreateModal && (
-        <div className="fixed inset-0 z-50 bg-slate-900/60 backdrop-blur-sm flex items-center justify-center p-4">
-          <div className="sap-card max-w-xl w-full p-6 shadow-2xl border-t-4 border-t-sap-blue animate-in fade-in zoom-in duration-150">
-            <h2 className="text-xl font-bold text-sap-text mb-1">
+        <div className="fixed inset-0 z-50 bg-slate-900/60 backdrop-blur-sm flex items-end sm:items-center justify-center p-0 sm:p-4">
+          <div className="sap-card max-w-xl w-full p-5 sm:p-6 shadow-2xl border-t-4 border-t-sap-blue rounded-b-none sm:rounded-lg max-h-[92vh] overflow-y-auto animate-in slide-in-from-bottom sm:zoom-in duration-150">
+            <h2 className="text-lg sm:text-xl font-bold text-sap-text mb-1">
               Apertura de Expediente de Memoria
             </h2>
             <p className="text-xs text-slate-500 mb-4">

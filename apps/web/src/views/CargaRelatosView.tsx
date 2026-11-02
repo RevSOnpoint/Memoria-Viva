@@ -250,13 +250,13 @@ export const CargaRelatosView: React.FC<CargaRelatosViewProps> = ({ onNavigate }
 
       {/* Formulario Principal de Carga */}
       <div className="sap-card p-6">
-        {/* Selector de Tipo de Aporte (Pills Fiori) */}
-        <div className="flex items-center justify-between pb-4 border-b border-sap-border mb-6">
-          <div className="flex items-center space-x-2">
+        {/* Selector de Tipo de Aporte (Pills Fiori Mobile-First) */}
+        <div className="flex flex-col sm:flex-row sm:items-center justify-between pb-4 border-b border-sap-border mb-6 gap-2">
+          <div className="flex flex-wrap items-center gap-2">
             <button
               type="button"
               onClick={() => applyPreset('texto')}
-              className={`px-4 py-2 text-xs font-bold rounded flex items-center gap-1.5 transition ${
+              className={`px-3 sm:px-4 py-2 text-xs font-bold rounded flex items-center gap-1.5 transition ${
                 tipo === 'texto'
                   ? 'bg-sap-blue text-white shadow'
                   : 'bg-slate-100 text-slate-700 hover:bg-slate-200'
@@ -269,7 +269,7 @@ export const CargaRelatosView: React.FC<CargaRelatosViewProps> = ({ onNavigate }
             <button
               type="button"
               onClick={() => applyPreset('audio')}
-              className={`px-4 py-2 text-xs font-bold rounded flex items-center gap-1.5 transition ${
+              className={`px-3 sm:px-4 py-2 text-xs font-bold rounded flex items-center gap-1.5 transition ${
                 tipo === 'audio'
                   ? 'bg-sap-blue text-white shadow'
                   : 'bg-slate-100 text-slate-700 hover:bg-slate-200'
@@ -282,7 +282,7 @@ export const CargaRelatosView: React.FC<CargaRelatosViewProps> = ({ onNavigate }
             <button
               type="button"
               onClick={() => applyPreset('foto')}
-              className={`px-4 py-2 text-xs font-bold rounded flex items-center gap-1.5 transition ${
+              className={`px-3 sm:px-4 py-2 text-xs font-bold rounded flex items-center gap-1.5 transition ${
                 tipo === 'foto'
                   ? 'bg-sap-blue text-white shadow'
                   : 'bg-slate-100 text-slate-700 hover:bg-slate-200'
@@ -293,8 +293,8 @@ export const CargaRelatosView: React.FC<CargaRelatosViewProps> = ({ onNavigate }
             </button>
           </div>
 
-          <span className="text-xs text-slate-500 font-medium hidden sm:inline">
-            Seleccione una categoría para autocompletar una plantilla de demostración
+          <span className="text-[11px] sm:text-xs text-slate-500 font-medium">
+            Plantillas de demostración en Palmares
           </span>
         </div>
 

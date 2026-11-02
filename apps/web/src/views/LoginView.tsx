@@ -30,8 +30,8 @@ export const LoginView: React.FC<LoginViewProps> = ({ onSuccess }) => {
   };
 
   return (
-    <div className="min-h-[85vh] flex items-center justify-center p-4">
-      <div className="sap-card max-w-md w-full p-8 shadow-xl border-t-4 border-t-sap-blue">
+    <div className="min-h-[85vh] flex items-center justify-center p-3 sm:p-4">
+      <div className="sap-card max-w-md w-full p-5 sm:p-8 shadow-xl border-t-4 border-t-sap-blue">
         {/* Encabezado Fiori */}
         <div className="text-center mb-6">
           <div className="inline-flex items-center justify-center w-14 h-14 rounded-full bg-blue-50 text-sap-blue mb-3 border border-blue-200">

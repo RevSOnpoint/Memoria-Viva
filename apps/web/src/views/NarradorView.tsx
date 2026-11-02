@@ -15,8 +15,7 @@ import {
   BookOpen,
   HelpCircle,
   X,
-  FileText,
-  RotateCcw
+  FileText
 } from 'lucide-react';
 
 interface NarradorViewProps {
@@ -136,12 +135,11 @@ export const NarradorView: React.FC<NarradorViewProps> = ({ onNavigate }) => {
     }
 
     window.speechSynthesis.cancel();
-    // Limpiar citas textuales y corchetes para narración más natural
     const cleanText = texto.replace(/\[Aporte.*?\]/g, '').replace(/https?:\/\/\S+/g, '');
 
     const utterance = new SpeechSynthesisUtterance(cleanText);
     utterance.lang = 'es-CR';
-    utterance.rate = 0.9; // Pausado para adultos mayores
+    utterance.rate = 0.9;
     utterance.pitch = 1.0;
 
     utterance.onend = () => setIsSpeaking(false);
@@ -160,47 +158,46 @@ export const NarradorView: React.FC<NarradorViewProps> = ({ onNavigate }) => {
 
   const hasConsent = !!selectedMemoria?.consentimiento?.evidencia_hash;
 
-  // Preguntas sugeridas para la memoria activa
   const sugerencias = selectedMemoria?.alias === 'Don Chepe'
     ? [
         '¿Cómo era el trapiche de bueyes en Zaragoza?',
         '¿Cómo se construyó el Templo de Nuestra Señora de las Mercedes?',
-        '¿A qué año viajó en nave espacial a Marte? (Prueba de no invención)'
+        '¿A qué año viajó a Marte? (Prueba no invención)'
       ]
     : selectedMemoria?.alias === 'Doña Carmen'
     ? [
         '¿Cómo atendía los partos de noche en Rincón de Zaragoza?',
         '¿Qué ocurrió durante el terremoto de 1955 y la olla comunal?',
-        '¿Cuál era su postre favorito en París? (Prueba de no invención)'
+        '¿Cuál era su postre favorito en París? (Prueba no invención)'
       ]
     : [
-        '¿Cuáles son sus principales vivencias de infancia en Palmares?',
+        '¿Cuáles son sus principales vivencias en Palmares?',
         '¿Cómo era el trabajo comunitario y las fiestas locales?'
       ];
 
   return (
-    <div className="space-y-6 max-w-5xl mx-auto">
-      {/* Encabezado Fiori */}
-      <div className="bg-white p-6 rounded-lg border border-sap-border shadow-sm flex flex-col md:flex-row md:items-center justify-between gap-4">
+    <div className="space-y-4 sm:space-y-6 max-w-5xl mx-auto">
+      {/* Encabezado Fiori Adaptativo */}
+      <div className="bg-white p-4 sm:p-6 rounded-lg border border-sap-border shadow-sm flex flex-col md:flex-row md:items-center justify-between gap-3 sm:gap-4">
         <div>
-          <div className="flex items-center space-x-2 text-xs font-bold text-teal-800 uppercase tracking-wider">
+          <div className="flex items-center space-x-2 text-[10px] sm:text-xs font-bold text-teal-800 uppercase tracking-wider">
             <span>Asistente Digital Patrimonial</span>
             <span>•</span>
-            <span>Inteligencia Artificial con Fuentes Primarias</span>
+            <span>IA con Fuentes Primarias</span>
           </div>
-          <h1 className="text-2xl font-bold text-sap-text mt-1">P07 Narrador Interactivo & Citas</h1>
-          <p className="text-sm text-sap-textMuted mt-0.5">
-            Respuestas estrictamente acotadas a la base de conocimiento validada. Cita autor, fecha y aporte con enlace a la fuente original.
+          <h1 className="text-xl sm:text-2xl font-bold text-sap-text mt-1">P07 Narrador Interactivo</h1>
+          <p className="text-xs sm:text-sm text-sap-textMuted mt-0.5">
+            Respuestas estrictamente acotadas a la base de conocimiento validada de esta memoria.
           </p>
         </div>
 
         {/* Selector de Memoria */}
-        <div className="flex items-center space-x-2">
-          <label className="text-xs font-bold text-slate-500 uppercase">Memoria:</label>
+        <div className="flex items-center space-x-2 w-full md:w-auto">
+          <label className="text-xs font-bold text-slate-500 uppercase flex-shrink-0">Memoria:</label>
           <select
             value={selectedMemoria?.id || ''}
             onChange={e => handleMemoriaChange(Number(e.target.value))}
-            className="h-11 px-3 text-sm font-semibold border border-sap-border rounded bg-white text-slate-800 shadow-sm"
+            className="h-10 sm:h-11 px-2.5 sm:px-3 text-xs sm:text-sm font-semibold border border-sap-border rounded bg-white text-slate-800 shadow-sm flex-1 md:flex-none"
           >
             {memorias.map(m => (
               <option key={m.id} value={m.id}>
@@ -213,64 +210,66 @@ export const NarradorView: React.FC<NarradorViewProps> = ({ onNavigate }) => {
 
       {/* Alerta si no tiene consentimiento */}
       {selectedMemoria && !hasConsent && (
-        <div className="p-4 bg-red-50 border border-red-200 text-red-800 rounded-lg flex items-center justify-between">
+        <div className="p-3.5 sm:p-4 bg-red-50 border border-red-200 text-red-800 rounded-lg flex flex-col sm:flex-row sm:items-center justify-between gap-2 shadow-sm">
           <div className="flex items-center space-x-2 text-xs font-semibold">
-            <ShieldAlert className="w-5 h-5 text-red-600 flex-shrink-0" />
+            <ShieldAlert className="w-4 h-4 sm:w-5 sm:h-5 text-red-600 flex-shrink-0" />
             <span>
               El narrador interactivo no puede activarse en este expediente porque no cuenta con consentimiento legal registrado.
             </span>
           </div>
           <button
             onClick={() => onNavigate('consentimiento', selectedMemoria.id)}
-            className="sap-btn sap-btn-danger text-xs whitespace-nowrap"
+            className="sap-btn sap-btn-danger text-xs self-start sm:self-auto py-1.5 h-auto"
           >
-            Acreditar Consentimiento en P03
+            Acreditar en P03
           </button>
         </div>
       )}
 
-      {/* Contenedor Conversacional SAP Horizon */}
-      <div className="sap-card overflow-hidden flex flex-col h-[650px] shadow-lg border-t-4 border-t-teal-600">
+      {/* Contenedor Conversacional SAP Horizon Adaptativo */}
+      <div className="sap-card overflow-hidden flex flex-col h-[75vh] min-h-[460px] max-h-[750px] shadow-lg border-t-4 border-t-teal-600">
         {/* Cabecera del chat con indicador de IA */}
-        <div className="p-4 bg-slate-900 text-white flex items-center justify-between border-b border-slate-800">
-          <div className="flex items-center space-x-3">
-            <div className="w-9 h-9 rounded-full bg-teal-500/20 text-teal-300 flex items-center justify-center border border-teal-500/40">
-              <Bot className="w-5 h-5" />
+        <div className="p-3 sm:p-4 bg-slate-900 text-white flex items-center justify-between border-b border-slate-800 flex-shrink-0">
+          <div className="flex items-center space-x-2.5 sm:space-x-3">
+            <div className="w-8 h-8 sm:w-9 sm:h-9 rounded-full bg-teal-500/20 text-teal-300 flex items-center justify-center border border-teal-500/40 flex-shrink-0">
+              <Bot className="w-4 h-4 sm:w-5 sm:h-5" />
             </div>
             <div>
-              <div className="font-bold text-sm flex items-center gap-2">
-                <span>Narrador de {selectedMemoria?.titular || 'Memoria Activa'}</span>
-                <span className="text-[10px] font-bold px-2 py-0.5 rounded bg-teal-900 text-teal-200 border border-teal-700">
+              <div className="font-bold text-xs sm:text-sm flex items-center gap-1.5">
+                <span className="truncate max-w-[150px] sm:max-w-none">
+                  {selectedMemoria?.titular || 'Memoria Activa'}
+                </span>
+                <span className="text-[9px] sm:text-[10px] font-bold px-1.5 py-0.5 rounded bg-teal-900 text-teal-200 border border-teal-700">
                   IA Oficial
                 </span>
               </div>
-              <div className="text-xs text-slate-400">
-                {selectedMemoria?.lugar_origen} • Aportes Validados: {selectedMemoria?.aportes_validados || 0}
+              <div className="text-[10px] sm:text-xs text-slate-400">
+                Aportes Validados: {selectedMemoria?.aportes_validados || 0}
               </div>
             </div>
           </div>
 
-          {/* Control de audio global */}
-          <div className="flex items-center space-x-2">
+          {/* Control de voz */}
+          <div>
             {isSpeaking ? (
               <button
                 onClick={detenerVoz}
-                className="px-3 py-1.5 rounded bg-red-600 hover:bg-red-700 text-white text-xs font-bold flex items-center gap-1.5 shadow"
+                className="px-2.5 py-1 sm:px-3 sm:py-1.5 rounded bg-red-600 hover:bg-red-700 text-white text-[11px] sm:text-xs font-bold flex items-center gap-1 shadow"
               >
-                <VolumeX className="w-4 h-4" />
-                <span>Detener Voz</span>
+                <VolumeX className="w-3.5 h-3.5" />
+                <span>Detener</span>
               </button>
             ) : (
-              <div className="text-xs text-slate-400 flex items-center gap-1">
-                <Volume2 className="w-4 h-4 text-teal-400" />
-                <span>Voz: Web Speech API</span>
+              <div className="text-[11px] sm:text-xs text-slate-400 flex items-center gap-1">
+                <Volume2 className="w-3.5 h-3.5 text-teal-400" />
+                <span className="hidden sm:inline">Voz Síntesis</span>
               </div>
             )}
           </div>
         </div>
 
-        {/* Flujo de mensajes */}
-        <div className="flex-1 p-6 overflow-y-auto space-y-4 bg-slate-50/50">
+        {/* Flujo de mensajes con scroll */}
+        <div className="flex-1 p-3.5 sm:p-6 overflow-y-auto space-y-3.5 bg-slate-50/50">
           {mensajes.map(m => {
             const isUser = m.sender === 'usuario';
 
@@ -279,16 +278,16 @@ export const NarradorView: React.FC<NarradorViewProps> = ({ onNavigate }) => {
                 key={m.id}
                 className={`flex flex-col ${isUser ? 'items-end' : 'items-start'}`}
               >
-                <div className="flex items-center space-x-1.5 mb-1 px-1 text-[11px] text-slate-500">
+                <div className="flex items-center space-x-1.5 mb-1 px-1 text-[10px] sm:text-[11px] text-slate-500">
                   <span className="font-semibold">
-                    {isUser ? 'Usted (Consultante)' : 'Asistente IA (Memoria Viva)'}
+                    {isUser ? 'Usted' : 'Narrador IA'}
                   </span>
                   <span>•</span>
                   <span>{m.hora}</span>
                 </div>
 
                 <div
-                  className={`p-4 rounded-xl max-w-2xl text-sm leading-relaxed shadow-sm ${
+                  className={`p-3 sm:p-4 rounded-xl max-w-2xl text-xs sm:text-sm leading-relaxed shadow-sm ${
                     isUser
                       ? 'bg-sap-blue text-white rounded-br-none'
                       : 'bg-white text-sap-text border border-sap-border rounded-bl-none'
@@ -298,8 +297,8 @@ export const NarradorView: React.FC<NarradorViewProps> = ({ onNavigate }) => {
 
                   {/* Citas y Botón "Ver fuente primaria" */}
                   {!isUser && m.fuentes && m.fuentes.length > 0 && (
-                    <div className="mt-4 pt-3 border-t border-slate-100 space-y-2">
-                      <div className="text-xs font-bold text-slate-700 flex items-center gap-1">
+                    <div className="mt-3 pt-2.5 border-t border-slate-100 space-y-2">
+                      <div className="text-[11px] sm:text-xs font-bold text-slate-700 flex items-center gap-1">
                         <BookOpen className="w-3.5 h-3.5 text-teal-600" />
                         <span>Fuentes Primarias Consultadas:</span>
                       </div>
@@ -307,20 +306,20 @@ export const NarradorView: React.FC<NarradorViewProps> = ({ onNavigate }) => {
                       {m.fuentes.map((f, i) => (
                         <div
                           key={i}
-                          className="p-3 bg-teal-50/60 rounded-lg border border-teal-200 flex flex-col sm:flex-row sm:items-center justify-between gap-2"
+                          className="p-2.5 sm:p-3 bg-teal-50/70 rounded-lg border border-teal-200 flex flex-col sm:flex-row sm:items-center justify-between gap-2"
                         >
                           <div>
-                            <div className="font-bold text-xs text-teal-950 font-mono">
+                            <div className="font-bold text-[11px] sm:text-xs text-teal-950 font-mono">
                               {f.cita}
                             </div>
-                            <div className="text-[11px] text-teal-800">
+                            <div className="text-[10px] sm:text-[11px] text-teal-800 truncate max-w-xs">
                               {f.titulo}
                             </div>
                           </div>
 
                           <button
                             onClick={() => setModalFuente(f)}
-                            className="sap-btn sap-btn-primary text-xs py-1.5 px-3 h-auto whitespace-nowrap bg-teal-800 hover:bg-teal-900 border-teal-950 flex items-center gap-1 shadow-sm"
+                            className="sap-btn sap-btn-primary text-xs py-1.5 px-3 h-auto whitespace-nowrap bg-teal-800 hover:bg-teal-900 border-teal-950 flex items-center justify-center gap-1 shadow-sm self-stretch sm:self-auto"
                           >
                             <ExternalLink className="w-3.5 h-3.5" />
                             <span>Ver fuente primaria</span>
@@ -330,12 +329,12 @@ export const NarradorView: React.FC<NarradorViewProps> = ({ onNavigate }) => {
                     </div>
                   )}
 
-                  {/* Botón de reproducción de voz para respuestas de IA */}
+                  {/* Botón de reproducción de voz */}
                   {!isUser && (
-                    <div className="mt-3 flex items-center justify-end">
+                    <div className="mt-2.5 flex items-center justify-end">
                       <button
                         onClick={() => hablarTexto(m.texto)}
-                        className="text-xs font-semibold text-slate-600 hover:text-teal-800 flex items-center gap-1 transition"
+                        className="text-[11px] sm:text-xs font-semibold text-slate-600 hover:text-teal-800 flex items-center gap-1 transition"
                       >
                         <Volume2 className="w-3.5 h-3.5" />
                         <span>Escuchar relato</span>
@@ -350,23 +349,23 @@ export const NarradorView: React.FC<NarradorViewProps> = ({ onNavigate }) => {
           {isLoading && (
             <div className="flex items-center space-x-2 text-xs text-slate-500 bg-white p-3 rounded-lg border border-sap-border w-fit shadow-sm">
               <div className="animate-spin w-4 h-4 border-2 border-teal-600 border-t-transparent rounded-full"></div>
-              <span>Consultando la base de conocimiento validada...</span>
+              <span>Consultando testimonios validados...</span>
             </div>
           )}
         </div>
 
-        {/* Píldoras de Preguntas Sugeridas */}
-        <div className="px-4 py-2 bg-slate-100 border-t border-sap-border flex items-center flex-wrap gap-2 text-xs">
-          <span className="text-slate-500 font-semibold flex items-center gap-1">
+        {/* Píldoras de Preguntas Sugeridas (Scroll horizontal táctil fluido) */}
+        <div className="px-3 py-2 bg-slate-100 border-t border-sap-border flex items-center overflow-x-auto gap-2 text-xs scrollbar-none flex-nowrap flex-shrink-0">
+          <span className="text-slate-500 font-semibold flex items-center gap-1 flex-shrink-0 text-[11px]">
             <HelpCircle className="w-3.5 h-3.5 text-teal-700" />
-            <span>Sugerencias:</span>
+            <span className="hidden sm:inline">Sugerencias:</span>
           </span>
           {sugerencias.map((sug, idx) => (
             <button
               key={idx}
               onClick={() => handleEnviarPregunta(sug)}
               disabled={isLoading || !hasConsent}
-              className="px-2.5 py-1 rounded bg-white hover:bg-slate-200 text-slate-700 border border-slate-300 font-medium transition disabled:opacity-50"
+              className="px-2.5 py-1 rounded bg-white hover:bg-slate-200 text-slate-700 border border-slate-300 font-medium transition disabled:opacity-50 flex-shrink-0 text-[11px] sm:text-xs whitespace-nowrap shadow-xs"
             >
               {sug}
             </button>
@@ -374,7 +373,7 @@ export const NarradorView: React.FC<NarradorViewProps> = ({ onNavigate }) => {
         </div>
 
         {/* Barra de entrada de texto Fiori */}
-        <div className="p-4 bg-white border-t border-sap-border">
+        <div className="p-2.5 sm:p-4 bg-white border-t border-sap-border flex-shrink-0">
           <form
             onSubmit={e => {
               e.preventDefault();
@@ -389,32 +388,33 @@ export const NarradorView: React.FC<NarradorViewProps> = ({ onNavigate }) => {
               onChange={e => setInputPregunta(e.target.value)}
               placeholder={
                 hasConsent
-                  ? `Pregúntele al narrador sobre los relatos de ${selectedMemoria?.titular || 'esta persona'}...`
-                  : 'Requiere consentimiento registrado para interactuar con el narrador.'
+                  ? `Pregúntele al narrador sobre ${selectedMemoria?.alias || 'esta memoria'}...`
+                  : 'Requiere consentimiento para consultar.'
               }
-              className="flex-1 h-12 px-4 text-sm border border-sap-border rounded focus:border-sap-blue focus:ring-2 focus:ring-blue-100"
+              className="flex-1 h-11 sm:h-12 px-3 sm:px-4 text-xs sm:text-sm border border-sap-border rounded focus:border-sap-blue focus:ring-2 focus:ring-blue-100"
             />
             <button
               type="submit"
               disabled={!hasConsent || isLoading || !inputPregunta.trim()}
-              className="sap-btn sap-btn-primary min-w-[120px]"
+              className="sap-btn sap-btn-primary px-3 sm:px-4 min-w-[48px] sm:min-w-[110px]"
+              aria-label="Enviar pregunta"
             >
-              <Send className="w-4 h-4 mr-1.5" />
-              <span>Preguntar</span>
+              <Send className="w-4 h-4 sm:mr-1.5" />
+              <span className="hidden sm:inline">Preguntar</span>
             </button>
           </form>
         </div>
       </div>
 
-      {/* Modal / Drawer: "Ver Fuente Primaria" (Evidencia Inmutable) */}
+      {/* Modal / Drawer: "Ver Fuente Primaria" (Mobile Responsive) */}
       {modalFuente && (
-        <div className="fixed inset-0 z-50 bg-slate-900/60 backdrop-blur-sm flex items-center justify-center p-4">
-          <div className="sap-card max-w-2xl w-full p-6 shadow-2xl border-t-4 border-t-teal-700 animate-in fade-in zoom-in duration-150">
+        <div className="fixed inset-0 z-50 bg-slate-900/60 backdrop-blur-sm flex items-end sm:items-center justify-center p-0 sm:p-4">
+          <div className="sap-card max-w-2xl w-full p-5 sm:p-6 shadow-2xl border-t-4 border-t-teal-700 max-h-[90vh] overflow-y-auto rounded-b-none sm:rounded-lg animate-in slide-in-from-bottom sm:zoom-in duration-150">
             <div className="flex items-center justify-between pb-3 border-b border-sap-border">
               <div className="flex items-center space-x-2">
-                <FileText className="w-5 h-5 text-teal-700" />
-                <h3 className="text-lg font-bold text-sap-text">
-                  Fuente Primaria Inmutable: {modalFuente.cita}
+                <FileText className="w-5 h-5 text-teal-700 flex-shrink-0" />
+                <h3 className="text-base sm:text-lg font-bold text-sap-text truncate">
+                  Fuente Primaria: {modalFuente.cita}
                 </h3>
               </div>
               <button
@@ -425,15 +425,15 @@ export const NarradorView: React.FC<NarradorViewProps> = ({ onNavigate }) => {
               </button>
             </div>
 
-            <div className="mt-4 space-y-4 text-xs">
-              <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
-                <div className="p-3 bg-slate-50 rounded border border-slate-200">
-                  <span className="text-slate-500 block">Título del Aporte:</span>
-                  <span className="font-bold text-slate-800 text-sm">{modalFuente.titulo || 'Testimonio'}</span>
+            <div className="mt-4 space-y-3.5 text-xs">
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-2.5">
+                <div className="p-2.5 sm:p-3 bg-slate-50 rounded border border-slate-200">
+                  <span className="text-slate-500 block text-[11px]">Título del Aporte:</span>
+                  <span className="font-bold text-slate-800 text-xs sm:text-sm">{modalFuente.titulo || 'Testimonio'}</span>
                 </div>
-                <div className="p-3 bg-slate-50 rounded border border-slate-200">
-                  <span className="text-slate-500 block">Autor y Fecha Histórica:</span>
-                  <span className="font-bold text-slate-800 text-sm">
+                <div className="p-2.5 sm:p-3 bg-slate-50 rounded border border-slate-200">
+                  <span className="text-slate-500 block text-[11px]">Autor y Fecha Histórica:</span>
+                  <span className="font-bold text-slate-800 text-xs sm:text-sm">
                     {modalFuente.autor} • {modalFuente.fecha}
                   </span>
                 </div>
@@ -444,7 +444,7 @@ export const NarradorView: React.FC<NarradorViewProps> = ({ onNavigate }) => {
                 <span className="text-slate-700 font-bold block mb-1">
                   Texto Original Inalterado en Custodia:
                 </span>
-                <div className="p-4 bg-slate-50 border border-slate-200 rounded font-serif text-sm leading-relaxed text-slate-800 max-h-60 overflow-y-auto whitespace-pre-wrap">
+                <div className="p-3 sm:p-4 bg-slate-50 border border-slate-200 rounded font-serif text-xs sm:text-sm leading-relaxed text-slate-800 max-h-52 overflow-y-auto whitespace-pre-wrap">
                   {modalFuente.contenido_original || modalFuente.texto_validado}
                 </div>
               </div>
@@ -452,29 +452,29 @@ export const NarradorView: React.FC<NarradorViewProps> = ({ onNavigate }) => {
               {/* Hash SHA-256 */}
               <div className="p-3 bg-blue-50/70 rounded border border-blue-200">
                 <div className="flex items-center gap-1 font-bold text-blue-900 mb-1">
-                  <Hash className="w-3.5 h-3.5 text-sap-blue" />
+                  <Hash className="w-3.5 h-3.5 text-sap-blue flex-shrink-0" />
                   <span>Criptografía SHA-256 Verificada:</span>
                 </div>
-                <div className="font-mono text-slate-700 break-all bg-white p-2 rounded border border-blue-100">
-                  {modalFuente.archivo_hash_sha256 || 'Hash certificado por la Fundación Legado Vivo'}
+                <div className="font-mono text-slate-700 break-all bg-white p-2 rounded border border-blue-100 text-[10px] sm:text-xs">
+                  {modalFuente.archivo_hash_sha256 || 'Certificado por Fundación Legado Vivo'}
                 </div>
               </div>
 
               <div className="p-2.5 bg-emerald-50 border border-emerald-200 text-emerald-800 rounded flex items-center gap-2">
                 <ShieldCheck className="w-4 h-4 text-emerald-600 flex-shrink-0" />
-                <span>
+                <span className="text-[11px] sm:text-xs">
                   Constancia: Este documento se mantiene intacto y su integridad está respaldada por la Fundación Legado Vivo.
                 </span>
               </div>
             </div>
 
-            <div className="mt-5 pt-3 border-t border-sap-border flex justify-end">
+            <div className="mt-4 pt-3 border-t border-sap-border flex justify-end">
               <button
                 type="button"
                 onClick={() => setModalFuente(null)}
-                className="sap-btn sap-btn-secondary text-xs"
+                className="sap-btn sap-btn-secondary text-xs w-full sm:w-auto"
               >
-                Cerrar Visor de Fuente
+                Cerrar Visor
               </button>
             </div>
           </div>
