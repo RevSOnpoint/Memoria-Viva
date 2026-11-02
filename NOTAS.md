@@ -36,3 +36,25 @@
 - Visibilidad privada no se expone a usuarios generales.
 - Aislamiento estricto por `memoria_id` (las bases de conocimiento nunca se cruzan).
 - 8 pruebas automatizadas aprobadas al 100% en `apps/api/tests/`.
+
+### 5. Identidad Visual Cálida y Accesibilidad para Personas Adultas Mayores
+- **Paleta Terrestre, Madera y Sol Palmareño**:
+  - Lienzo pergamino/arena: `#faf7f2`
+  - Madera noble y café tostado: `#26170d`, `#442a17`
+  - Ámbar soleado / terracota cálido: `#c05600`, `#9f4600`, `#fef6ee`
+  - Verde bosque de integridad ética: `#1b6e39`, `#f0f8f2`
+  - Bordes firmes y contrastados: `#d8ccba`, `#e3d9cb`
+- **Eliminación Total de Estética 'Genérica de IA'**:
+  - Cero degradados artificiales morados o neón (`bg-gradient-to-r` eliminado de paneles informativos).
+  - Cero paneles ultra-redondeados de burbuja (`rounded-3xl` / `rounded-2xl`).
+  - Cero badges y etiquetas de jerga técnica sin sentido ("P02", "P03", "P04", "Simulador IA v1.1").
+  - Sustitución por terminología institucional respetuosa: *"Archivo General"*, *"Contrato de Custodia"*, *"Expediente Histórico"*, *"Fe Legal"*.
+- **Diseño Ergonómico para Adultos Mayores**:
+  - Tipografía base escalada a 19px con alto contraste (`#261b12` sobre fondos nítidos `#ffffff` y `#faf7f2`).
+  - Titulares en fuente Serif editorial cálida (`font-serif`, Georgia / Cambria) para máxima legibilidad y solemnidad.
+  - Botones y campos interactivos con objetivo táctil garantizado de al menos 48px de altura (`min-h-[48px]`).
+  - Anillos de foco visibles de 3px en tono ámbar (`#c05600`) para navegación asistida o por teclado.
+- **Fotografía Real del Patrimonio Palmareño**:
+  - Paisajes reales de las colinas de cafetales de Palmares.
+  - Retratos fidedignos para los guardianes de la memoria (*Don Chepe González*, *Doña Carmen Rojas*).
+  - Vistas de objetos de labranza tradicional, trapiches y documentos familiares.
