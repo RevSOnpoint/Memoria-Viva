@@ -1,0 +1,82 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  --base-font-size: 18px;
+}
+
+html {
+  font-size: var(--base-font-size);
+}
+
+body {
+  font-family: 'Public Sans', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+  min-height: 100vh;
+  background-color: #f3f5f8;
+  color: #223548;
+}
+
+/* Enfoque accesible de alto contraste tipo SAP */
+button:focus-visible, a:focus-visible, input:focus-visible, select:focus-visible, textarea:focus-visible {
+  outline: 3px solid #0070f2;
+  outline-offset: 2px;
+}
+
+/* Botones con objetivo táctil accesible mínimo de 48px */
+.sap-btn {
+  min-height: 48px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0 1.25rem;
+  font-weight: 600;
+  border-radius: 0.375rem;
+  transition: all 0.15s ease-in-out;
+  cursor: pointer;
+}
+
+.sap-btn-primary {
+  background-color: #0070f2;
+  color: #ffffff;
+  border: 1px solid #0854a0;
+}
+.sap-btn-primary:hover {
+  background-color: #0854a0;
+}
+
+.sap-btn-secondary {
+  background-color: #ffffff;
+  color: #223548;
+  border: 1px solid #bcc9d4;
+}
+.sap-btn-secondary:hover {
+  background-color: #f3f5f8;
+  border-color: #8c9dae;
+}
+
+.sap-btn-success {
+  background-color: #107e3e;
+  color: #ffffff;
+  border: 1px solid #0b5c2d;
+}
+.sap-btn-success:hover {
+  background-color: #0b5c2d;
+}
+
+.sap-btn-danger {
+  background-color: #ffffff;
+  color: #b00020;
+  border: 1px solid #e099a4;
+}
+.sap-btn-danger:hover {
+  background-color: #fdeded;
+}
+
+/* Tarjetas y contenedores SAP Horizon */
+.sap-card {
+  background-color: #ffffff;
+  border: 1px solid #d9e0e8;
+  border-radius: 0.5rem;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.04);
+}
