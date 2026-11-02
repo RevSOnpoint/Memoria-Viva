@@ -20,7 +20,7 @@ export const LoginView: React.FC<LoginViewProps> = ({ onSuccess }) => {
       loginAs(match);
       onSuccess();
     } else {
-      setError('Credenciales inválidas. Seleccione uno de los perfiles provistos abajo.');
+      setError('Credenciales inválidas. Seleccione una de las cuentas autorizadas.');
     }
   };
 
@@ -89,10 +89,10 @@ export const LoginView: React.FC<LoginViewProps> = ({ onSuccess }) => {
           </button>
         </form>
 
-        {/* Selector Rápido de Demo */}
+        {/* Selector de Cuentas Autorizadas */}
         <div className="pt-6 border-t border-[#e3d9cb] space-y-3">
           <div className="text-xs font-bold text-[#665546] uppercase tracking-wider text-center font-serif">
-            Acceso Rápido por Perfil (Demostración)
+            Acceso Directo por Perfil Institucional
           </div>
 
           <div className="grid grid-cols-2 gap-2.5">

@@ -284,7 +284,7 @@ export const CargaRelatosView: React.FC<CargaRelatosViewProps> = ({ onNavigate }
           </div>
 
           <span className="text-xs text-[#8c6239] font-serif font-bold">
-            Plantillas para demostración
+            Plantillas de testimonios locales
           </span>
         </div>
 
