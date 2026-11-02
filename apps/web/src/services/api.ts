@@ -181,3 +181,4 @@ export const api = {
     return request(`/api/admin/auditoria?${params.toString()}`);
   }
 };
+

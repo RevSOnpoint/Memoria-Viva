@@ -24,9 +24,10 @@ import {
 
 interface MemoriasViewProps {
   onNavigate: (tab: string, memoriaId?: number) => void;
+  onSelectPersona?: (memoriaId: number) => void;
 }
 
-export const MemoriasView: React.FC<MemoriasViewProps> = ({ onNavigate }) => {
+export const MemoriasView: React.FC<MemoriasViewProps> = ({ onNavigate, onSelectPersona }) => {
   const { activeRole, activeMemoriaId, setActiveMemoriaId } = useAuth();
   const [memorias, setMemorias] = useState<Memoria[]>([]);
   const [isLoading, setIsLoading] = useState(true);
@@ -335,14 +336,30 @@ export const MemoriasView: React.FC<MemoriasViewProps> = ({ onNavigate }) => {
 
                 {/* Barra de Acciones por Rol */}
                 <div className="grid grid-cols-2 sm:grid-cols-4 gap-2 pt-2 border-t border-slate-100">
+                  {/* Abrir Expediente & Vivencias */}
+                  <button
+                    onClick={() => {
+                      setActiveMemoriaId(memoria.id);
+                      if (onSelectPersona) onSelectPersona(memoria.id);
+                    }}
+                    className="p-2 rounded text-xs font-bold bg-[#0056b3] text-white hover:bg-[#004494] flex items-center justify-center gap-1 transition shadow-xs col-span-2 sm:col-span-1"
+                  >
+                    <BookOpen className="w-3.5 h-3.5" />
+                    <span>Ver Expediente</span>
+                  </button>
+
                   {/* P07: Preguntar al Narrador */}
                   <button
                     onClick={() => {
                       setActiveMemoriaId(memoria.id);
-                      onNavigate('narrador', memoria.id);
+                      if (onSelectPersona) {
+                        onSelectPersona(memoria.id);
+                      } else {
+                        onNavigate('narrador', memoria.id);
+                      }
                     }}
                     disabled={!hasConsent}
-                    title={!hasConsent ? 'Requiere consentimiento registrado' : 'Interactuar con el narrador IA'}
+                    title={!hasConsent ? 'Requiere consentimiento registrado' : 'Interactuar con el narrador'}
                     className={`p-2 rounded text-xs font-bold flex items-center justify-center gap-1 transition ${
                       hasConsent
                         ? 'bg-teal-50 text-teal-800 hover:bg-teal-100 border border-teal-200'
@@ -350,7 +367,7 @@ export const MemoriasView: React.FC<MemoriasViewProps> = ({ onNavigate }) => {
                     }`}
                   >
                     <Bot className="w-3.5 h-3.5" />
-                    <span>Narrador IA</span>
+                    <span>Narrador</span>
                   </button>
 
                   {/* P04: Cargar Relato */}
@@ -377,21 +394,9 @@ export const MemoriasView: React.FC<MemoriasViewProps> = ({ onNavigate }) => {
                       className="p-2 rounded text-xs font-bold bg-blue-50 text-sap-blue hover:bg-blue-100 border border-blue-200 flex items-center justify-center gap-1 transition"
                     >
                       <FileCheck className="w-3.5 h-3.5" />
-                      <span>Consentimiento</span>
+                      <span>Contrato</span>
                     </button>
                   )}
-
-                  {/* Seleccionar como activa */}
-                  <button
-                    onClick={() => setActiveMemoriaId(memoria.id)}
-                    className={`p-2 rounded text-xs font-bold border transition ${
-                      isSelected
-                        ? 'bg-sap-blue text-white border-sap-blue'
-                        : 'bg-white text-slate-700 hover:bg-slate-50 border-slate-200'
-                    }`}
-                  >
-                    {isSelected ? '✓ Seleccionada' : 'Seleccionar'}
-                  </button>
                 </div>
               </div>
             );

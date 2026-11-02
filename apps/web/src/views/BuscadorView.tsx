@@ -272,3 +272,4 @@ export const BuscadorView: React.FC<BuscadorViewProps> = ({ onNavigate }) => {
     </div>
   );
 };
+

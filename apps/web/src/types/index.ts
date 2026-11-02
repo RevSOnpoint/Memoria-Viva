@@ -2,7 +2,7 @@ export type UserRole = 'Usuario' | 'Digitalizador' | 'Gestor de datos' | 'Admini
 
 export interface User {
   id: number;
-  email: str;
+  email: string;
   full_name: string;
   role: UserRole;
   is_active: boolean;
@@ -125,3 +125,4 @@ export interface AuditoriaItem {
   ip_origen: string;
   created_at: string;
 }
+
