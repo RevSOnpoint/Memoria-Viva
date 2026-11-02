@@ -1,27 +1,38 @@
 # Memoria Viva - Fundación Legado Vivo (Palmares, Costa Rica)
 ## Registro de Decisiones de Arquitectura y Diseño (NOTAS.md)
 
-### 1. Sistema de Diseño e Interfaz "Tipo SAP" (SAP Fiori / Horizon Enterprise)
-- **ShellBar & Navegación**: Se implementa una barra superior institucional SAP ShellBar con identidad de la Fundación Legado Vivo, selector rápido de rol de demostración (Usuario, Digitalizador, Gestor de datos, Administrador) y control de accesibilidad visual (escalado de fuente 18px base con multiplicadores hasta 200%).
-- **Estructura Fiori Master-Detail / Object Page**: Las pantallas siguen la distribución empresarial de SAP con barras de herramientas de acción explícitas, tablas con badges de estado semánticos (Verde/Success para "Validado"/"Consentimiento Válido", Ámbar/Warning para "Pendiente de Revisión"/"Familiar", Azul/Informative para "En Proceso"/"Público", Rojo/Error para "Sin Consentimiento"/"Rechazado", Neutral para "Privado"/"Borrador").
-- **Pantalla de Validación P05 (Split Screen)**: Se diseñó con panel dividido donde el material original inmutable se mantiene intacto a la izquierda con su hash SHA-256 verificado, y a la derecha el editor de curación para el Gestor de datos con botón de incorporación a la base de conocimiento.
-- **Narrador P07**: Diseño tipo Asistente Digital Enterprise con badge que aclara obligatoriamente "Inteligencia Artificial", citas colapsables estructuradas `[Aporte #ID - Autor, Fecha]` y botón de acción directa "Ver fuente primaria".
+### 1. Sistema de Diseño e Interfaz Institucional (Rediseño Formal y No-IA)
+- **Navegación Lateral Institucional (Sidebar)**: Se sustituyó la barra horizontal de pestañas por una barra lateral corporativa con separación formal por módulos:
+  1. *Patrimonio Cultural*: Exploración de Regiones y Territorios, Archivo de Personas y Buscador Histórico.
+  2. *Participación y Transmisión*: "Guarda tus Memorias / Escribe tu Historia", Registro de Personas & Contrato Legal, y Carga de Aportes.
+  3. *Curaduría y Verificación*: Mesa de Curaduría para el Gestor de Datos.
+  4. *Administración Institucional*: Gestión de Usuarios y Bitácora de Auditoría.
+- **Zona de Regiones y Territorios (Palmares)**:
+  - Vista inicial orientada al territorio cultural: imagen representativa del cantón de Palmares (Alajuela), sinopsis histórica y filtros por distritos (*Zaragoza, Rincón de Zaragoza, Palmares Centro, La Granja*).
+  - Filtros temáticos por tradiciones vivas (*Trapiches de dulce y café, Partería y salud comunitaria, Construcción del Templo de Piedra, Terremoto de 1955*).
+  - Muestra a los **Guardianes de la Memoria** de esa región con acceso directo a su expediente.
+- **Expediente de Memoria y Narrador Contextualizado**:
+  - El narrador ya no es un chatbot genérico desconectado; se encuentra **integrado dentro del expediente biográfico de cada persona** (*PersonaDetalleView*).
+  - El usuario explora primero las vivencias y aportes originales inmutables (textos, audios, fotos) y, si desea interactuar, abre la pestaña *"Consultar al Narrador de la Memoria"*, el cual responde en base a los testimonios validados de ese individuo.
+- **Flujo Unificado: Registro de Persona + Contrato de Consentimiento**:
+  - El consentimiento no es un formulario suelto; es un **Contrato Legal Formal de Custodia y Cesión Ética** que se celebra de manera indisoluble al momento de abrir el expediente de una persona.
+  - Genera y certifica la huella criptográfica SHA-256 en tiempo real.
+- **Módulo Educativo "Escribe tu Historia"**:
+  - Landing informativa que explica en 4 fases cómo se recopilan, custodian y curan las memorias familiares en la Fundación Legado Vivo, orientada a las familias y personas adultas mayores.
 
 ### 2. Capa de IA y Modo Simulado (AI_MODE=mock)
-- Se implementaron 4 interfaces desacopladas en `apps/api/app/ai/`:
-  1. `TranscriptionInterface`: Devuelve transcripciones estructuradas de relatos orales de Palmares con timestamps y entidades extraídas.
-  2. `ImageAnalysisInterface`: Devuelve análisis iconográfico de fotografías históricas de Palmares (arquitectura de piedra, vestimenta tradicional campesina, carretas).
-  3. `LLMNarratorInterface`: Motor de respuesta basado en fragmentos validados. Aplica la regla estricta: si no hay evidencia responde exactamente `"no cuento con esa información"` sin inventar ni alucinar.
-  4. `VoiceInterface`: Configuración para Web Speech API del navegador en español con cadencia pausada (rate: 0.9) óptima para personas adultas mayores.
-- La arquitectura permite sustituir los mocks por Whisper y Gemini sin modificar controladores ni modelos.
+- 4 interfaces desacopladas en `apps/api/app/ai/`:
+  1. `TranscriptionInterface`: Transcripciones estructuradas de relatos orales de Palmares.
+  2. `ImageAnalysisInterface`: Análisis iconográfico de fotos históricas.
+  3. `LLMNarratorInterface`: Motor de respuesta basado en fragmentos validados. Regla estricta: si no hay evidencia responde exactamente `"no cuento con esa información"` sin inventar ni alucinar.
+  4. `VoiceInterface`: Configuración para Web Speech API del navegador en español con cadencia pausada (rate: 0.9) para personas adultas mayores.
 
 ### 3. Almacenamiento y Base de Datos Híbrida
-- **Desarrollo y Demo Local**: SQLite con modo de aislamiento y creación automática de tablas y semillas para ejecución inmediata sin dependencias complejas de servidor.
+- **Desarrollo y Demo Local**: SQLite con modo de aislamiento y creación automática de tablas y semillas para ejecución inmediata.
 - **Producción / Docker Compose**: PostgreSQL 16 con credenciales seguras vía `.env`.
 
 ### 4. Reglas del Dominio y Privacidad Verificadas por Pruebas Automáticas
 - Memoria sin consentimiento queda bloqueada para procesamiento, publicación y narración.
 - Visibilidad privada no se expone a usuarios generales.
 - Aislamiento estricto por `memoria_id` (las bases de conocimiento nunca se cruzan).
-- Todas las reglas validadas al 100% mediante suite en `apps/api/tests/test_privacy.py`.
-
+- 8 pruebas automatizadas aprobadas al 100% en `apps/api/tests/`.
