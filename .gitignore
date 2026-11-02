@@ -9,6 +9,7 @@ __pycache__/
 .pytest_cache/
 *.db
 *.sqlite3
+*.tsbuildinfo
 .env.local
 .DS_Store
 

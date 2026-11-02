@@ -9,23 +9,31 @@ import {
   ShieldAlert,
   Search,
   Filter,
-  Eye,
   FileCheck,
   UploadCloud,
-  Bot,
   LayoutGrid,
   Table as TableIcon,
   CheckCircle2,
-  Clock,
   Lock,
   Globe,
-  Users
+  Users,
+  Building2,
+  ArrowRight
 } from 'lucide-react';
 
 interface MemoriasViewProps {
   onNavigate: (tab: string, memoriaId?: number) => void;
   onSelectPersona?: (memoriaId: number) => void;
 }
+
+const PORTRAIT_MAP: Record<string, string> = {
+  'José Ángel González Chaves': 'https://images.unsplash.com/photo-1544717305-2782549b5136?auto=format&fit=crop&w=600&q=80',
+  'Don Chepe': 'https://images.unsplash.com/photo-1544717305-2782549b5136?auto=format&fit=crop&w=600&q=80',
+  'Carmen María Rojas Vargas': 'https://images.unsplash.com/photo-1566616213894-2d4e1baee5d8?auto=format&fit=crop&w=600&q=80',
+  'Doña Carmen': 'https://images.unsplash.com/photo-1566616213894-2d4e1baee5d8?auto=format&fit=crop&w=600&q=80',
+};
+
+const DEFAULT_PORTRAIT = 'https://images.unsplash.com/photo-1455390582262-044cdead277a?auto=format&fit=crop&w=600&q=80';
 
 export const MemoriasView: React.FC<MemoriasViewProps> = ({ onNavigate, onSelectPersona }) => {
   const { activeRole, activeMemoriaId, setActiveMemoriaId } = useAuth();
@@ -88,8 +96,7 @@ export const MemoriasView: React.FC<MemoriasViewProps> = ({ onNavigate, onSelect
       setNewDescripcion('');
       loadMemorias();
       setActiveMemoriaId(created.id);
-      // Redirigir directamente a registrar consentimiento para cumplir la regla
-      onNavigate('consentimiento', created.id);
+      onNavigate('registro_contrato');
     } catch (err: any) {
       alert(err.message || 'Error creando expediente de memoria');
     } finally {
@@ -108,24 +115,25 @@ export const MemoriasView: React.FC<MemoriasViewProps> = ({ onNavigate, onSelect
     return matchesSearch && matchesVis;
   });
 
-  // Métricas para KPI Tiles Fiori
+  // Métricas de acervo
   const totalMemorias = memorias.length;
   const conConsentimiento = memorias.filter(m => m.consentimiento?.evidencia_hash).length;
   const totalAportesValidados = memorias.reduce((acc, m) => acc + (m.aportes_validados || 0), 0);
 
   return (
     <div className="space-y-6">
-      {/* Encabezado y Toolbar SAP Fiori */}
-      <div className="bg-white p-6 rounded-lg border border-sap-border shadow-sm flex flex-col md:flex-row md:items-center justify-between gap-4">
+      {/* Encabezado Institucional Cálido */}
+      <div className="bg-white p-6 sm:p-7 rounded border border-[#d8ccba] shadow-2xs flex flex-col md:flex-row md:items-center justify-between gap-4">
         <div>
-          <div className="flex items-center space-x-2 text-xs font-bold text-sap-blue uppercase tracking-wider">
-            <span>Directorio Central Patrimonial</span>
-            <span>•</span>
-            <span>Fundación Legado Vivo</span>
+          <div className="flex items-center space-x-2 text-xs font-bold text-[#c05600] uppercase tracking-wider font-serif">
+            <Building2 className="w-4 h-4" />
+            <span>Archivo General de Personas & Expedientes Históricos</span>
           </div>
-          <h1 className="text-2xl font-bold text-sap-text mt-1">P02 Mis Memorias & Expedientes</h1>
-          <p className="text-sm text-sap-textMuted mt-0.5">
-            Custodia inmutable y consulta controlada del acervo histórico de Palmares, Costa Rica.
+          <h1 className="text-2xl sm:text-3xl font-bold font-serif text-[#261b12] mt-1.5">
+            Custodia del Acervo Humano de Palmares
+          </h1>
+          <p className="text-sm sm:text-base text-[#442a17] mt-1 leading-relaxed">
+            Consulte las biografías de vida, relatos agrícolas y documentos preservados bajo consentimiento informado.
           </p>
         </div>
 
@@ -133,72 +141,72 @@ export const MemoriasView: React.FC<MemoriasViewProps> = ({ onNavigate, onSelect
         <div className="flex items-center space-x-3">
           {['Digitalizador', 'Administrador'].includes(activeRole) && (
             <button
-              onClick={() => setShowCreateModal(true)}
-              className="sap-btn sap-btn-primary flex items-center gap-2 shadow"
+              onClick={() => onNavigate('registro_contrato')}
+              className="btn-primary"
             >
-              <Plus className="w-5 h-5" />
-              <span>Registrar Nueva Memoria</span>
+              <Plus className="w-5 h-5 mr-1.5" />
+              <span>Registrar Nueva Persona & Contrato</span>
             </button>
           )}
         </div>
       </div>
 
-      {/* KPI Tiles (SAP Fiori ObjectHeader KPIs) */}
+      {/* Resumen Cuantitativo en Tono Madera y Ámbar */}
       <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
-        <div className="sap-card p-5 border-l-4 border-l-sap-blue">
-          <div className="text-xs font-bold uppercase tracking-wider text-slate-500">
-            Total Expedientes en Custodia
+        <div className="bg-white p-5 rounded border border-[#d8ccba] border-l-4 border-l-[#442a17] shadow-2xs">
+          <div className="text-xs font-bold uppercase tracking-wider text-[#665546] font-serif">
+            Expedientes en Custodia
           </div>
-          <div className="text-3xl font-extrabold text-sap-text mt-1">{totalMemorias}</div>
-          <div className="text-xs text-slate-600 mt-1 flex items-center gap-1">
-            <BookOpen className="w-3.5 h-3.5 text-sap-blue" />
-            <span>Filtrados según privacidad de rol '{activeRole}'</span>
-          </div>
-        </div>
-
-        <div className="sap-card p-5 border-l-4 border-l-sap-success">
-          <div className="text-xs font-bold uppercase tracking-wider text-slate-500">
-            Con Consentimiento Válido
-          </div>
-          <div className="text-3xl font-extrabold text-sap-success mt-1">{conConsentimiento}</div>
-          <div className="text-xs text-slate-600 mt-1 flex items-center gap-1">
-            <ShieldCheck className="w-3.5 h-3.5 text-sap-success" />
-            <span>Acreditados con hash criptográfico SHA-256</span>
+          <div className="text-3xl font-bold font-serif text-[#261b12] mt-1">{totalMemorias}</div>
+          <div className="text-xs text-[#665546] mt-1 flex items-center gap-1.5">
+            <BookOpen className="w-4 h-4 text-[#8c6239]" />
+            <span>Autorizados para el rol '{activeRole}'</span>
           </div>
         </div>
 
-        <div className="sap-card p-5 border-l-4 border-l-amber-500">
-          <div className="text-xs font-bold uppercase tracking-wider text-slate-500">
-            Aportes Validados en Base de Conocimiento
+        <div className="bg-white p-5 rounded border border-[#d8ccba] border-l-4 border-l-[#1b6e39] shadow-2xs">
+          <div className="text-xs font-bold uppercase tracking-wider text-[#665546] font-serif">
+            Con Consentimiento Acreditado
           </div>
-          <div className="text-3xl font-extrabold text-amber-700 mt-1">{totalAportesValidados}</div>
-          <div className="text-xs text-slate-600 mt-1 flex items-center gap-1">
-            <CheckCircle2 className="w-3.5 h-3.5 text-amber-600" />
-            <span>Alimentan el Narrador interactivo con fuentes</span>
+          <div className="text-3xl font-bold font-serif text-[#1b6e39] mt-1">{conConsentimiento}</div>
+          <div className="text-xs text-[#665546] mt-1 flex items-center gap-1.5">
+            <ShieldCheck className="w-4 h-4 text-[#1b6e39]" />
+            <span>Certificados con huella SHA-256</span>
+          </div>
+        </div>
+
+        <div className="bg-white p-5 rounded border border-[#d8ccba] border-l-4 border-l-[#c05600] shadow-2xs">
+          <div className="text-xs font-bold uppercase tracking-wider text-[#665546] font-serif">
+            Vivencias & Aportes Validados
+          </div>
+          <div className="text-3xl font-bold font-serif text-[#c05600] mt-1">{totalAportesValidados}</div>
+          <div className="text-xs text-[#665546] mt-1 flex items-center gap-1.5">
+            <CheckCircle2 className="w-4 h-4 text-[#c05600]" />
+            <span>Alimentan el conocimiento y narración</span>
           </div>
         </div>
       </div>
 
-      {/* Barra de Filtros Fiori (FilterBar Mobile-First) */}
-      <div className="sap-card p-3 sm:p-4 flex flex-col md:flex-row items-stretch md:items-center justify-between gap-3 bg-white">
-        <div className="flex flex-col sm:flex-row flex-1 items-stretch sm:items-center gap-2 sm:gap-3 w-full">
+      {/* Barra de Filtros Accesible para Adultos Mayores */}
+      <div className="bg-white p-4 rounded border border-[#d8ccba] flex flex-col md:flex-row items-stretch md:items-center justify-between gap-3 shadow-2xs">
+        <div className="flex flex-col sm:flex-row flex-1 items-stretch sm:items-center gap-3 w-full">
           <div className="relative flex-1">
-            <Search className="w-4 h-4 text-slate-400 absolute left-3 top-3.5" />
+            <Search className="w-5 h-5 text-[#8c6239] absolute left-3.5 top-3.5" />
             <input
               type="text"
               value={searchTerm}
               onChange={e => setSearchTerm(e.target.value)}
-              placeholder="Buscar por titular, alias, lugar o relato..."
-              className="w-full h-11 pl-9 pr-4 text-xs sm:text-sm border border-sap-border rounded focus:border-sap-blue focus:ring-1 focus:ring-sap-blue"
+              placeholder="Buscar por nombre, apodo, distrito o vivencia..."
+              className="w-full min-h-[48px] pl-11 pr-4 text-sm sm:text-base border border-[#d8ccba] rounded bg-[#ffffff] text-[#261b12] focus:border-[#c05600] focus:ring-1 focus:ring-[#c05600]"
             />
           </div>
 
           <div className="flex items-center space-x-2">
-            <Filter className="w-4 h-4 text-slate-500 hidden sm:block" />
+            <Filter className="w-5 h-5 text-[#8c6239] hidden sm:block" />
             <select
               value={filterVisibilidad}
               onChange={e => setFilterVisibilidad(e.target.value)}
-              className="h-11 px-3 text-xs sm:text-sm border border-sap-border rounded bg-white font-medium text-slate-700 w-full sm:w-auto"
+              className="min-h-[48px] px-3.5 text-sm font-medium border border-[#d8ccba] rounded bg-white text-[#261b12] w-full sm:w-auto"
             >
               <option value="todos">Todas las visibilidades</option>
               <option value="publico">Público</option>
@@ -208,12 +216,14 @@ export const MemoriasView: React.FC<MemoriasViewProps> = ({ onNavigate, onSelect
           </div>
         </div>
 
-        {/* Selector de Vista (Cuadrícula / Tabla) */}
-        <div className="flex items-center justify-end space-x-1 border border-sap-border rounded p-1 bg-slate-50 self-end md:self-auto">
+        {/* Selector de Modo de Vista */}
+        <div className="flex items-center justify-end space-x-1 border border-[#d8ccba] rounded p-1 bg-[#fcf8f3] self-end md:self-auto">
           <button
             onClick={() => setViewMode('grid')}
-            className={`p-1.5 rounded text-xs sm:text-sm flex items-center gap-1.5 font-semibold transition ${
-              viewMode === 'grid' ? 'bg-white shadow text-sap-blue' : 'text-slate-600 hover:text-slate-900'
+            className={`min-h-[40px] px-3 rounded text-xs font-bold flex items-center gap-1.5 transition ${
+              viewMode === 'grid'
+                ? 'bg-[#c05600] text-white shadow-xs'
+                : 'text-[#442a17] hover:bg-[#f4ede2]'
             }`}
           >
             <LayoutGrid className="w-4 h-4" />
@@ -221,180 +231,136 @@ export const MemoriasView: React.FC<MemoriasViewProps> = ({ onNavigate, onSelect
           </button>
           <button
             onClick={() => setViewMode('table')}
-            className={`p-1.5 rounded text-xs sm:text-sm flex items-center gap-1.5 font-semibold transition ${
-              viewMode === 'table' ? 'bg-white shadow text-sap-blue' : 'text-slate-600 hover:text-slate-900'
+            className={`min-h-[40px] px-3 rounded text-xs font-bold flex items-center gap-1.5 transition ${
+              viewMode === 'table'
+                ? 'bg-[#c05600] text-white shadow-xs'
+                : 'text-[#442a17] hover:bg-[#f4ede2]'
             }`}
           >
             <TableIcon className="w-4 h-4" />
-            <span>Tabla Fiori</span>
+            <span>Registro</span>
           </button>
         </div>
       </div>
 
       {/* Contenido Principal */}
       {isLoading ? (
-        <div className="sap-card p-12 text-center text-slate-500">
-          <div className="animate-spin w-8 h-8 border-4 border-sap-blue border-t-transparent rounded-full mx-auto mb-3"></div>
-          <p className="font-medium">Consultando registros autorizados...</p>
+        <div className="bg-white p-12 rounded border border-[#d8ccba] text-center text-[#665546]">
+          <div className="animate-spin w-8 h-8 border-3 border-[#c05600] border-t-transparent rounded-full mx-auto mb-3" />
+          <p className="font-serif text-base">Consultando expedientes autorizados...</p>
         </div>
       ) : filteredMemorias.length === 0 ? (
-        <div className="sap-card p-12 text-center text-slate-500">
-          <BookOpen className="w-12 h-12 text-slate-300 mx-auto mb-3" />
-          <h3 className="text-lg font-bold text-slate-700">No se encontraron expedientes</h3>
-          <p className="text-sm text-slate-500 max-w-md mx-auto mt-1">
-            No existen expedientes que coincidan con los filtros aplicados o no se cuenta con autorización para visualizarlos bajo el perfil actual.
+        <div className="bg-white p-12 rounded border border-[#d8ccba] text-center text-[#665546]">
+          <BookOpen className="w-12 h-12 text-[#bfae97] mx-auto mb-3" />
+          <h3 className="text-xl font-bold font-serif text-[#261b12]">No se encontraron expedientes</h3>
+          <p className="text-sm text-[#665546] max-w-md mx-auto mt-1">
+            No existen personas que coincidan con la búsqueda o no se cuenta con autorización para visualizarlas bajo el perfil actual.
           </p>
         </div>
       ) : viewMode === 'grid' ? (
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
           {filteredMemorias.map(memoria => {
             const hasConsent = !!memoria.consentimiento?.evidencia_hash;
-            const isSelected = activeMemoriaId === memoria.id;
+            const photoUrl =
+              PORTRAIT_MAP[memoria.titular] ||
+              (memoria.alias ? PORTRAIT_MAP[memoria.alias] : null) ||
+              DEFAULT_PORTRAIT;
 
             return (
               <div
                 key={memoria.id}
-                className={`sap-card p-6 transition-all hover:shadow-md relative ${
-                  isSelected ? 'border-2 border-sap-blue ring-2 ring-blue-100' : 'border border-sap-border'
-                }`}
+                className="bg-white rounded border border-[#d8ccba] shadow-2xs hover:border-[#bfae97] transition flex flex-col justify-between overflow-hidden"
               >
-                {/* Badges de Estado Semántico SAP */}
-                <div className="flex items-center justify-between mb-3">
-                  <div className="flex items-center space-x-2">
-                    {hasConsent ? (
-                      <span className="inline-flex items-center gap-1 px-2.5 py-1 rounded bg-sap-successBg text-sap-success text-xs font-bold border border-emerald-200">
-                        <ShieldCheck className="w-3.5 h-3.5" />
-                        Consentimiento Válido
-                      </span>
-                    ) : (
-                      <span className="inline-flex items-center gap-1 px-2.5 py-1 rounded bg-sap-errorBg text-sap-error text-xs font-bold border border-red-200">
-                        <ShieldAlert className="w-3.5 h-3.5" />
-                        Sin Consentimiento
-                      </span>
-                    )}
+                <div>
+                  {/* Cabecera de la Tarjeta con Foto y Datos Principales */}
+                  <div className="p-5 sm:p-6 flex items-start gap-4 border-b border-[#f4ede2]">
+                    <img
+                      src={photoUrl}
+                      alt={memoria.titular}
+                      className="w-20 h-20 sm:w-24 sm:h-24 rounded object-cover border-2 border-[#d8ccba] flex-shrink-0 shadow-xs"
+                    />
 
-                    {/* Visibilidad badge */}
-                    <span className={`inline-flex items-center gap-1 px-2 py-0.5 rounded text-xs font-semibold ${
-                      memoria.visibilidad === 'publico'
-                        ? 'bg-blue-50 text-sap-blue border border-blue-200'
-                        : memoria.visibilidad === 'familiar'
-                        ? 'bg-amber-50 text-amber-700 border border-amber-200'
-                        : 'bg-slate-100 text-slate-700 border border-slate-300'
-                    }`}>
-                      {memoria.visibilidad === 'publico' && <Globe className="w-3 h-3" />}
-                      {memoria.visibilidad === 'familiar' && <Users className="w-3 h-3" />}
-                      {memoria.visibilidad === 'privado' && <Lock className="w-3 h-3" />}
-                      <span className="capitalize">{memoria.visibilidad}</span>
-                    </span>
+                    <div className="min-w-0 flex-1">
+                      <div className="flex items-center justify-between gap-2 mb-1">
+                        <span className="text-xs text-[#8c6239] font-serif font-bold uppercase tracking-wider">
+                          Expediente #{memoria.id}
+                        </span>
+                        
+                        <span className="text-xs text-[#665546] font-medium bg-[#fcf8f3] px-2 py-0.5 rounded border border-[#e3d9cb] capitalize">
+                          {memoria.visibilidad}
+                        </span>
+                      </div>
+
+                      <h3 className="text-lg sm:text-xl font-bold font-serif text-[#261b12] leading-tight truncate">
+                        {memoria.titular}
+                      </h3>
+
+                      {memoria.alias && (
+                        <div className="text-sm font-semibold text-[#c05600] mt-0.5">
+                          "{memoria.alias}"
+                        </div>
+                      )}
+
+                      <div className="text-xs text-[#665546] mt-1 truncate">
+                        {memoria.lugar_origen}
+                      </div>
+                    </div>
                   </div>
 
-                  <span className="text-xs text-slate-500 font-mono">
-                    ID #{memoria.id}
-                  </span>
-                </div>
+                  {/* Semblanza y Estado Ético */}
+                  <div className="p-5 sm:p-6 space-y-3">
+                    <p className="text-xs sm:text-sm text-[#442a17] line-clamp-3 leading-relaxed">
+                      {memoria.descripcion || 'Expediente histórico con vivencias orales y aportes documentales custodiados.'}
+                    </p>
 
-                {/* Titular y Datos Fiori */}
-                <div className="mb-4">
-                  <h3 className="text-xl font-bold text-sap-text leading-snug">
-                    {memoria.titular}
-                    {memoria.alias && (
-                      <span className="text-sap-blue font-semibold ml-2 text-base">
-                        ({memoria.alias})
-                      </span>
-                    )}
-                  </h3>
-                  <div className="text-xs text-slate-500 mt-1 flex items-center gap-2">
-                    <span>{memoria.lugar_origen}</span>
-                    {memoria.fecha_nacimiento && (
-                      <>
-                        <span>•</span>
-                        <span>Nacimiento: {memoria.fecha_nacimiento}</span>
-                      </>
-                    )}
-                  </div>
-                </div>
+                    <div className="p-3 bg-[#fcf8f3] rounded border border-[#e3d9cb] flex items-center justify-between text-xs text-[#442a17]">
+                      <div className="flex items-center gap-1.5">
+                        {hasConsent ? (
+                          <>
+                            <ShieldCheck className="w-4 h-4 text-[#1b6e39]" />
+                            <span className="font-semibold text-[#1b6e39]">Consentimiento Válido</span>
+                          </>
+                        ) : (
+                          <>
+                            <ShieldAlert className="w-4 h-4 text-[#a81c1c]" />
+                            <span className="font-semibold text-[#a81c1c]">Sin Consentimiento</span>
+                          </>
+                        )}
+                      </div>
 
-                <p className="text-sm text-slate-600 line-clamp-3 mb-5 leading-relaxed">
-                  {memoria.descripcion || 'Sin descripción detallada registrada.'}
-                </p>
-
-                {/* Resumen de aportes */}
-                <div className="bg-slate-50 p-3 rounded border border-slate-100 flex items-center justify-between text-xs mb-5">
-                  <div>
-                    <span className="text-slate-500">Aportes Validados:</span>
-                    <span className="font-bold text-slate-800 ml-1">
-                      {memoria.aportes_validados || 0} / {memoria.total_aportes || 0}
-                    </span>
-                  </div>
-                  <div>
-                    <span className="text-slate-500">Estado:</span>
-                    <span className="font-bold text-slate-800 ml-1">
-                      {memoria.estado}
-                    </span>
+                      <div>
+                        <span className="text-[#665546]">Aportes validados:</span>
+                        <strong className="ml-1 text-[#261b12]">
+                          {memoria.aportes_validados || 0}
+                        </strong>
+                      </div>
+                    </div>
                   </div>
                 </div>
 
-                {/* Barra de Acciones por Rol */}
-                <div className="grid grid-cols-2 sm:grid-cols-4 gap-2 pt-2 border-t border-slate-100">
-                  {/* Abrir Expediente & Vivencias */}
+                {/* Acciones de la Tarjeta */}
+                <div className="p-4 bg-[#faf7f2] border-t border-[#f4ede2] flex items-center justify-between gap-2">
                   <button
                     onClick={() => {
                       setActiveMemoriaId(memoria.id);
                       if (onSelectPersona) onSelectPersona(memoria.id);
                     }}
-                    className="p-2 rounded text-xs font-bold bg-[#0056b3] text-white hover:bg-[#004494] flex items-center justify-center gap-1 transition shadow-xs col-span-2 sm:col-span-1"
+                    className="btn-primary flex-1 text-xs sm:text-sm"
                   >
-                    <BookOpen className="w-3.5 h-3.5" />
-                    <span>Ver Expediente</span>
+                    <BookOpen className="w-4 h-4 mr-2" />
+                    <span>Consultar Expediente & Vivencias</span>
                   </button>
 
-                  {/* P07: Preguntar al Narrador */}
-                  <button
-                    onClick={() => {
-                      setActiveMemoriaId(memoria.id);
-                      if (onSelectPersona) {
-                        onSelectPersona(memoria.id);
-                      } else {
-                        onNavigate('narrador', memoria.id);
-                      }
-                    }}
-                    disabled={!hasConsent}
-                    title={!hasConsent ? 'Requiere consentimiento registrado' : 'Interactuar con el narrador'}
-                    className={`p-2 rounded text-xs font-bold flex items-center justify-center gap-1 transition ${
-                      hasConsent
-                        ? 'bg-teal-50 text-teal-800 hover:bg-teal-100 border border-teal-200'
-                        : 'bg-slate-100 text-slate-400 cursor-not-allowed'
-                    }`}
-                  >
-                    <Bot className="w-3.5 h-3.5" />
-                    <span>Narrador</span>
-                  </button>
-
-                  {/* P04: Cargar Relato */}
                   {['Digitalizador', 'Administrador'].includes(activeRole) && (
                     <button
                       onClick={() => {
                         setActiveMemoriaId(memoria.id);
                         onNavigate('carga', memoria.id);
                       }}
-                      className="p-2 rounded text-xs font-bold bg-cyan-50 text-cyan-800 hover:bg-cyan-100 border border-cyan-200 flex items-center justify-center gap-1 transition"
+                      className="btn-secondary text-xs sm:text-sm px-3"
+                      title="Cargar nuevo testimonio"
                     >
-                      <UploadCloud className="w-3.5 h-3.5" />
-                      <span>Cargar</span>
-                    </button>
-                  )}
-
-                  {/* P03: Consentimiento */}
-                  {['Digitalizador', 'Gestor de datos', 'Administrador'].includes(activeRole) && (
-                    <button
-                      onClick={() => {
-                        setActiveMemoriaId(memoria.id);
-                        onNavigate('consentimiento', memoria.id);
-                      }}
-                      className="p-2 rounded text-xs font-bold bg-blue-50 text-sap-blue hover:bg-blue-100 border border-blue-200 flex items-center justify-center gap-1 transition"
-                    >
-                      <FileCheck className="w-3.5 h-3.5" />
-                      <span>Contrato</span>
+                      <UploadCloud className="w-4 h-4" />
                     </button>
                   )}
                 </div>
@@ -403,61 +369,60 @@ export const MemoriasView: React.FC<MemoriasViewProps> = ({ onNavigate, onSelect
           })}
         </div>
       ) : (
-        /* Vista de Tabla Fiori Enterprise */
-        <div className="sap-card overflow-hidden">
+        /* Vista de Registro en Tabla Cálida */
+        <div className="bg-white rounded border border-[#d8ccba] overflow-hidden shadow-2xs">
           <div className="overflow-x-auto">
-            <table className="w-full text-left text-sm">
-              <thead className="bg-slate-50 text-xs font-bold text-slate-600 uppercase tracking-wider border-b border-sap-border">
+            <table className="w-full text-left text-sm text-[#261b12]">
+              <thead className="bg-[#fcf8f3] text-xs font-bold text-[#442a17] uppercase tracking-wider border-b border-[#d8ccba] font-serif">
                 <tr>
-                  <th className="py-3 px-4">Titular & Expediente</th>
-                  <th className="py-3 px-4">Lugar</th>
-                  <th className="py-3 px-4">Consentimiento Legal</th>
-                  <th className="py-3 px-4">Visibilidad</th>
-                  <th className="py-3 px-4">Aportes Validados</th>
-                  <th className="py-3 px-4 text-right">Acciones</th>
+                  <th className="py-3.5 px-4">Titular de la Memoria</th>
+                  <th className="py-3.5 px-4">Distrito / Lugar</th>
+                  <th className="py-3.5 px-4">Consentimiento</th>
+                  <th className="py-3.5 px-4">Visibilidad</th>
+                  <th className="py-3.5 px-4">Aportes</th>
+                  <th className="py-3.5 px-4 text-right">Acción</th>
                 </tr>
               </thead>
-              <tbody className="divide-y divide-sap-border">
+              <tbody className="divide-y divide-[#f4ede2]">
                 {filteredMemorias.map(memoria => {
                   const hasConsent = !!memoria.consentimiento?.evidencia_hash;
                   return (
-                    <tr key={memoria.id} className="hover:bg-slate-50/80 transition">
-                      <td className="py-3 px-4">
-                        <div className="font-bold text-sap-text">{memoria.titular}</div>
-                        {memoria.alias && <div className="text-xs text-sap-blue">{memoria.alias}</div>}
+                    <tr key={memoria.id} className="hover:bg-[#fcfaf7] transition">
+                      <td className="py-3.5 px-4">
+                        <div className="font-bold font-serif text-base text-[#261b12]">{memoria.titular}</div>
+                        {memoria.alias && <div className="text-xs text-[#c05600] font-semibold">"{memoria.alias}"</div>}
                       </td>
-                      <td className="py-3 px-4 text-xs text-slate-600">{memoria.lugar_origen}</td>
-                      <td className="py-3 px-4">
+                      <td className="py-3.5 px-4 text-xs text-[#665546]">{memoria.lugar_origen}</td>
+                      <td className="py-3.5 px-4">
                         {hasConsent ? (
-                          <span className="inline-flex items-center gap-1 text-xs font-bold text-sap-success">
+                          <span className="inline-flex items-center gap-1.5 text-xs font-bold text-[#1b6e39]">
                             <ShieldCheck className="w-4 h-4" />
                             Acreditado
                           </span>
                         ) : (
-                          <span className="inline-flex items-center gap-1 text-xs font-bold text-sap-error">
+                          <span className="inline-flex items-center gap-1.5 text-xs font-bold text-[#a81c1c]">
                             <ShieldAlert className="w-4 h-4" />
                             Sin Consentimiento
                           </span>
                         )}
                       </td>
-                      <td className="py-3 px-4">
-                        <span className="text-xs font-semibold capitalize px-2 py-0.5 rounded bg-slate-100 text-slate-700">
+                      <td className="py-3.5 px-4">
+                        <span className="text-xs font-semibold capitalize px-2.5 py-1 rounded bg-[#fcf8f3] text-[#442a17] border border-[#e3d9cb]">
                           {memoria.visibilidad}
                         </span>
                       </td>
-                      <td className="py-3 px-4 font-mono text-xs">
-                        {memoria.aportes_validados || 0} / {memoria.total_aportes || 0}
+                      <td className="py-3.5 px-4 text-xs font-bold">
+                        {memoria.aportes_validados || 0} validados
                       </td>
-                      <td className="py-3 px-4 text-right space-x-2">
+                      <td className="py-3.5 px-4 text-right">
                         <button
                           onClick={() => {
                             setActiveMemoriaId(memoria.id);
-                            onNavigate('narrador', memoria.id);
+                            if (onSelectPersona) onSelectPersona(memoria.id);
                           }}
-                          disabled={!hasConsent}
-                          className="px-2.5 py-1 text-xs font-bold rounded bg-teal-50 text-teal-800 hover:bg-teal-100 disabled:opacity-40"
+                          className="btn-secondary min-h-[38px] py-1 text-xs"
                         >
-                          Narrador
+                          Ver Expediente
                         </button>
                       </td>
                     </tr>
@@ -465,122 +430,6 @@ export const MemoriasView: React.FC<MemoriasViewProps> = ({ onNavigate, onSelect
                 })}
               </tbody>
             </table>
-          </div>
-        </div>
-      )}
-
-      {/* Modal: Registrar Nueva Memoria (SAP Object Creation Dialog) */}
-      {showCreateModal && (
-        <div className="fixed inset-0 z-50 bg-slate-900/60 backdrop-blur-sm flex items-end sm:items-center justify-center p-0 sm:p-4">
-          <div className="sap-card max-w-xl w-full p-5 sm:p-6 shadow-2xl border-t-4 border-t-sap-blue rounded-b-none sm:rounded-lg max-h-[92vh] overflow-y-auto animate-in slide-in-from-bottom sm:zoom-in duration-150">
-            <h2 className="text-lg sm:text-xl font-bold text-sap-text mb-1">
-              Apertura de Expediente de Memoria
-            </h2>
-            <p className="text-xs text-slate-500 mb-4">
-              Fundación Legado Vivo — Todo nuevo expediente se inicia en modo "Privado" hasta el registro fehaciente de su consentimiento.
-            </p>
-
-            <form onSubmit={handleCreateMemoria} className="space-y-4 text-sm">
-              <div>
-                <label className="block font-semibold text-slate-700 mb-1">
-                  Nombre Completo del Titular *
-                </label>
-                <input
-                  type="text"
-                  required
-                  value={newTitular}
-                  onChange={e => setNewTitular(e.target.value)}
-                  placeholder="Ej: José Ángel González Chaves"
-                  className="w-full h-11 px-3 border border-sap-border rounded focus:border-sap-blue focus:ring-1 focus:ring-sap-blue"
-                />
-              </div>
-
-              <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
-                <div>
-                  <label className="block font-semibold text-slate-700 mb-1">
-                    Alias o Nombre Popular
-                  </label>
-                  <input
-                    type="text"
-                    value={newAlias}
-                    onChange={e => setNewAlias(e.target.value)}
-                    placeholder="Ej: Don Chepe"
-                    className="w-full h-11 px-3 border border-sap-border rounded focus:border-sap-blue focus:ring-1 focus:ring-sap-blue"
-                  />
-                </div>
-                <div>
-                  <label className="block font-semibold text-slate-700 mb-1">
-                    Lugar de Origen
-                  </label>
-                  <input
-                    type="text"
-                    value={newLugar}
-                    onChange={e => setNewLugar(e.target.value)}
-                    placeholder="Ej: Zaragoza, Palmares"
-                    className="w-full h-11 px-3 border border-sap-border rounded focus:border-sap-blue focus:ring-1 focus:ring-sap-blue"
-                  />
-                </div>
-              </div>
-
-              <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
-                <div>
-                  <label className="block font-semibold text-slate-700 mb-1">
-                    Fecha o Año de Nacimiento
-                  </label>
-                  <input
-                    type="text"
-                    value={newNacimiento}
-                    onChange={e => setNewNacimiento(e.target.value)}
-                    placeholder="Ej: 18 de marzo de 1924"
-                    className="w-full h-11 px-3 border border-sap-border rounded focus:border-sap-blue focus:ring-1 focus:ring-sap-blue"
-                  />
-                </div>
-                <div>
-                  <label className="block font-semibold text-slate-700 mb-1">
-                    Visibilidad Inicial (Regla: Privado por defecto)
-                  </label>
-                  <select
-                    value={newVisibilidad}
-                    onChange={e => setNewVisibilidad(e.target.value as any)}
-                    className="w-full h-11 px-3 border border-sap-border rounded bg-white"
-                  >
-                    <option value="privado">Privado (Recomendado)</option>
-                    <option value="familiar">Familiar</option>
-                    <option value="publico">Público</option>
-                  </select>
-                </div>
-              </div>
-
-              <div>
-                <label className="block font-semibold text-slate-700 mb-1">
-                  Resumen Biográfico o Contexto Patrimonial
-                </label>
-                <textarea
-                  rows={3}
-                  value={newDescripcion}
-                  onChange={e => setNewDescripcion(e.target.value)}
-                  placeholder="Describa la labor agrícola, comunitaria o artesanal de la persona en el cantón de Palmares..."
-                  className="w-full p-3 border border-sap-border rounded focus:border-sap-blue focus:ring-1 focus:ring-sap-blue"
-                />
-              </div>
-
-              <div className="flex items-center justify-end space-x-3 pt-3 border-t border-slate-100">
-                <button
-                  type="button"
-                  onClick={() => setShowCreateModal(false)}
-                  className="sap-btn sap-btn-secondary"
-                >
-                  Cancelar
-                </button>
-                <button
-                  type="submit"
-                  disabled={isSubmitting}
-                  className="sap-btn sap-btn-primary"
-                >
-                  {isSubmitting ? 'Guardando...' : 'Crear y Continuar a Consentimiento'}
-                </button>
-              </div>
-            </form>
           </div>
         </div>
       )}

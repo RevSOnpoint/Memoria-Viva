@@ -7,10 +7,8 @@ import {
   ShieldCheck,
   Hash,
   CheckCircle2,
-  AlertCircle,
   ArrowRight,
   User,
-  MapPin,
   Calendar,
   Lock,
   Globe,
@@ -117,56 +115,56 @@ export const RegistroMemoriaContratoView: React.FC<RegistroMemoriaContratoViewPr
   return (
     <div className="space-y-6 max-w-4xl mx-auto">
       {/* Encabezado Formal Institucional */}
-      <div className="bg-white p-6 rounded-lg border border-slate-200 shadow-xs">
-        <div className="flex items-center space-x-2 text-xs font-bold text-[#0056b3] uppercase tracking-wider font-mono">
+      <div className="bg-white p-6 rounded border border-[#d8ccba] shadow-2xs">
+        <div className="flex items-center space-x-2 text-xs font-bold text-[#c05600] uppercase tracking-wider font-serif">
           <Building2 className="w-4 h-4" />
           <span>Fundación Legado Vivo • Departamento de Registro y Custodia</span>
         </div>
-        <h1 className="text-2xl font-bold font-serif text-slate-900 mt-1">
+        <h1 className="text-2xl sm:text-3xl font-bold font-serif text-[#261b12] mt-1.5">
           Apertura de Expediente & Contrato de Consentimiento
         </h1>
-        <p className="text-xs sm:text-sm text-slate-600 mt-1 leading-relaxed">
-          Todo registro de una persona o de sus vivencias se formaliza mediante un contrato legal que garantiza la custodia ética y la no alteración del patrimonio histórico.
+        <p className="text-sm sm:text-base text-[#442a17] mt-1.5 leading-relaxed">
+          Todo registro de una persona o de sus vivencias se formaliza mediante un contrato legal que garantiza la custodia ética, la no alteración del testimonio y el respeto irrestricto a la voluntad familiar.
         </p>
       </div>
 
       {createdResult ? (
         /* Constancia de Registro Exitoso */
-        <div className="bg-white rounded-xl border-2 border-emerald-500 p-6 sm:p-8 shadow-md space-y-6">
-          <div className="flex items-center space-x-3 text-emerald-800">
-            <CheckCircle2 className="w-8 h-8 text-emerald-600 flex-shrink-0" />
+        <div className="bg-white rounded border-2 border-[#1b6e39] p-6 sm:p-8 shadow-sm space-y-6">
+          <div className="flex items-start sm:items-center space-x-3 text-[#1b6e39]">
+            <CheckCircle2 className="w-9 h-9 text-[#1b6e39] flex-shrink-0" />
             <div>
-              <h2 className="text-xl font-bold font-serif text-slate-900">
+              <h2 className="text-2xl font-bold font-serif text-[#261b12]">
                 Expediente #{createdResult.memoriaId} Formalizado con Éxito
               </h2>
-              <p className="text-xs text-slate-600">
-                La persona <strong>{createdResult.titular}</strong> y su contrato de consentimiento informado han quedado debidamente acreditados en la base de datos institucional.
+              <p className="text-sm text-[#442a17] mt-1">
+                La persona <strong>{createdResult.titular}</strong> y su contrato de consentimiento informado han quedado debidamente acreditados bajo fe institucional.
               </p>
             </div>
           </div>
 
-          <div className="p-4 bg-slate-50 rounded-lg border border-slate-200 text-xs space-y-2">
-            <div className="font-mono text-slate-500 uppercase text-[10px]">
+          <div className="p-4 bg-[#fcf8f3] rounded border border-[#d8ccba] space-y-2">
+            <div className="font-serif text-[#442a17] font-bold text-xs uppercase tracking-wider">
               Firma Criptográfica SHA-256 de Custodia:
             </div>
-            <div className="font-mono text-xs text-slate-800 break-all bg-white p-2.5 rounded border border-slate-200">
+            <div className="font-mono text-xs sm:text-sm text-[#261b12] break-all bg-white p-3 rounded border border-[#e3d9cb]">
               {createdResult.hash}
             </div>
           </div>
 
-          <div className="pt-4 border-t border-slate-200 flex flex-col sm:flex-row items-center justify-end gap-3">
+          <div className="pt-4 border-t border-[#e3d9cb] flex flex-col sm:flex-row items-center justify-end gap-3">
             <button
               onClick={() => onSuccessNavigate(createdResult.memoriaId)}
-              className="w-full sm:w-auto px-4 py-2.5 bg-slate-100 hover:bg-slate-200 text-slate-800 font-bold text-xs rounded transition"
+              className="btn-secondary w-full sm:w-auto"
             >
               Ver Expediente de {createdResult.titular}
             </button>
             <button
               onClick={() => onNavigateCarga(createdResult.memoriaId)}
-              className="w-full sm:w-auto px-5 py-2.5 bg-[#0056b3] hover:bg-[#004494] text-white font-bold text-xs rounded flex items-center justify-center gap-1.5 shadow-xs transition"
+              className="btn-primary w-full sm:w-auto"
             >
-              <span>Proceder a Carga de Relatos (P04)</span>
-              <ArrowRight className="w-4 h-4" />
+              <span>Proceder a Carga de Relatos</span>
+              <ArrowRight className="w-5 h-5 ml-2" />
             </button>
           </div>
         </div>
@@ -174,18 +172,20 @@ export const RegistroMemoriaContratoView: React.FC<RegistroMemoriaContratoViewPr
         /* Formulario Unificado: Persona + Contrato */
         <form onSubmit={handleSubmit} className="space-y-6">
           {/* SECCIÓN 1: DATOS DE LA PERSONA / INFORMANTE */}
-          <div className="bg-white p-6 rounded-lg border border-slate-200 shadow-xs space-y-4">
-            <div className="pb-3 border-b border-slate-100 flex items-center justify-between">
-              <h3 className="font-bold font-serif text-base text-slate-900 flex items-center gap-2">
-                <User className="w-4 h-4 text-[#0056b3]" />
+          <div className="bg-white p-6 rounded border border-[#d8ccba] shadow-2xs space-y-4">
+            <div className="pb-3 border-b border-[#f4ede2] flex items-center justify-between">
+              <h3 className="font-bold font-serif text-lg text-[#261b12] flex items-center gap-2">
+                <User className="w-5 h-5 text-[#c05600]" />
                 <span>1. Datos de Identificación del Titular</span>
               </h3>
-              <span className="text-[11px] font-mono text-slate-400">Paso 1 de 2</span>
+              <span className="text-xs font-semibold text-[#8c6239] bg-[#fef6ee] px-2.5 py-1 rounded border border-[#ecdac7]">
+                Paso 1 de 2
+              </span>
             </div>
 
-            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 text-xs sm:text-sm">
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 text-sm">
               <div>
-                <label className="block font-semibold text-slate-700 mb-1">
+                <label className="block font-bold text-[#261b12] mb-1.5 font-serif">
                   Nombre Completo del Informante / Adulto Mayor *
                 </label>
                 <input
@@ -194,12 +194,12 @@ export const RegistroMemoriaContratoView: React.FC<RegistroMemoriaContratoViewPr
                   value={titular}
                   onChange={e => setTitular(e.target.value)}
                   placeholder="Ej: José Ángel González Chaves"
-                  className="w-full h-11 px-3 border border-slate-300 rounded focus:border-[#0056b3] focus:ring-1 focus:ring-[#0056b3]"
+                  className="w-full min-h-[48px] px-3.5 border border-[#d8ccba] rounded bg-[#ffffff] text-[#261b12] focus:border-[#c05600] focus:ring-1 focus:ring-[#c05600]"
                 />
               </div>
 
               <div>
-                <label className="block font-semibold text-slate-700 mb-1">
+                <label className="block font-bold text-[#261b12] mb-1.5 font-serif">
                   Alias o Nombre Popular en la Comunidad
                 </label>
                 <input
@@ -207,20 +207,20 @@ export const RegistroMemoriaContratoView: React.FC<RegistroMemoriaContratoViewPr
                   value={alias}
                   onChange={e => setAlias(e.target.value)}
                   placeholder="Ej: Don Chepe"
-                  className="w-full h-11 px-3 border border-slate-300 rounded focus:border-[#0056b3] focus:ring-1 focus:ring-[#0056b3]"
+                  className="w-full min-h-[48px] px-3.5 border border-[#d8ccba] rounded bg-[#ffffff] text-[#261b12] focus:border-[#c05600] focus:ring-1 focus:ring-[#c05600]"
                 />
               </div>
             </div>
 
-            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 text-xs sm:text-sm">
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 text-sm">
               <div>
-                <label className="block font-semibold text-slate-700 mb-1">
+                <label className="block font-bold text-[#261b12] mb-1.5 font-serif">
                   Distrito o Comunidad de Palmares *
                 </label>
                 <select
                   value={distrito}
                   onChange={e => setDistrito(e.target.value)}
-                  className="w-full h-11 px-3 border border-slate-300 rounded bg-white font-medium"
+                  className="w-full min-h-[48px] px-3.5 border border-[#d8ccba] rounded bg-[#ffffff] text-[#261b12] font-medium"
                 >
                   <option value="Zaragoza, Palmares, Costa Rica">Zaragoza (Café y trapiches)</option>
                   <option value="Rincón de Zaragoza, Palmares, Costa Rica">Rincón de Zaragoza (Partería y salud)</option>
@@ -231,7 +231,7 @@ export const RegistroMemoriaContratoView: React.FC<RegistroMemoriaContratoViewPr
               </div>
 
               <div>
-                <label className="block font-semibold text-slate-700 mb-1">
+                <label className="block font-bold text-[#261b12] mb-1.5 font-serif">
                   Año o Fecha de Nacimiento
                 </label>
                 <input
@@ -239,13 +239,13 @@ export const RegistroMemoriaContratoView: React.FC<RegistroMemoriaContratoViewPr
                   value={fechaNacimiento}
                   onChange={e => setFechaNacimiento(e.target.value)}
                   placeholder="Ej: 18 de marzo de 1924"
-                  className="w-full h-11 px-3 border border-slate-300 rounded focus:border-[#0056b3] focus:ring-1 focus:ring-[#0056b3]"
+                  className="w-full min-h-[48px] px-3.5 border border-[#d8ccba] rounded bg-[#ffffff] text-[#261b12] focus:border-[#c05600] focus:ring-1 focus:ring-[#c05600]"
                 />
               </div>
             </div>
 
             <div>
-              <label className="block font-semibold text-slate-700 mb-1 text-xs sm:text-sm">
+              <label className="block font-bold text-[#261b12] mb-1.5 text-sm font-serif">
                 Semblanza Biográfica o Contexto Patrimonial
               </label>
               <textarea
@@ -253,30 +253,32 @@ export const RegistroMemoriaContratoView: React.FC<RegistroMemoriaContratoViewPr
                 value={descripcion}
                 onChange={e => setDescripcion(e.target.value)}
                 placeholder="Describa brevemente la labor agrícola, comunitaria, culinaria o artesanal de la persona..."
-                className="w-full p-3 border border-slate-300 rounded text-xs sm:text-sm focus:border-[#0056b3] focus:ring-1 focus:ring-[#0056b3]"
+                className="w-full p-3.5 border border-[#d8ccba] rounded text-sm text-[#261b12] focus:border-[#c05600] focus:ring-1 focus:ring-[#c05600]"
               />
             </div>
           </div>
 
           {/* SECCIÓN 2: CONTRATO DE CONSENTIMIENTO INFORMADO */}
-          <div className="bg-white p-6 rounded-lg border-t-4 border-t-amber-600 border border-slate-200 shadow-xs space-y-4">
-            <div className="pb-3 border-b border-slate-100 flex items-center justify-between">
-              <h3 className="font-bold font-serif text-base text-slate-900 flex items-center gap-2">
-                <FileSignature className="w-4 h-4 text-amber-600" />
-                <span>2. Cláusulas del Contrato de Consentimiento & Cesión Ética</span>
+          <div className="bg-white p-6 rounded border-t-4 border-t-[#c05600] border border-[#d8ccba] shadow-2xs space-y-4">
+            <div className="pb-3 border-b border-[#f4ede2] flex items-center justify-between">
+              <h3 className="font-bold font-serif text-lg text-[#261b12] flex items-center gap-2">
+                <FileSignature className="w-5 h-5 text-[#c05600]" />
+                <span>2. Cláusulas del Contrato de Consentimiento & Custodia Ética</span>
               </h3>
-              <span className="text-[11px] font-mono text-slate-400">Paso 2 de 2</span>
+              <span className="text-xs font-semibold text-[#8c6239] bg-[#fef6ee] px-2.5 py-1 rounded border border-[#ecdac7]">
+                Paso 2 de 2
+              </span>
             </div>
 
-            <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 text-xs sm:text-sm">
+            <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 text-sm">
               <div>
-                <label className="block font-semibold text-slate-700 mb-1">
+                <label className="block font-bold text-[#261b12] mb-1.5 font-serif">
                   Modalidad de Otorgamiento *
                 </label>
                 <select
                   value={modalidad}
                   onChange={e => setModalidad(e.target.value as any)}
-                  className="w-full h-11 px-3 border border-slate-300 rounded bg-white font-medium"
+                  className="w-full min-h-[48px] px-3.5 border border-[#d8ccba] rounded bg-white text-[#261b12] font-medium"
                 >
                   <option value="Firma digital">Firma Digital / Huella dactilar</option>
                   <option value="Escrita">Documento Físico Notarial Firmado</option>
@@ -286,7 +288,7 @@ export const RegistroMemoriaContratoView: React.FC<RegistroMemoriaContratoViewPr
               </div>
 
               <div>
-                <label className="block font-semibold text-slate-700 mb-1">
+                <label className="block font-bold text-[#261b12] mb-1.5 font-serif">
                   Fecha del Acuerdo *
                 </label>
                 <input
@@ -294,18 +296,18 @@ export const RegistroMemoriaContratoView: React.FC<RegistroMemoriaContratoViewPr
                   required
                   value={fechaOtorgamiento}
                   onChange={e => setFechaOtorgamiento(e.target.value)}
-                  className="w-full h-11 px-3 border border-slate-300 rounded focus:border-[#0056b3]"
+                  className="w-full min-h-[48px] px-3.5 border border-[#d8ccba] rounded bg-white text-[#261b12] focus:border-[#c05600]"
                 />
               </div>
 
               <div>
-                <label className="block font-semibold text-slate-700 mb-1">
+                <label className="block font-bold text-[#261b12] mb-1.5 font-serif">
                   Nivel de Visibilidad Inicial *
                 </label>
                 <select
                   value={visibilidad}
                   onChange={e => setVisibilidad(e.target.value as any)}
-                  className="w-full h-11 px-3 border border-slate-300 rounded bg-white font-medium"
+                  className="w-full min-h-[48px] px-3.5 border border-[#d8ccba] rounded bg-white text-[#261b12] font-medium"
                 >
                   <option value="publico">Público (Consulta comunitaria y narrador)</option>
                   <option value="familiar">Familiar (Restringido a personas autorizadas)</option>
@@ -315,7 +317,7 @@ export const RegistroMemoriaContratoView: React.FC<RegistroMemoriaContratoViewPr
             </div>
 
             <div>
-              <label className="block font-semibold text-slate-700 mb-1 text-xs sm:text-sm">
+              <label className="block font-bold text-[#261b12] mb-1.5 text-sm font-serif">
                 Evidencia Probatoria en Custodia
               </label>
               <input
@@ -323,23 +325,23 @@ export const RegistroMemoriaContratoView: React.FC<RegistroMemoriaContratoViewPr
                 value={notasContrato}
                 onChange={e => setNotasContrato(e.target.value)}
                 placeholder="Indique tomo notarial, folio, o registro físico en sede de la Fundación..."
-                className="w-full h-11 px-3 border border-slate-300 rounded text-xs sm:text-sm"
+                className="w-full min-h-[48px] px-3.5 border border-[#d8ccba] rounded text-sm text-[#261b12]"
               />
             </div>
 
-            {/* Visualización del Hash Criptográfico del Contrato en Vivo */}
-            <div className="p-3 bg-amber-50/70 rounded border border-amber-200 text-xs">
-              <div className="flex items-center gap-1.5 font-bold text-amber-900 mb-1 font-mono">
-                <Hash className="w-3.5 h-3.5 text-amber-700" />
-                <span>Hash Criptográfico SHA-256 del Contrato (Se certificará inmutablemente):</span>
+            {/* Certificado de Hash en Vivo */}
+            <div className="p-4 bg-[#fcf8f3] rounded border border-[#d8ccba] space-y-1.5">
+              <div className="flex items-center gap-2 font-bold text-[#442a17] text-xs font-serif uppercase tracking-wider">
+                <Hash className="w-4 h-4 text-[#c05600]" />
+                <span>Huella Criptográfica SHA-256 del Contrato:</span>
               </div>
-              <div className="font-mono text-slate-800 break-all bg-white p-2 rounded border border-amber-100 text-[11px]">
+              <div className="font-mono text-xs text-[#261b12] break-all bg-white p-3 rounded border border-[#e3d9cb]">
                 {liveHash}
               </div>
             </div>
 
-            <div className="text-[11px] text-slate-500 leading-relaxed pt-2 border-t border-slate-100">
-              Al presionar <strong>"Formalizar Contrato y Crear Expediente"</strong>, se creará el expediente de memoria y se ligará de forma indisoluble a este consentimiento. Sin este paso, el motor de IA y el archivo histórico mantendrán bloqueado el procesamiento.
+            <div className="text-xs sm:text-sm text-[#665546] leading-relaxed pt-2 border-t border-[#f4ede2]">
+              Al presionar <strong>"Formalizar Contrato y Crear Expediente"</strong>, se creará el expediente de memoria y se ligará de forma indisoluble a este consentimiento. Sin este paso, el sistema de preservación mantendrá bloqueada cualquier publicación.
             </div>
           </div>
 
@@ -348,9 +350,9 @@ export const RegistroMemoriaContratoView: React.FC<RegistroMemoriaContratoViewPr
             <button
               type="submit"
               disabled={isSubmitting}
-              className="px-6 py-3 bg-[#0056b3] hover:bg-[#004494] text-white font-bold text-sm rounded-lg flex items-center gap-2 shadow-sm transition disabled:opacity-50"
+              className="btn-primary"
             >
-              <FileSignature className="w-4 h-4" />
+              <FileSignature className="w-5 h-5 mr-2" />
               <span>{isSubmitting ? 'Formalizando contrato...' : 'Formalizar Contrato & Crear Expediente'}</span>
             </button>
           </div>
@@ -359,4 +361,3 @@ export const RegistroMemoriaContratoView: React.FC<RegistroMemoriaContratoViewPr
     </div>
   );
 };
-

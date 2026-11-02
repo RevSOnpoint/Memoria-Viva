@@ -3,18 +3,15 @@ import { useAuth } from '../context/AuthContext';
 import {
   BookOpen,
   FileSignature,
-  UploadCloud,
   ShieldCheck,
   Sparkles,
   ArrowRight,
   Heart,
-  Users,
-  Building2,
   CheckCircle2,
   Mic,
-  Image,
-  FileText,
-  Clock
+  Camera,
+  Coffee,
+  Calendar
 } from 'lucide-react';
 
 interface GuardaMemoriasViewProps {
@@ -30,90 +27,108 @@ export const GuardaMemoriasView: React.FC<GuardaMemoriasViewProps> = ({ onNaviga
       titulo: 'Recopilación del Testimonio Oral y Documental',
       descripcion:
         'Reúna a la persona adulta mayor en un entorno sereno. Grabe sus relatos con el teléfono o micrófono, recopile fotografías antiguas de época o digitalice cartas y apuntes familiares.',
-      icono: <Mic className="w-6 h-6 text-[#0056b3]" />,
-      detalle: 'Aceptamos relatos de texto escrito, cintas o archivos de audio y fotografías de álbumes familiares.'
+      icono: <Mic className="w-6 h-6 text-[#c05600]" />,
+      detalle: 'Aceptamos relatos de texto escrito, audios testimoniales y fotos familiares.'
     },
     {
       numero: '02',
       titulo: 'Formalización del Contrato de Consentimiento',
       descripcion:
-        'La ética es nuestro pilar fundamental. Toda memoria requiere un contrato de consentimiento informado (firma digital, acta notarial o testimonio grabado) donde la persona o sus tutores definen el alcance y visibilidad (privado, familiar o público).',
-      icono: <FileSignature className="w-6 h-6 text-amber-600" />,
+        'La ética es nuestro pilar fundamental. Toda memoria requiere un contrato de consentimiento informado (firma digital, acta escrita o testimonio grabado) donde se define la visibilidad (privado, familiar o público).',
+      icono: <FileSignature className="w-6 h-6 text-[#8c6239]" />,
       detalle: 'Sin consentimiento acreditado, ninguna memoria puede ser procesada ni consultada.'
     },
     {
       numero: '03',
       titulo: 'Custodia Inmutable con Firma SHA-256',
       descripcion:
-        'El archivo original nunca es alterado. Al momento de la ingesta en la plataforma, se calcula una huella criptográfica SHA-256 única e inmutable que garantiza la integridad histórica del testimonio a perpetuidad.',
-      icono: <ShieldCheck className="w-6 h-6 text-emerald-600" />,
-      detalle: 'El archivo original se mantiene exactamente como fue entregado por el informante.'
+        'El archivo original nunca es alterado. Al momento de la ingesta, se calcula una huella criptográfica SHA-256 única e inmutable que garantiza la integridad histórica del testimonio a perpetuidad.',
+      icono: <ShieldCheck className="w-6 h-6 text-[#1b6e39]" />,
+      detalle: 'El documento original se mantiene idéntico a como fue entregado.'
     },
     {
       numero: '04',
-      titulo: 'Curaduría Histórica y Transmisión con IA',
+      titulo: 'Curaduría Histórica y Transmisión Intergeneracional',
       descripcion:
-        'El equipo de Gestores de Datos de la Fundación revisa los nombres de lugares de Palmares y hechos históricos. Una vez validada, la memoria alimenta su base de conocimiento aislada para ser explorada con el narrador interactivo.',
-      icono: <Sparkles className="w-6 h-6 text-teal-600" />,
-      detalle: 'El narrador responde citando siempre la fuente primaria y nunca inventa datos.'
+        'El equipo de Gestores de Datos de la Fundación revisa los topónimos de Palmares y la coherencia histórica. Una vez validada, la memoria permite consultas fidedignas con citas directas de la fuente.',
+      icono: <Sparkles className="w-6 h-6 text-[#c05600]" />,
+      detalle: 'El narrador responde citando siempre la fuente original y nunca inventa datos.'
     }
   ];
 
   return (
     <div className="space-y-8 max-w-5xl mx-auto">
-      {/* Banner de Bienvenida Institucional */}
-      <div className="bg-gradient-to-r from-[#0c1a2d] to-[#142d4f] text-white rounded-xl p-6 sm:p-10 border border-[#1a3861] shadow-md relative overflow-hidden">
-        <div className="max-w-2xl relative z-10 space-y-3">
-          <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded bg-amber-500/20 text-amber-300 border border-amber-400/30 text-xs font-semibold font-mono">
-            <Heart className="w-3.5 h-3.5 text-amber-300" />
-            <span>Preservación del Patrimonio Oral • Palmares, Costa Rica</span>
+      {/* Portada Cálida con Imagen Real de Memoria y Tradición */}
+      <div className="bg-white border border-[#d8ccba] rounded shadow-xs overflow-hidden">
+        <div className="grid grid-cols-1 md:grid-cols-12">
+          {/* Imagen histórica evocadora de narración y tradición */}
+          <div className="md:col-span-5 relative min-h-[260px] md:min-h-full">
+            <img
+              src="https://images.unsplash.com/photo-1544717305-2782549b5136?auto=format&fit=crop&w=800&q=80"
+              alt="Persona mayor compartiendo sus recuerdos y vivencias históricas"
+              className="w-full h-full object-cover"
+            />
+            <div className="absolute inset-0 bg-[#26170d]/20" />
+            <div className="absolute bottom-3 left-4 right-4 bg-[#26170d]/85 text-[#fef6ee] p-2.5 rounded text-xs border border-[#442a17]">
+              <span className="font-serif font-bold">Don Chepe González</span>
+              <span className="text-[#e3d9cb] text-[11px] block">Guardián de relatos agrícolas en Zaragoza de Palmares</span>
+            </div>
           </div>
 
-          <h1 className="text-2xl sm:text-4xl font-extrabold font-serif tracking-tight text-white leading-tight">
-            Guarda tus Memorias, Escribe tu Historia
-          </h1>
+          {/* Información Institucional Cálida y Accesible */}
+          <div className="md:col-span-7 p-6 sm:p-8 flex flex-col justify-between bg-[#fcfaf7]">
+            <div className="space-y-3">
+              <div className="text-xs font-bold text-[#c05600] uppercase tracking-wider font-serif">
+                Programa de Transmisión Intergeneracional
+              </div>
 
-          <p className="text-xs sm:text-sm text-slate-300 leading-relaxed">
-            La <strong>Fundación Legado Vivo</strong> acompaña a las familias de Palmares en la dignificación, registro y custodia inmutable de las historias de vida, costumbres agrícolas, oficios y tradiciones de nuestras personas adultas mayores.
-          </p>
+              <h1 className="text-2xl sm:text-3xl font-bold font-serif text-[#261b12] leading-tight">
+                Guarda tus Memorias, Escribe tu Historia
+              </h1>
 
-          <div className="pt-3 flex flex-wrap gap-3">
-            {['Digitalizador', 'Administrador'].includes(activeRole) ? (
+              <p className="text-sm sm:text-base text-[#442a17] leading-relaxed">
+                La <strong>Fundación Legado Vivo</strong> acompaña a las familias de Palmares en la dignificación, registro formal y custodia inalterable de las vivencias, costumbres agrícolas, oficios y anécdotas de nuestras personas adultas mayores.
+              </p>
+            </div>
+
+            <div className="pt-6 flex flex-wrap gap-3">
+              {['Digitalizador', 'Administrador'].includes(activeRole) ? (
+                <button
+                  onClick={() => onNavigate('registro_contrato')}
+                  className="btn-primary"
+                >
+                  <FileSignature className="w-5 h-5 mr-2" />
+                  <span>Registrar Expediente & Contrato</span>
+                </button>
+              ) : (
+                <button
+                  onClick={() => onNavigate('regiones')}
+                  className="btn-primary"
+                >
+                  <BookOpen className="w-5 h-5 mr-2" />
+                  <span>Explorar Memorias de Palmares</span>
+                </button>
+              )}
+
               <button
-                onClick={() => onNavigate('registro_contrato')}
-                className="px-5 py-2.5 bg-amber-500 hover:bg-amber-600 text-slate-950 font-bold text-xs sm:text-sm rounded-lg flex items-center gap-2 shadow-sm transition"
+                onClick={() => onNavigate('memorias')}
+                className="btn-secondary"
               >
-                <FileSignature className="w-4 h-4" />
-                <span>Registrar un Expediente & Contrato</span>
+                Ver Catálogo de Personas
               </button>
-            ) : (
-              <button
-                onClick={() => onNavigate('regiones')}
-                className="px-5 py-2.5 bg-amber-500 hover:bg-amber-600 text-slate-950 font-bold text-xs sm:text-sm rounded-lg flex items-center gap-2 shadow-sm transition"
-              >
-                <BookOpen className="w-4 h-4" />
-                <span>Explorar las Memorias de Palmares</span>
-              </button>
-            )}
-
-            <button
-              onClick={() => onNavigate('regiones')}
-              className="px-4 py-2.5 bg-slate-800/80 hover:bg-slate-800 text-white font-semibold text-xs sm:text-sm rounded-lg border border-slate-700 transition"
-            >
-              Ver Archivo de Personas
-            </button>
+            </div>
           </div>
         </div>
       </div>
 
-      {/* Proceso Explicativo en 4 Fases */}
+      {/* Proceso Explicativo en 4 Fases con Contornos Claros */}
       <div className="space-y-4">
-        <div className="border-b border-slate-200 pb-2">
-          <h2 className="text-lg font-bold font-serif text-slate-900">
-            El Proceso de Preservación de la Fundación
+        <div className="border-b border-[#e3d9cb] pb-3">
+          <h2 className="text-xl font-bold font-serif text-[#261b12]">
+            El Proceso de Preservación en 4 Pasos
           </h2>
-          <p className="text-xs text-slate-500">
-            Conozca cómo cada relato es tratado con el más alto rigor ético, legal y tecnológico.
+          <p className="text-sm text-[#665546]">
+            Un camino transparente y respetuoso para proteger la memoria de nuestras personas queridas.
           </p>
         </div>
 
@@ -121,29 +136,29 @@ export const GuardaMemoriasView: React.FC<GuardaMemoriasViewProps> = ({ onNaviga
           {pasos.map(paso => (
             <div
               key={paso.numero}
-              className="bg-white p-6 rounded-lg border border-slate-200 shadow-xs hover:border-slate-300 transition flex flex-col justify-between"
+              className="bg-white p-6 rounded border border-[#d8ccba] shadow-2xs hover:border-[#bfae97] transition flex flex-col justify-between"
             >
               <div>
                 <div className="flex items-center justify-between mb-3">
-                  <div className="p-2.5 rounded-lg bg-slate-50 border border-slate-100">
+                  <div className="p-3 rounded bg-[#fcf8f3] border border-[#e3d9cb]">
                     {paso.icono}
                   </div>
-                  <span className="font-mono text-2xl font-black text-slate-200">
+                  <span className="font-serif text-2xl font-bold text-[#bfae97]">
                     {paso.numero}
                   </span>
                 </div>
 
-                <h3 className="font-bold font-serif text-base text-slate-900 mb-1.5">
+                <h3 className="font-bold font-serif text-lg text-[#261b12] mb-2">
                   {paso.titulo}
                 </h3>
 
-                <p className="text-xs text-slate-600 leading-relaxed mb-3">
+                <p className="text-sm text-[#442a17] leading-relaxed mb-4">
                   {paso.descripcion}
                 </p>
               </div>
 
-              <div className="pt-3 border-t border-slate-100 text-[11px] text-slate-500 flex items-center gap-1.5 font-medium">
-                <CheckCircle2 className="w-3.5 h-3.5 text-emerald-600 flex-shrink-0" />
+              <div className="pt-3 border-t border-[#f4ede2] text-xs text-[#665546] flex items-center gap-2 font-medium">
+                <CheckCircle2 className="w-4 h-4 text-[#1b6e39] flex-shrink-0" />
                 <span>{paso.detalle}</span>
               </div>
             </div>
@@ -152,46 +167,61 @@ export const GuardaMemoriasView: React.FC<GuardaMemoriasViewProps> = ({ onNaviga
       </div>
 
       {/* Guía Ética para la Familia y Entrevistadores */}
-      <div className="bg-slate-50 border border-slate-200 rounded-lg p-6 space-y-3">
-        <h3 className="font-bold font-serif text-base text-slate-900 flex items-center gap-2">
-          <Heart className="w-4 h-4 text-rose-600" />
-          <span>Recomendaciones para Entrevistar a una Persona Mayor</span>
+      <div className="bg-[#fcf8f3] border-1.5 border-[#d8ccba] rounded p-6 sm:p-7 space-y-4">
+        <h3 className="font-bold font-serif text-lg text-[#261b12] flex items-center gap-2">
+          <Coffee className="w-5 h-5 text-[#c05600]" />
+          <span>Recomendaciones para Conversar con una Persona Adulta Mayor</span>
         </h3>
-        <ul className="text-xs text-slate-600 space-y-2 list-disc list-inside leading-relaxed">
-          <li>
-            <strong>Espacio de confianza:</strong> Realice la conversación en su sillón preferido, con café o té, sin prisas ni interrupciones externas.
-          </li>
-          <li>
-            <strong>Respete su léxico y modismos:</strong> No corrija las expresiones campesinas palmareñas; son parte viva del patrimonio lingüístico.
-          </li>
-          <li>
-            <strong>Disparadores de memoria:</strong> Muestre fotografías viejas del parque central de Palmares, objetos de molienda o mencione a vecinos antiguos para despertar anécdotas espontáneas.
-          </li>
-          <li>
-            <strong>Consentimiento explícito:</strong> Explíquele con cariño que sus relatos serán conservados para que sus bisnietos y la comunidad conozcan sus enseñanzas.
-          </li>
-        </ul>
+        
+        <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 text-sm text-[#442a17] leading-relaxed">
+          <div className="p-4 bg-white rounded border border-[#e3d9cb] space-y-1">
+            <div className="font-bold text-[#261b12] font-serif">1. Entorno de calma y afecto</div>
+            <p className="text-xs sm:text-sm text-[#665546]">
+              Realice la conversación en su rincón preferido de la casa, compartiendo un buen café chorreado y sin afanes ni apuros.
+            </p>
+          </div>
+
+          <div className="p-4 bg-white rounded border border-[#e3d9cb] space-y-1">
+            <div className="font-bold text-[#261b12] font-serif">2. Respeto al léxico campesino</div>
+            <p className="text-xs sm:text-sm text-[#665546]">
+              No corrija las palabras o modismos propios de la historia palmareña. Cada expresión es un tesoro del patrimonio lingüístico.
+            </p>
+          </div>
+
+          <div className="p-4 bg-white rounded border border-[#e3d9cb] space-y-1">
+            <div className="font-bold text-[#261b12] font-serif">3. Disparadores visuales</div>
+            <p className="text-xs sm:text-sm text-[#665546]">
+              Tenga a mano fotos viejas del templo de las Mercedes, objetos de labranza o mencione a antiguos vecinos para activar recuerdos felices.
+            </p>
+          </div>
+
+          <div className="p-4 bg-white rounded border border-[#e3d9cb] space-y-1">
+            <div className="font-bold text-[#261b12] font-serif">4. Consentimiento cariñoso y claro</div>
+            <p className="text-xs sm:text-sm text-[#665546]">
+              Explíquele con claridad que sus vivencias servirán de inspiración y aprendizaje para sus hijos, nietos y toda la comunidad.
+            </p>
+          </div>
+        </div>
       </div>
 
       {/* Llamado a la Acción Final */}
-      <div className="bg-white p-6 rounded-lg border border-slate-200 text-center space-y-3">
-        <h4 className="font-bold text-slate-800 font-serif text-base">
-          ¿Desea registrar una historia familiar o comunitaria?
+      <div className="bg-white p-7 rounded border border-[#d8ccba] text-center space-y-3">
+        <h4 className="font-bold text-[#261b12] font-serif text-xl">
+          ¿Desea registrar una historia familiar o de su comunidad?
         </h4>
-        <p className="text-xs text-slate-500 max-w-lg mx-auto">
-          Contacte al personal Digitalizador de la Fundación Legado Vivo o inicie el registro con contrato formal si cuenta con el rol autorizado.
+        <p className="text-sm text-[#665546] max-w-xl mx-auto leading-relaxed">
+          El equipo Digitalizador de la Fundación Legado Vivo está a su entera disposición para orientarle en cada paso del proceso.
         </p>
         <div className="pt-2">
           <button
             onClick={() => onNavigate('registro_contrato')}
-            className="px-5 py-2.5 bg-[#0056b3] hover:bg-[#004494] text-white text-xs font-bold rounded shadow-xs transition inline-flex items-center gap-2"
+            className="btn-primary"
           >
             <span>Iniciar Registro de Memoria & Contrato</span>
-            <ArrowRight className="w-4 h-4" />
+            <ArrowRight className="w-5 h-5 ml-2" />
           </button>
         </div>
       </div>
     </div>
   );
 };
-

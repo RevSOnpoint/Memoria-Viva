@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { useAuth } from '../context/AuthContext';
 import { User, UserRole } from '../types';
-import { ShieldCheck, UserCheck, KeyRound, Building2 } from 'lucide-react';
+import { ShieldCheck, UserCheck, Building2 } from 'lucide-react';
 
 interface LoginViewProps {
   onSuccess: () => void;
@@ -20,7 +20,7 @@ export const LoginView: React.FC<LoginViewProps> = ({ onSuccess }) => {
       loginAs(match);
       onSuccess();
     } else {
-      setError('Credenciales inválidas. Seleccione uno de los roles demo provistos abajo.');
+      setError('Credenciales inválidas. Seleccione uno de los perfiles provistos abajo.');
     }
   };
 
@@ -30,31 +30,33 @@ export const LoginView: React.FC<LoginViewProps> = ({ onSuccess }) => {
   };
 
   return (
-    <div className="min-h-[85vh] flex items-center justify-center p-3 sm:p-4">
-      <div className="sap-card max-w-md w-full p-5 sm:p-8 shadow-xl border-t-4 border-t-sap-blue">
-        {/* Encabezado Fiori */}
-        <div className="text-center mb-6">
-          <div className="inline-flex items-center justify-center w-14 h-14 rounded-full bg-blue-50 text-sap-blue mb-3 border border-blue-200">
+    <div className="min-h-screen bg-[#faf7f2] flex items-center justify-center p-4">
+      <div className="bg-white max-w-lg w-full p-6 sm:p-9 rounded border border-[#d8ccba] shadow-sm space-y-6">
+        {/* Encabezado Institucional */}
+        <div className="text-center space-y-2">
+          <div className="inline-flex items-center justify-center w-16 h-16 rounded bg-[#442a17] text-[#fef6ee] mb-2 border border-[#2a1a0f] shadow-xs">
             <Building2 className="w-8 h-8" />
           </div>
-          <h1 className="text-2xl font-bold text-sap-text tracking-tight">Fundación Legado Vivo</h1>
-          <p className="text-sm text-sap-textMuted mt-1">Plataforma Patrimonial "Memoria Viva" (Palmares, CR)</p>
-          <div className="mt-2 inline-block px-3 py-1 bg-slate-100 rounded text-xs font-semibold text-slate-700">
-            Control de Acceso y Gobernanza Institucional
+          <h1 className="text-2xl sm:text-3xl font-bold font-serif text-[#261b12] tracking-tight">
+            Memoria Viva
+          </h1>
+          <p className="text-sm sm:text-base text-[#442a17] font-serif">Fundación Legado Vivo • Palmares, Costa Rica</p>
+          <div className="text-xs text-[#8c6239] font-medium pt-1">
+            Plataforma de Preservación, Consentimiento y Transmisión Histórica
           </div>
         </div>
 
         {error && (
-          <div className="mb-4 p-3 bg-red-50 border border-red-200 text-red-700 text-sm rounded flex items-center gap-2">
+          <div className="p-3.5 bg-[#fdf2f2] border border-[#f0c2c2] text-[#a81c1c] text-sm rounded flex items-center gap-2">
             <ShieldCheck className="w-4 h-4 flex-shrink-0" />
             <span>{error}</span>
           </div>
         )}
 
-        {/* Formulario tradicional */}
+        {/* Formulario */}
         <form onSubmit={handleSubmit} className="space-y-4">
           <div>
-            <label className="block text-sm font-semibold text-sap-text mb-1">
+            <label className="block text-sm font-bold text-[#261b12] mb-1 font-serif">
               Correo Electrónico Institucional
             </label>
             <input
@@ -62,12 +64,12 @@ export const LoginView: React.FC<LoginViewProps> = ({ onSuccess }) => {
               value={email}
               onChange={e => setEmail(e.target.value)}
               placeholder="ejemplo@legadovivo.cr"
-              className="w-full h-11 px-3 text-sm border border-sap-border rounded focus:border-sap-blue focus:ring-1 focus:ring-sap-blue"
+              className="w-full min-h-[48px] px-3.5 text-sm sm:text-base border border-[#d8ccba] rounded text-[#261b12] focus:border-[#c05600]"
             />
           </div>
 
           <div>
-            <label className="block text-sm font-semibold text-sap-text mb-1">
+            <label className="block text-sm font-bold text-[#261b12] mb-1 font-serif">
               Contraseña de Acceso
             </label>
             <input
@@ -75,44 +77,37 @@ export const LoginView: React.FC<LoginViewProps> = ({ onSuccess }) => {
               value={password}
               onChange={e => setPassword(e.target.value)}
               placeholder="••••••••"
-              className="w-full h-11 px-3 text-sm border border-sap-border rounded focus:border-sap-blue focus:ring-1 focus:ring-sap-blue"
+              className="w-full min-h-[48px] px-3.5 text-sm sm:text-base border border-[#d8ccba] rounded text-[#261b12] focus:border-[#c05600]"
             />
           </div>
 
           <button
             type="submit"
-            className="w-full sap-btn sap-btn-primary mt-2"
+            className="btn-primary w-full text-base font-bold"
           >
             Iniciar Sesión
           </button>
         </form>
 
-        {/* Selector Rápido de Demo (Para evaluación fluida) */}
-        <div className="mt-8 pt-6 border-t border-slate-200">
-          <div className="text-xs font-bold text-slate-500 uppercase tracking-wider text-center mb-3">
-            Acceso Rápido por Perfil (Demostración de 10 min)
+        {/* Selector Rápido de Demo */}
+        <div className="pt-6 border-t border-[#e3d9cb] space-y-3">
+          <div className="text-xs font-bold text-[#665546] uppercase tracking-wider text-center font-serif">
+            Acceso Rápido por Perfil (Demostración)
           </div>
 
-          <div className="grid grid-cols-2 gap-2">
+          <div className="grid grid-cols-2 gap-2.5">
             {demoUsers.map(user => {
-              const roleColors: Record<UserRole, string> = {
-                'Digitalizador': 'hover:border-cyan-500 hover:bg-cyan-50 text-cyan-800',
-                'Gestor de datos': 'hover:border-amber-500 hover:bg-amber-50 text-amber-800',
-                'Usuario': 'hover:border-blue-500 hover:bg-blue-50 text-blue-800',
-                'Administrador': 'hover:border-purple-500 hover:bg-purple-50 text-purple-800'
-              };
-
               return (
                 <button
                   key={user.id}
                   onClick={() => handleQuickLogin(user)}
-                  className={`p-2.5 text-left border border-slate-200 rounded text-xs transition flex flex-col justify-between ${roleColors[user.role]}`}
+                  className="p-3 text-left border border-[#d8ccba] rounded bg-[#fcf8f3] hover:bg-[#f4ede2] hover:border-[#c05600] transition flex flex-col justify-between"
                 >
-                  <span className="font-bold flex items-center gap-1">
-                    <UserCheck className="w-3.5 h-3.5" />
+                  <span className="font-bold font-serif text-sm text-[#261b12] flex items-center gap-1.5">
+                    <UserCheck className="w-4 h-4 text-[#c05600]" />
                     {user.role}
                   </span>
-                  <span className="text-[11px] text-slate-500 truncate mt-1">
+                  <span className="text-xs text-[#665546] truncate mt-1">
                     {user.full_name}
                   </span>
                 </button>

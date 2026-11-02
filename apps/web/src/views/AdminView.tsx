@@ -3,15 +3,12 @@ import { useAuth } from '../context/AuthContext';
 import { User, AuditoriaItem } from '../types';
 import { api } from '../services/api';
 import {
-  ShieldAlert,
   Users,
   History,
   UserPlus,
-  ShieldCheck,
   Filter,
   CheckCircle2,
-  Clock,
-  Terminal
+  Building2
 } from 'lucide-react';
 
 export const AdminView: React.FC = () => {
@@ -71,30 +68,28 @@ export const AdminView: React.FC = () => {
 
   const getBadgeForAction = (accion: string) => {
     if (accion.includes('CONSENTIMIENTO') || accion.includes('VALIDACION')) {
-      return 'bg-emerald-100 text-emerald-800 border-emerald-300';
+      return 'bg-[#f0f8f2] text-[#1b6e39] border-[#bfe2ca]';
     }
     if (accion.includes('CARGA') || accion.includes('CREACION')) {
-      return 'bg-blue-100 text-blue-800 border-blue-300';
+      return 'bg-[#fef6ee] text-[#c05600] border-[#ecdac7]';
     }
-    if (accion.includes('CONSULTA')) {
-      return 'bg-teal-100 text-teal-800 border-teal-300';
-    }
-    return 'bg-slate-100 text-slate-800 border-slate-300';
+    return 'bg-[#fcf8f3] text-[#442a17] border-[#d8ccba]';
   };
 
   return (
     <div className="space-y-6 max-w-6xl mx-auto">
-      {/* Encabezado Fiori */}
-      <div className="bg-white p-6 rounded-lg border border-sap-border shadow-sm flex flex-col md:flex-row md:items-center justify-between gap-4">
+      {/* Encabezado Institucional Cálido */}
+      <div className="bg-white p-6 sm:p-7 rounded border border-[#d8ccba] shadow-2xs flex flex-col md:flex-row md:items-center justify-between gap-4">
         <div>
-          <div className="flex items-center space-x-2 text-xs font-bold text-purple-700 uppercase tracking-wider">
-            <span>Panel de Control y Trazabilidad</span>
-            <span>•</span>
-            <span>Gobernanza Institucional</span>
+          <div className="flex items-center space-x-2 text-xs font-bold text-[#c05600] uppercase tracking-wider font-serif">
+            <Building2 className="w-4 h-4" />
+            <span>Panel de Control & Trazabilidad Institucional</span>
           </div>
-          <h1 className="text-2xl font-bold text-sap-text mt-1">P08 Administración & Bitácora de Auditoría</h1>
-          <p className="text-sm text-sap-textMuted mt-0.5">
-            Registro inmutable de accesos, consentimientos, aportes y validaciones en la Fundación Legado Vivo.
+          <h1 className="text-2xl sm:text-3xl font-bold font-serif text-[#261b12] mt-1.5">
+            Gobernanza & Bitácora de Auditoría
+          </h1>
+          <p className="text-sm sm:text-base text-[#442a17] mt-1 leading-relaxed">
+            Registro cronológico inmutable de accesos, consentimientos, aportes y validaciones en la Fundación Legado Vivo.
           </p>
         </div>
 
@@ -102,49 +97,49 @@ export const AdminView: React.FC = () => {
           {activeTab === 'usuarios' && (
             <button
               onClick={() => setShowModal(true)}
-              className="sap-btn sap-btn-primary text-xs flex items-center gap-1.5 shadow"
+              className="btn-primary text-xs sm:text-sm"
             >
-              <UserPlus className="w-4 h-4" />
+              <UserPlus className="w-4 h-4 mr-1.5" />
               <span>Registrar Usuario</span>
             </button>
           )}
         </div>
       </div>
 
-      {/* Tabs Fiori */}
-      <div className="flex items-center space-x-2 border-b border-sap-border pb-2 text-sm font-semibold">
+      {/* Pestañas de Navegación */}
+      <div className="flex items-center space-x-2 border-b border-[#e3d9cb] pb-2 text-xs sm:text-sm font-semibold">
         <button
           onClick={() => setActiveTab('auditoria')}
-          className={`px-4 py-2 rounded flex items-center gap-2 transition ${
-            activeTab === 'auditoria' ? 'bg-sap-blue text-white shadow' : 'text-slate-600 hover:bg-slate-100'
+          className={`min-h-[44px] px-4 rounded flex items-center gap-2 transition ${
+            activeTab === 'auditoria' ? 'bg-[#c05600] text-white shadow-xs font-bold' : 'text-[#442a17] hover:bg-[#f4ede2]'
           }`}
         >
           <History className="w-4 h-4" />
-          <span>Bitácora de Auditoría Inmutable ({auditorias.length})</span>
+          <span>Bitácora de Auditoría ({auditorias.length})</span>
         </button>
         <button
           onClick={() => setActiveTab('usuarios')}
-          className={`px-4 py-2 rounded flex items-center gap-2 transition ${
-            activeTab === 'usuarios' ? 'bg-sap-blue text-white shadow' : 'text-slate-600 hover:bg-slate-100'
+          className={`min-h-[44px] px-4 rounded flex items-center gap-2 transition ${
+            activeTab === 'usuarios' ? 'bg-[#c05600] text-white shadow-xs font-bold' : 'text-[#442a17] hover:bg-[#f4ede2]'
           }`}
         >
           <Users className="w-4 h-4" />
-          <span>Usuarios y Roles ({usuarios.length})</span>
+          <span>Personal y Cuentas ({usuarios.length})</span>
         </button>
       </div>
 
       {/* Vista de Bitácora de Auditoría */}
       {activeTab === 'auditoria' && (
-        <div className="sap-card overflow-hidden">
+        <div className="bg-white rounded border border-[#d8ccba] shadow-2xs overflow-hidden">
           {/* Barra de filtros de auditoría */}
-          <div className="p-4 bg-slate-50 border-b border-sap-border flex items-center justify-between text-xs">
+          <div className="p-4 bg-[#fcf8f3] border-b border-[#e3d9cb] flex flex-col sm:flex-row sm:items-center justify-between gap-3 text-xs sm:text-sm">
             <div className="flex items-center space-x-2">
-              <Filter className="w-4 h-4 text-slate-500" />
-              <span className="font-bold text-slate-700">Filtrar por evento:</span>
+              <Filter className="w-4 h-4 text-[#8c6239]" />
+              <span className="font-bold text-[#261b12] font-serif">Filtrar por evento:</span>
               <select
                 value={filterAccion}
                 onChange={e => setFilterAccion(e.target.value)}
-                className="h-9 px-2 border border-sap-border rounded bg-white font-medium"
+                className="min-h-[38px] px-3 border border-[#d8ccba] rounded bg-white text-[#261b12] font-medium"
               >
                 <option value="todas">Todos los eventos</option>
                 <option value="INICIO_SESION">Inicios de Sesión</option>
@@ -152,18 +147,18 @@ export const AdminView: React.FC = () => {
                 <option value="REGISTRO_CONSENTIMIENTO">Registro de Consentimiento</option>
                 <option value="CARGA_APORTE">Carga de Aportes</option>
                 <option value="VALIDACION_GESTOR_APROBADO">Validación Aprobada</option>
-                <option value="CONSULTA_NARRADOR">Consultas al Narrador IA</option>
+                <option value="CONSULTA_NARRADOR">Consultas al Narrador</option>
               </select>
             </div>
 
-            <span className="text-slate-500">
+            <span className="text-xs text-[#665546]">
               Mostrando {filteredLogs.length} eventos auditados
             </span>
           </div>
 
           <div className="overflow-x-auto">
             <table className="w-full text-left text-xs">
-              <thead className="bg-slate-100 text-slate-600 uppercase font-bold border-b border-sap-border">
+              <thead className="bg-[#fcfaf7] text-[#442a17] uppercase font-bold border-b border-[#d8ccba] font-serif">
                 <tr>
                   <th className="py-3 px-4">Fecha y Hora</th>
                   <th className="py-3 px-4">Usuario</th>
@@ -173,7 +168,7 @@ export const AdminView: React.FC = () => {
                   <th className="py-3 px-4">IP Origen</th>
                 </tr>
               </thead>
-              <tbody className="divide-y divide-sap-border font-mono">
+              <tbody className="divide-y divide-[#f4ede2]">
                 {filteredLogs.map(log => {
                   let parsedDetalles = log.detalles;
                   try {
@@ -184,25 +179,25 @@ export const AdminView: React.FC = () => {
                   } catch {}
 
                   return (
-                    <tr key={log.id} className="hover:bg-slate-50">
-                      <td className="py-3 px-4 text-slate-600 whitespace-nowrap">
+                    <tr key={log.id} className="hover:bg-[#fcfaf7]">
+                      <td className="py-3 px-4 text-[#665546] whitespace-nowrap">
                         {new Date(log.created_at).toLocaleString()}
                       </td>
-                      <td className="py-3 px-4 font-sans font-semibold text-slate-800">
+                      <td className="py-3 px-4 font-semibold text-[#261b12]">
                         {log.usuario_email || 'Sistema'}
                       </td>
                       <td className="py-3 px-4">
-                        <span className={`inline-block px-2 py-0.5 rounded text-[11px] font-bold border ${getBadgeForAction(log.accion)}`}>
+                        <span className={`inline-block px-2.5 py-1 rounded text-[11px] font-bold border ${getBadgeForAction(log.accion)}`}>
                           {log.accion}
                         </span>
                       </td>
-                      <td className="py-3 px-4 text-slate-700">
+                      <td className="py-3 px-4 text-[#442a17]">
                         {log.entidad_tipo} {log.entidad_id && `#${log.entidad_id}`}
                       </td>
-                      <td className="py-3 px-4 text-[11px] text-slate-600 max-w-xs truncate" title={log.detalles || ''}>
+                      <td className="py-3 px-4 text-[11px] text-[#665546] max-w-xs truncate" title={log.detalles || ''}>
                         {parsedDetalles || '-'}
                       </td>
-                      <td className="py-3 px-4 text-slate-500">
+                      <td className="py-3 px-4 text-[#665546] font-mono">
                         {log.ip_origen}
                       </td>
                     </tr>
@@ -216,28 +211,28 @@ export const AdminView: React.FC = () => {
 
       {/* Vista de Usuarios y Roles */}
       {activeTab === 'usuarios' && (
-        <div className="sap-card overflow-hidden">
-          <table className="w-full text-left text-sm">
-            <thead className="bg-slate-50 text-xs font-bold text-slate-600 uppercase tracking-wider border-b border-sap-border">
+        <div className="bg-white rounded border border-[#d8ccba] shadow-2xs overflow-hidden">
+          <table className="w-full text-left text-sm text-[#261b12]">
+            <thead className="bg-[#fcf8f3] text-xs font-bold text-[#442a17] uppercase tracking-wider border-b border-[#d8ccba] font-serif">
               <tr>
-                <th className="py-3 px-4">Nombre Completo</th>
-                <th className="py-3 px-4">Correo Institucional</th>
-                <th className="py-3 px-4">Rol Asignado</th>
-                <th className="py-3 px-4">Estado</th>
+                <th className="py-3.5 px-4">Nombre Completo</th>
+                <th className="py-3.5 px-4">Correo Institucional</th>
+                <th className="py-3.5 px-4">Rol Asignado</th>
+                <th className="py-3.5 px-4">Estado</th>
               </tr>
             </thead>
-            <tbody className="divide-y divide-sap-border">
+            <tbody className="divide-y divide-[#f4ede2]">
               {usuarios.map(u => (
-                <tr key={u.id} className="hover:bg-slate-50">
-                  <td className="py-3 px-4 font-bold text-sap-text">{u.full_name}</td>
-                  <td className="py-3 px-4 text-slate-600">{u.email}</td>
-                  <td className="py-3 px-4">
-                    <span className="px-2.5 py-1 rounded text-xs font-bold bg-blue-50 text-sap-blue border border-blue-200">
+                <tr key={u.id} className="hover:bg-[#fcfaf7]">
+                  <td className="py-3.5 px-4 font-bold font-serif text-base text-[#261b12]">{u.full_name}</td>
+                  <td className="py-3.5 px-4 text-xs text-[#665546]">{u.email}</td>
+                  <td className="py-3.5 px-4">
+                    <span className="px-2.5 py-1 rounded text-xs font-bold bg-[#fef6ee] text-[#c05600] border border-[#ecdac7]">
                       {u.role}
                     </span>
                   </td>
-                  <td className="py-3 px-4">
-                    <span className="inline-flex items-center gap-1 text-xs font-semibold text-emerald-700">
+                  <td className="py-3.5 px-4">
+                    <span className="inline-flex items-center gap-1.5 text-xs font-semibold text-[#1b6e39]">
                       <CheckCircle2 className="w-4 h-4" />
                       Activo
                     </span>
@@ -251,75 +246,62 @@ export const AdminView: React.FC = () => {
 
       {/* Modal: Registrar Usuario */}
       {showModal && (
-        <div className="fixed inset-0 z-50 bg-slate-900/60 backdrop-blur-sm flex items-center justify-center p-4">
-          <div className="sap-card max-w-md w-full p-6 shadow-2xl border-t-4 border-t-purple-600 animate-in fade-in zoom-in duration-150">
-            <h2 className="text-xl font-bold text-sap-text mb-1">Registrar Nuevo Usuario</h2>
-            <p className="text-xs text-slate-500 mb-4">
-              Asigne el perfil correspondiente según las funciones en la Fundación Legado Vivo.
-            </p>
+        <div className="fixed inset-0 z-50 bg-[#26170d]/60 backdrop-blur-xs flex items-center justify-center p-4">
+          <div className="bg-white max-w-md w-full p-6 sm:p-7 rounded border border-[#d8ccba] shadow-xl space-y-4">
+            <h3 className="text-xl font-bold font-serif text-[#261b12]">
+              Registrar Nuevo Personal
+            </h3>
 
             <form onSubmit={handleCreateUser} className="space-y-4 text-sm">
               <div>
-                <label className="block font-semibold text-slate-700 mb-1">Nombre Completo *</label>
+                <label className="block font-bold text-[#261b12] mb-1 font-serif">Nombre Completo *</label>
                 <input
                   type="text"
                   required
                   value={newName}
                   onChange={e => setNewName(e.target.value)}
-                  placeholder="Ej: Licda. María Elena Brenes"
-                  className="w-full h-11 px-3 border border-sap-border rounded focus:border-sap-blue focus:ring-1 focus:ring-sap-blue"
+                  className="w-full min-h-[44px] px-3 border border-[#d8ccba] rounded text-[#261b12]"
                 />
               </div>
 
               <div>
-                <label className="block font-semibold text-slate-700 mb-1">Correo Electrónico *</label>
+                <label className="block font-bold text-[#261b12] mb-1 font-serif">Correo Electrónico *</label>
                 <input
                   type="email"
                   required
                   value={newEmail}
                   onChange={e => setNewEmail(e.target.value)}
-                  placeholder="brenes@legadovivo.cr"
-                  className="w-full h-11 px-3 border border-sap-border rounded focus:border-sap-blue focus:ring-1 focus:ring-sap-blue"
+                  className="w-full min-h-[44px] px-3 border border-[#d8ccba] rounded text-[#261b12]"
                 />
               </div>
 
               <div>
-                <label className="block font-semibold text-slate-700 mb-1">Rol Operativo *</label>
+                <label className="block font-bold text-[#261b12] mb-1 font-serif">Rol Asignado *</label>
                 <select
                   value={newRole}
                   onChange={e => setNewRole(e.target.value as any)}
-                  className="w-full h-11 px-3 border border-sap-border rounded bg-white font-medium"
+                  className="w-full min-h-[44px] px-3 border border-[#d8ccba] rounded bg-white text-[#261b12]"
                 >
-                  <option value="Usuario">Usuario (Consultas y Narrador)</option>
-                  <option value="Digitalizador">Digitalizador (Creación y Carga)</option>
-                  <option value="Gestor de datos">Gestor de datos (Curaduría y Validación)</option>
-                  <option value="Administrador">Administrador (Control Total y Auditoría)</option>
+                  <option value="Usuario">Usuario (Ciudadano / Familiar)</option>
+                  <option value="Digitalizador">Digitalizador (Carga y Entrevista)</option>
+                  <option value="Gestor de datos">Gestor de datos (Curaduría)</option>
+                  <option value="Administrador">Administrador (Control Total)</option>
                 </select>
               </div>
 
-              <div>
-                <label className="block font-semibold text-slate-700 mb-1">Contraseña</label>
-                <input
-                  type="password"
-                  value={newPassword}
-                  onChange={e => setNewPassword(e.target.value)}
-                  className="w-full h-11 px-3 border border-sap-border rounded focus:border-sap-blue focus:ring-1 focus:ring-sap-blue"
-                />
-              </div>
-
-              <div className="flex items-center justify-end space-x-3 pt-3 border-t border-slate-100">
+              <div className="pt-3 border-t border-[#f4ede2] flex justify-end gap-2">
                 <button
                   type="button"
                   onClick={() => setShowModal(false)}
-                  className="sap-btn sap-btn-secondary"
+                  className="btn-secondary min-h-[40px] px-4 text-xs"
                 >
                   Cancelar
                 </button>
                 <button
                   type="submit"
-                  className="sap-btn sap-btn-primary"
+                  className="btn-primary min-h-[40px] px-4 text-xs"
                 >
-                  Guardar Usuario
+                  Guardar
                 </button>
               </div>
             </form>
@@ -329,4 +311,3 @@ export const AdminView: React.FC = () => {
     </div>
   );
 };
-

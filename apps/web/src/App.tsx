@@ -48,7 +48,7 @@ const MainApp: React.FC = () => {
   }
 
   return (
-    <div className="min-h-screen bg-[#f4f6f9] text-slate-800 flex flex-col font-sans">
+    <div className="min-h-screen bg-[#faf7f2] text-[#261b12] flex flex-col font-sans">
       {/* Sidebar Lateral */}
       <Sidebar
         currentView={currentView}
@@ -59,23 +59,23 @@ const MainApp: React.FC = () => {
 
       {/* Contenedor Principal (Con padding lateral para el Sidebar en desktop) */}
       <div className="lg:pl-72 flex-1 flex flex-col min-w-0">
-        {/* Topbar Institucional (Header de Contexto y Acciones) */}
-        <header className="bg-white border-b border-slate-200 sticky top-0 z-30 shadow-2xs">
-          <div className="max-w-7xl mx-auto px-4 sm:px-6 h-14 flex items-center justify-between gap-4">
+        {/* Topbar Institucional Cálido (Header de Contexto y Acciones) */}
+        <header className="bg-white border-b border-[#e3d9cb] sticky top-0 z-30 shadow-xs">
+          <div className="max-w-7xl mx-auto px-4 sm:px-6 h-16 flex items-center justify-between gap-4">
             {/* Toggle de Sidebar Móvil & Migas de Pan */}
             <div className="flex items-center space-x-3 truncate">
               <button
                 onClick={() => setMobileSidebarOpen(true)}
-                className="lg:hidden p-2 rounded-md hover:bg-slate-100 text-slate-700 transition"
-                aria-label="Abrir menú lateral"
+                className="lg:hidden p-2 rounded hover:bg-[#f4ede2] text-[#442a17] transition border border-[#d8ccba]"
+                aria-label="Abrir menú de navegación"
               >
                 <Menu className="w-5 h-5" />
               </button>
 
-              <div className="flex items-center space-x-1.5 text-xs text-slate-500 truncate font-mono">
-                <span className="font-semibold text-slate-800">Archivo</span>
-                <ChevronRight className="w-3.5 h-3.5 text-slate-400" />
-                <span className="capitalize text-slate-600 truncate">
+              <div className="flex items-center space-x-2 text-xs sm:text-sm text-[#665546] truncate">
+                <span className="font-bold text-[#261b12] font-serif">Archivo</span>
+                <ChevronRight className="w-4 h-4 text-[#baa995]" />
+                <span className="font-medium text-[#c05600] truncate">
                   {currentView === 'regiones' && 'Regiones & Territorios'}
                   {currentView === 'memorias' && 'Archivo de Personas'}
                   {currentView === 'persona_detalle' && 'Expediente Biográfico'}
@@ -84,28 +84,28 @@ const MainApp: React.FC = () => {
                   {currentView === 'carga' && 'Carga de Relatos'}
                   {currentView === 'validacion' && 'Mesa de Curaduría'}
                   {currentView === 'buscador' && 'Búsqueda Documental'}
-                  {currentView === 'admin' && 'Administración'}
+                  {currentView === 'admin' && 'Gobernanza Institucional'}
                 </span>
               </div>
             </div>
 
             {/* Perfil del Operador y Estado */}
-            <div className="flex items-center space-x-3 text-xs flex-shrink-0">
-              <div className="hidden sm:flex items-center gap-1.5 px-2.5 py-1 rounded bg-slate-100 text-slate-700 border border-slate-200">
-                <UserCheck className="w-3.5 h-3.5 text-emerald-600" />
+            <div className="flex items-center space-x-3 text-xs sm:text-sm flex-shrink-0">
+              <div className="hidden sm:flex items-center gap-2 px-3 py-1.5 rounded bg-[#fcf8f3] text-[#442a17] border border-[#d8ccba]">
+                <UserCheck className="w-4 h-4 text-[#c05600]" />
                 <span>Perfil: <strong>{activeRole}</strong></span>
               </div>
 
               <div className="text-right hidden md:block">
-                <div className="font-bold text-slate-800 text-xs truncate max-w-[150px]">
+                <div className="font-bold text-[#261b12] text-xs sm:text-sm truncate max-w-[170px]">
                   {currentUser.full_name}
                 </div>
-                <div className="text-[10px] text-slate-400 font-mono truncate max-w-[150px]">
+                <div className="text-[11px] text-[#665546] truncate max-w-[170px]">
                   {currentUser.email}
                 </div>
               </div>
 
-              <div className="w-8 h-8 rounded-full bg-[#0c1a2d] text-amber-200 flex items-center justify-center font-bold text-xs uppercase border border-slate-700">
+              <div className="w-9 h-9 rounded bg-[#442a17] text-[#fef6ee] flex items-center justify-center font-bold text-sm uppercase border border-[#2a1a0f] shadow-xs">
                 {currentUser.full_name[0]}
               </div>
             </div>
@@ -169,25 +169,24 @@ const MainApp: React.FC = () => {
         </main>
 
         {/* Pie Institucional Formal */}
-        <footer className="bg-white border-t border-slate-200 py-4 text-xs text-slate-500 mt-auto">
+        <footer className="bg-white border-t border-[#e3d9cb] py-5 text-xs text-[#665546] mt-auto">
           <div className="max-w-7xl mx-auto px-4 sm:px-6 flex flex-col sm:flex-row items-center justify-between gap-3 text-center sm:text-left">
             <div>
-              <span className="font-bold text-slate-700 font-serif">Fundación Legado Vivo</span>
-              <span className="mx-1.5">•</span>
-              <span>Palmares, Alajuela, Costa Rica</span>
-              <span className="mx-1.5">•</span>
-              <span className="font-mono">Plataforma de Preservación Histórica</span>
+              <span className="font-bold text-[#261b12] font-serif text-sm">Fundación Legado Vivo</span>
+              <span className="mx-2 text-[#baa995]">•</span>
+              <span className="font-medium text-[#442a17]">Palmares, Alajuela, Costa Rica</span>
+              <span className="mx-2 text-[#baa995]">•</span>
+              <span>Custodia y Preservación del Patrimonio Oral</span>
             </div>
 
-            <div className="flex items-center space-x-3 text-[11px] text-slate-500 font-mono">
-              <span className="flex items-center gap-1">
-                <ShieldCheck className="w-3.5 h-3.5 text-emerald-600" />
-                <span>Custodia Criptográfica SHA-256</span>
+            <div className="flex items-center space-x-3 text-xs text-[#665546]">
+              <span className="flex items-center gap-1.5 font-medium">
+                <ShieldCheck className="w-4 h-4 text-[#1b6e39]" />
+                <span>Integridad Criptográfica SHA-256</span>
               </span>
-              <span>•</span>
-              <span className="flex items-center gap-1">
-                <Info className="w-3.5 h-3.5 text-blue-600" />
-                <span>Simulador IA v1.1</span>
+              <span className="text-[#baa995]">•</span>
+              <span className="text-[#8c6239] font-medium">
+                Rigor Ético & Consentimiento
               </span>
             </div>
           </div>

@@ -11,7 +11,6 @@ import {
   UploadCloud,
   CheckSquare,
   Shield,
-  History,
   Building2,
   ChevronDown,
   UserCheck,
@@ -66,82 +65,79 @@ export const Sidebar: React.FC<SidebarProps> = ({
       {/* Overlay para móvil */}
       {mobileOpen && (
         <div
-          className="fixed inset-0 bg-slate-950/60 z-40 lg:hidden backdrop-blur-xs"
+          className="fixed inset-0 bg-warm-woodDark/60 z-40 lg:hidden backdrop-blur-xs"
           onClick={onCloseMobile}
         />
       )}
 
-      {/* Sidebar Principal */}
+      {/* Sidebar Principal en Tono Madera Cálida */}
       <aside
-        className={`fixed top-0 bottom-0 left-0 z-50 w-72 bg-[#0c1a2d] text-slate-200 border-r border-[#1a2d47] flex flex-col transition-transform duration-200 ease-in-out lg:translate-x-0 ${
+        className={`fixed top-0 bottom-0 left-0 z-50 w-72 bg-[#26170d] text-[#f4ede2] border-r border-[#442a17] flex flex-col transition-transform duration-200 ease-in-out lg:translate-x-0 ${
           mobileOpen ? 'translate-x-0' : '-translate-x-full'
         }`}
       >
-        {/* Cabecera Institucional */}
-        <div className="p-5 border-b border-[#1a2d47] flex items-center justify-between">
+        {/* Cabecera Institucional Cálida */}
+        <div className="p-5 border-b border-[#3d2514] flex items-center justify-between">
           <div className="flex items-center space-x-3">
-            <div className="w-10 h-10 rounded bg-[#0056b3] text-white flex items-center justify-center font-bold text-lg shadow-inner border border-blue-400/30">
-              <Building2 className="w-5 h-5 text-amber-200" />
+            <div className="w-11 h-11 rounded bg-[#c05600] text-white flex items-center justify-center font-bold text-lg shadow-sm border border-[#e07722]/40">
+              <Building2 className="w-6 h-6 text-[#fef6ee]" />
             </div>
             <div>
-              <div className="font-bold text-sm tracking-wide text-white leading-tight uppercase font-serif">
+              <div className="font-bold text-base tracking-wide text-white leading-tight font-serif">
                 Memoria Viva
               </div>
-              <div className="text-[11px] text-slate-400 font-medium">
+              <div className="text-xs text-[#d6c7b5]">
                 Fundación Legado Vivo
               </div>
-              <div className="text-[10px] text-amber-400/90 font-mono">
-                Palmares • Costa Rica
+              <div className="text-[11px] text-[#e89b52] font-medium">
+                Palmares, Costa Rica
               </div>
             </div>
           </div>
 
           <button
             onClick={onCloseMobile}
-            className="lg:hidden p-1.5 rounded hover:bg-slate-800 text-slate-400 hover:text-white"
+            className="lg:hidden p-1.5 rounded hover:bg-[#3d2514] text-[#d6c7b5] hover:text-white"
             aria-label="Cerrar navegación"
           >
             <X className="w-5 h-5" />
           </button>
         </div>
 
-        {/* Selector de Rol y Auditoría Rápida */}
-        <div className="px-4 py-3 bg-[#081220] border-b border-[#1a2d47] text-xs">
-          <div className="text-[10px] font-bold text-slate-400 uppercase tracking-wider mb-1 flex items-center justify-between">
-            <span>Perfil Institucional:</span>
-            <span className="text-[9px] px-1.5 py-0.2 rounded bg-blue-950 text-blue-300 border border-blue-800">
-              Demo 10 min
-            </span>
+        {/* Selector de Perfil Sobrio */}
+        <div className="px-4 py-3 bg-[#1c1109] border-b border-[#3d2514] text-xs">
+          <div className="text-[11px] font-semibold text-[#baa995] uppercase tracking-wider mb-1.5">
+            Rol del Usuario:
           </div>
 
           <div className="relative">
             <button
               onClick={() => setRoleMenuOpen(!roleMenuOpen)}
-              className="w-full flex items-center justify-between px-3 py-2 rounded bg-[#10223b] hover:bg-[#152b4b] border border-[#233d63] text-white font-semibold transition"
+              className="w-full flex items-center justify-between px-3 py-2 rounded bg-[#331f11] hover:bg-[#3e2716] border border-[#52331c] text-white font-medium transition"
             >
               <div className="flex items-center space-x-2 truncate">
-                <UserCheck className="w-3.5 h-3.5 text-emerald-400 flex-shrink-0" />
-                <span className="truncate">{activeRole}</span>
+                <UserCheck className="w-4 h-4 text-[#e89b52] flex-shrink-0" />
+                <span className="truncate font-semibold">{activeRole}</span>
               </div>
-              <ChevronDown className="w-3.5 h-3.5 text-slate-400" />
+              <ChevronDown className="w-4 h-4 text-[#baa995]" />
             </button>
 
             {roleMenuOpen && (
               <div
-                className="absolute left-0 right-0 top-full mt-1 bg-white text-slate-800 rounded shadow-xl border border-slate-200 py-1 z-50"
+                className="absolute left-0 right-0 top-full mt-1 bg-white text-[#261b12] rounded shadow-lg border border-[#e3d9cb] py-1 z-50"
                 onClick={() => setRoleMenuOpen(false)}
               >
                 {allRoles.map(r => (
                   <button
                     key={r}
                     onClick={() => switchRole(r)}
-                    className={`w-full text-left px-3 py-2 text-xs font-semibold flex items-center justify-between hover:bg-slate-100 ${
-                      activeRole === r ? 'bg-blue-50 text-[#0056b3] font-bold border-l-4 border-[#0056b3]' : 'text-slate-700'
+                    className={`w-full text-left px-3 py-2.5 text-xs font-semibold flex items-center justify-between hover:bg-[#f4ede2] ${
+                      activeRole === r ? 'bg-[#fef6ee] text-[#c05600] font-bold border-l-4 border-[#c05600]' : 'text-[#442a17]'
                     }`}
                   >
                     <span>{r}</span>
                     {activeRole === r && (
-                      <span className="text-[10px] bg-[#0056b3] text-white px-1.5 py-0.5 rounded font-normal">
+                      <span className="text-[10px] bg-[#c05600] text-white px-2 py-0.5 rounded font-normal">
                         Activo
                       </span>
                     )}
@@ -152,127 +148,121 @@ export const Sidebar: React.FC<SidebarProps> = ({
           </div>
         </div>
 
-        {/* Menú de Navegación Estructurado */}
-        <nav className="flex-1 overflow-y-auto px-3 py-4 space-y-6 text-xs scrollbar-thin">
-          {/* Grupo 1: Patrimonio & Territorio */}
+        {/* Menú de Navegación Limpio y Formal */}
+        <nav className="flex-1 overflow-y-auto px-3 py-4 space-y-6 text-sm">
+          {/* Módulo 1: Patrimonio Cultural */}
           <div>
-            <div className="px-3 text-[10px] font-bold uppercase tracking-wider text-slate-400 mb-2 font-mono">
-              Patrimonio Cultural
+            <div className="px-3 text-xs font-bold uppercase tracking-wider text-[#d2baa0] mb-2 font-serif">
+              Patrimonio & Historia
             </div>
             <div className="space-y-1">
-              {/* Regiones y Territorios */}
               <button
                 onClick={() => handleNav('regiones')}
-                className={`w-full flex items-center space-x-2.5 px-3 py-2.5 rounded-md font-medium transition ${
+                className={`w-full flex items-center space-x-3 px-3 py-2.5 rounded font-medium transition ${
                   currentView === 'regiones'
-                    ? 'bg-[#0056b3] text-white shadow-sm font-semibold'
-                    : 'text-slate-300 hover:bg-[#142640] hover:text-white'
+                    ? 'bg-[#c05600] text-white font-bold shadow-xs'
+                    : 'text-[#e9ddcf] hover:bg-[#382313] hover:text-white'
                 }`}
               >
-                <Compass className="w-4 h-4 text-amber-300 flex-shrink-0" />
-                <span>Regiones & Territorios</span>
+                <Compass className="w-5 h-5 text-[#f4ba7e] flex-shrink-0" />
+                <span>Regiones & Comunidades</span>
               </button>
 
-              {/* Archivo de Personas y Memorias */}
               <button
                 onClick={() => handleNav('memorias')}
-                className={`w-full flex items-center space-x-2.5 px-3 py-2.5 rounded-md font-medium transition ${
+                className={`w-full flex items-center space-x-3 px-3 py-2.5 rounded font-medium transition ${
                   currentView === 'memorias' || currentView === 'persona_detalle'
-                    ? 'bg-[#0056b3] text-white shadow-sm font-semibold'
-                    : 'text-slate-300 hover:bg-[#142640] hover:text-white'
+                    ? 'bg-[#c05600] text-white font-bold shadow-xs'
+                    : 'text-[#e9ddcf] hover:bg-[#382313] hover:text-white'
                 }`}
               >
-                <Users className="w-4 h-4 text-blue-300 flex-shrink-0" />
+                <Users className="w-5 h-5 text-[#f4ba7e] flex-shrink-0" />
                 <span>Archivo de Personas</span>
               </button>
 
-              {/* Buscador Histórico */}
               <button
                 onClick={() => handleNav('buscador')}
-                className={`w-full flex items-center space-x-2.5 px-3 py-2.5 rounded-md font-medium transition ${
+                className={`w-full flex items-center space-x-3 px-3 py-2.5 rounded font-medium transition ${
                   currentView === 'buscador'
-                    ? 'bg-[#0056b3] text-white shadow-sm font-semibold'
-                    : 'text-slate-300 hover:bg-[#142640] hover:text-white'
+                    ? 'bg-[#c05600] text-white font-bold shadow-xs'
+                    : 'text-[#e9ddcf] hover:bg-[#382313] hover:text-white'
                 }`}
               >
-                <Search className="w-4 h-4 text-indigo-300 flex-shrink-0" />
-                <span>Buscador Documental</span>
+                <Search className="w-5 h-5 text-[#f4ba7e] flex-shrink-0" />
+                <span>Buscador Histórico</span>
               </button>
             </div>
           </div>
 
-          {/* Grupo 2: Participación & Aporte */}
+          {/* Módulo 2: Participación & Aporte */}
           <div>
-            <div className="px-3 text-[10px] font-bold uppercase tracking-wider text-slate-400 mb-2 font-mono">
-              Participación y Transmisión
+            <div className="px-3 text-xs font-bold uppercase tracking-wider text-[#d2baa0] mb-2 font-serif">
+              Participación Familiar
             </div>
             <div className="space-y-1">
-              {/* Guarda tus Memorias / Escribe tu Historia */}
               <button
                 onClick={() => handleNav('guarda_memorias')}
-                className={`w-full flex items-center space-x-2.5 px-3 py-2.5 rounded-md font-medium transition ${
+                className={`w-full flex items-center space-x-3 px-3 py-2.5 rounded font-medium transition ${
                   currentView === 'guarda_memorias'
-                    ? 'bg-[#0056b3] text-white shadow-sm font-semibold'
-                    : 'text-slate-300 hover:bg-[#142640] hover:text-white'
+                    ? 'bg-[#c05600] text-white font-bold shadow-xs'
+                    : 'text-[#e9ddcf] hover:bg-[#382313] hover:text-white'
                 }`}
               >
-                <BookOpen className="w-4 h-4 text-emerald-300 flex-shrink-0" />
+                <BookOpen className="w-5 h-5 text-[#e5a867] flex-shrink-0" />
                 <span>Escribe tu Historia</span>
               </button>
 
-              {/* Registro de Persona con Contrato de Consentimiento (Digitalizador / Admin) */}
               {['Digitalizador', 'Administrador'].includes(activeRole) && (
                 <button
                   onClick={() => handleNav('registro_contrato')}
-                  className={`w-full flex items-center space-x-2.5 px-3 py-2.5 rounded-md font-medium transition ${
+                  className={`w-full flex items-center space-x-3 px-3 py-2.5 rounded font-medium transition ${
                     currentView === 'registro_contrato'
-                      ? 'bg-[#0056b3] text-white shadow-sm font-semibold'
-                      : 'text-slate-300 hover:bg-[#142640] hover:text-white'
+                      ? 'bg-[#c05600] text-white font-bold shadow-xs'
+                      : 'text-[#e9ddcf] hover:bg-[#382313] hover:text-white'
                   }`}
                 >
-                  <FileSignature className="w-4 h-4 text-amber-400 flex-shrink-0" />
+                  <FileSignature className="w-5 h-5 text-[#f4ba7e] flex-shrink-0" />
                   <span>Registrar Persona & Contrato</span>
                 </button>
               )}
 
-              {/* Carga de Aportes Testimoniales */}
               {['Digitalizador', 'Administrador'].includes(activeRole) && (
                 <button
                   onClick={() => handleNav('carga')}
-                  className={`w-full flex items-center space-x-2.5 px-3 py-2.5 rounded-md font-medium transition ${
+                  className={`w-full flex items-center space-x-3 px-3 py-2.5 rounded font-medium transition ${
                     currentView === 'carga'
-                      ? 'bg-[#0056b3] text-white shadow-sm font-semibold'
-                      : 'text-slate-300 hover:bg-[#142640] hover:text-white'
+                      ? 'bg-[#c05600] text-white font-bold shadow-xs'
+                      : 'text-[#e9ddcf] hover:bg-[#382313] hover:text-white'
                   }`}
                 >
-                  <UploadCloud className="w-4 h-4 text-cyan-300 flex-shrink-0" />
-                  <span>Carga de Aportes</span>
+                  <UploadCloud className="w-5 h-5 text-[#f4ba7e] flex-shrink-0" />
+                  <span>Carga de Relatos</span>
                 </button>
               )}
             </div>
           </div>
 
-          {/* Grupo 3: Curaduría y Gobernanza (Gestor y Admin) */}
+          {/* Módulo 3: Curaduría (Gestor y Admin) */}
           {['Gestor de datos', 'Administrador'].includes(activeRole) && (
             <div>
-              <div className="px-3 text-[10px] font-bold uppercase tracking-wider text-slate-400 mb-2 font-mono">
-                Curaduría y Verificación
+              <div className="px-3 text-xs font-bold uppercase tracking-wider text-[#d2baa0] mb-2 font-serif">
+                Revisión Histórica
               </div>
               <div className="space-y-1">
                 <button
                   onClick={() => handleNav('validacion')}
-                  className={`w-full flex items-center justify-between px-3 py-2.5 rounded-md font-medium transition ${
+                  className={`w-full flex items-center justify-between px-3 py-2.5 rounded font-medium transition ${
                     currentView === 'validacion'
-                      ? 'bg-[#0056b3] text-white shadow-sm font-semibold'
-                      : 'text-slate-300 hover:bg-[#142640] hover:text-white'
+                      ? 'bg-[#c05600] text-white font-bold shadow-xs'
+                      : 'text-[#e9ddcf] hover:bg-[#382313] hover:text-white'
                   }`}
                 >
-                  <div className="flex items-center space-x-2.5">
-                    <CheckSquare className="w-4 h-4 text-amber-400 flex-shrink-0" />
+                  <div className="flex items-center space-x-3">
+                    <CheckSquare className="w-5 h-5 text-[#f4ba7e] flex-shrink-0" />
                     <span>Mesa de Curaduría</span>
                   </div>
                   {pendientesCount > 0 && (
-                    <span className="px-1.5 py-0.2 rounded-full bg-amber-500 text-slate-950 font-bold text-[10px]">
+                    <span className="px-2 py-0.5 rounded bg-[#f4ba7e] text-[#26170d] font-bold text-xs">
                       {pendientesCount}
                     </span>
                   )}
@@ -281,61 +271,59 @@ export const Sidebar: React.FC<SidebarProps> = ({
             </div>
           )}
 
-          {/* Grupo 4: Administración Institucional */}
+          {/* Módulo 4: Administración */}
           {activeRole === 'Administrador' && (
             <div>
-              <div className="px-3 text-[10px] font-bold uppercase tracking-wider text-slate-400 mb-2 font-mono">
-                Administración Institucional
+              <div className="px-3 text-xs font-bold uppercase tracking-wider text-[#d2baa0] mb-2 font-serif">
+                Administración
               </div>
               <div className="space-y-1">
                 <button
                   onClick={() => handleNav('admin')}
-                  className={`w-full flex items-center space-x-2.5 px-3 py-2.5 rounded-md font-medium transition ${
+                  className={`w-full flex items-center space-x-3 px-3 py-2.5 rounded font-medium transition ${
                     currentView === 'admin'
-                      ? 'bg-[#0056b3] text-white shadow-sm font-semibold'
-                      : 'text-slate-300 hover:bg-[#142640] hover:text-white'
+                      ? 'bg-[#c05600] text-white font-bold shadow-xs'
+                      : 'text-[#e9ddcf] hover:bg-[#382313] hover:text-white'
                   }`}
                 >
-                  <Shield className="w-4 h-4 text-purple-400 flex-shrink-0" />
-                  <span>Usuarios & Bitácora</span>
+                  <Shield className="w-5 h-5 text-[#f4ba7e] flex-shrink-0" />
+                  <span>Usuarios & Auditoría</span>
                 </button>
               </div>
             </div>
           )}
         </nav>
 
-        {/* Footer del Sidebar con Accesibilidad de Lectura */}
-        <div className="p-4 bg-[#081220] border-t border-[#1a2d47] text-xs space-y-3">
-          <div className="flex items-center justify-between text-slate-400 text-[11px]">
-            <span>Lectura accesible:</span>
-            <div className="flex items-center space-x-1">
+        {/* Pie del Sidebar: Accesibilidad de Lectura */}
+        <div className="p-4 bg-[#1c1109] border-t border-[#3d2514] text-xs space-y-2">
+          <div className="flex items-center justify-between text-[#d6c7b5]">
+            <span className="font-medium">Tamaño de letra:</span>
+            <div className="flex items-center space-x-1.5">
               <button
                 onClick={decreaseFontSize}
-                className="p-1 rounded bg-[#10223b] hover:bg-[#1a3356] text-slate-300 transition"
-                title="Disminuir tamaño"
+                className="p-1.5 rounded bg-[#331f11] hover:bg-[#442a17] text-white transition"
+                title="Disminuir tamaño de letra"
               >
-                <ZoomOut className="w-3.5 h-3.5" />
+                <ZoomOut className="w-4 h-4" />
               </button>
-              <span className="font-mono text-[10px] px-1 text-amber-300 font-bold">
+              <span className="font-bold px-1.5 text-[#e89b52]">
                 {Math.round(fontSizeScale * 100)}%
               </span>
               <button
                 onClick={increaseFontSize}
-                className="p-1 rounded bg-[#10223b] hover:bg-[#1a3356] text-slate-300 transition"
-                title="Aumentar tamaño"
+                className="p-1.5 rounded bg-[#331f11] hover:bg-[#442a17] text-white transition"
+                title="Aumentar tamaño de letra"
               >
-                <ZoomIn className="w-3.5 h-3.5" />
+                <ZoomIn className="w-4 h-4" />
               </button>
             </div>
           </div>
 
-          <div className="pt-2 border-t border-slate-800/80 flex items-center justify-between text-[10px] text-slate-500">
-            <span>© Fundación Legado Vivo</span>
-            <span className="font-mono">v1.1</span>
+          <div className="pt-2 border-t border-[#331f11] text-[11px] text-[#9c8976] text-center">
+            Fundación Legado Vivo • Palmares
           </div>
         </div>
       </aside>
     </>
   );
 };
-
