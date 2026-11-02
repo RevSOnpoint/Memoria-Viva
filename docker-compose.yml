@@ -1,0 +1,53 @@
+version: '3.8'
+
+services:
+  db:
+    image: postgres:16-alpine
+    container_name: memoria_viva_db
+    restart: always
+    environment:
+      POSTGRES_USER: memoria
+      POSTGRES_PASSWORD: memoria123
+      POSTGRES_DB: memoria_viva
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U memoria -d memoria_viva"]
+      interval: 5s
+      timeout: 5s
+      retries: 5
+
+  api:
+    build:
+      context: .
+      dockerfile: apps/api/Dockerfile
+    container_name: memoria_viva_api
+    restart: always
+    environment:
+      AI_MODE: mock
+      DATABASE_URL: postgresql://memoria:memoria123@db:5432/memoria_viva
+      SECRET_KEY: legado-vivo-palmares-secret-key-2026
+      UPLOAD_DIR: uploads
+    ports:
+      - "8000:8000"
+    depends_on:
+      db:
+        condition: service_healthy
+
+  web:
+    build:
+      context: .
+      dockerfile: apps/web/Dockerfile
+    container_name: memoria_viva_web
+    restart: always
+    environment:
+      VITE_API_URL: http://localhost:8000
+    ports:
+      - "5173:5173"
+    depends_on:
+      - api
+
+volumes:
+  postgres_data:
