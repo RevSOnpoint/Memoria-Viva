@@ -8,6 +8,7 @@ interface AuthContextType {
   isLoading: boolean;
   activeRole: UserRole;
   switchRole: (role: UserRole) => void;
+  login: (email: string, password: string) => Promise<User>;
   loginAs: (user: User) => void;
   logout: () => void;
   // Accesibilidad para adultos mayores
@@ -22,35 +23,82 @@ interface AuthContextType {
 
 const AuthContext = createContext<AuthContextType | undefined>(undefined);
 
+const SESSION_KEY = 'memoria-viva.session.user';
+
+const readStoredUser = (): User | null => {
+  try {
+    const raw = localStorage.getItem(SESSION_KEY);
+    if (!raw) return null;
+
+    const parsed = JSON.parse(raw);
+    if (
+      !parsed ||
+      typeof parsed.email !== 'string' ||
+      typeof parsed.full_name !== 'string' ||
+      typeof parsed.role !== 'string'
+    ) {
+      return null;
+    }
+
+    return parsed as User;
+  } catch {
+    return null;
+  }
+};
+
+const persistUser = (user: User | null) => {
+  try {
+    if (user) {
+      localStorage.setItem(SESSION_KEY, JSON.stringify(user));
+    } else {
+      localStorage.removeItem(SESSION_KEY);
+    }
+  } catch {
+    return;
+  }
+};
+
 export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
-  const [currentUser, setCurrentUser] = useState<User | null>(null);
+  const [currentUser, setCurrentUser] = useState<User | null>(() => readStoredUser());
   const [demoUsers, setDemoUsers] = useState<User[]>([]);
   const [isLoading, setIsLoading] = useState<boolean>(true);
   const [fontSizeScale, setFontSizeScale] = useState<number>(1.0);
   const [activeMemoriaId, setActiveMemoriaId] = useState<number | null>(null);
 
   useEffect(() => {
-    // Cargar usuarios demo
     api.getDemoUsers()
       .then(users => {
         setDemoUsers(users);
-        // Por defecto, iniciamos como 'Digitalizador' para facilitar la demostración de creación
-        const defaultUser = users.find(u => u.role === 'Digitalizador') || users[0];
-        if (defaultUser) {
-          loginAs(defaultUser);
-        }
+        setCurrentUser(previousUser => {
+          if (!previousUser) return null;
+          return users.find(user => user.email === previousUser.email) || previousUser;
+        });
       })
       .catch(err => {
-        console.error("Error cargando usuarios demo:", err);
+        console.error('Error cargando usuarios demo:', err);
       })
       .finally(() => {
         setIsLoading(false);
       });
   }, []);
 
+  useEffect(() => {
+    if (currentUser) {
+      setActiveUserEmail(currentUser.email);
+      persistUser(currentUser);
+    }
+  }, [currentUser]);
+
   const loginAs = (user: User) => {
     setCurrentUser(user);
     setActiveUserEmail(user.email);
+    persistUser(user);
+  };
+
+  const login = async (email: string, password: string): Promise<User> => {
+    const user = await api.login(email.trim().toLowerCase(), password);
+    loginAs(user);
+    return user;
   };
 
   const switchRole = (role: UserRole) => {
@@ -62,6 +110,8 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
 
   const logout = () => {
     setCurrentUser(null);
+    setActiveUserEmail('');
+    persistUser(null);
   };
 
   // Control de tamaño de fuente
@@ -94,6 +144,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
         isLoading,
         activeRole: currentUser?.role || 'Usuario',
         switchRole,
+        login,
         loginAs,
         logout,
         fontSizeScale,

@@ -1,8 +1,11 @@
 import React, { useState } from 'react';
 import { AuthProvider, useAuth } from './context/AuthContext';
+import { Navbar } from './components/Navbar';
 import { Sidebar } from './components/Sidebar';
 import { LoginView } from './views/LoginView';
+import { HomeView } from './views/HomeView';
 import { RegionesView } from './views/RegionesView';
+import { RegionDetalleView } from './views/RegionDetalleView';
 import { PersonaDetalleView } from './views/PersonaDetalleView';
 import { GuardaMemoriasView } from './views/GuardaMemoriasView';
 import { RegistroMemoriaContratoView } from './views/RegistroMemoriaContratoView';
@@ -12,19 +15,20 @@ import { CargaRelatosView } from './views/CargaRelatosView';
 import { ValidacionView } from './views/ValidacionView';
 import { BuscadorView } from './views/BuscadorView';
 import { AdminView } from './views/AdminView';
-import {
-  Menu,
-  Building2,
-  ShieldCheck,
-  Info,
-  ChevronRight,
-  UserCheck
-} from 'lucide-react';
+import { SobreNosotrosView } from './views/SobreNosotrosView';
+import { ContactoView } from './views/ContactoView';
+import { PreguntasFrecuentesView } from './views/PreguntasFrecuentesView';
+import { LegalView } from './views/LegalView';
+import { Footer } from './components/Footer';
+
+const LEGAL_VIEWS = ['terminos', 'privacidad', 'cookies', 'accesibilidad', 'aviso_legal', 'etica'];
 
 const MainApp: React.FC = () => {
-  const { currentUser, setActiveMemoriaId, activeRole } = useAuth();
-  const [currentView, setCurrentView] = useState<string>('regiones');
+  const { currentUser, setActiveMemoriaId } = useAuth();
+  const [currentView, setCurrentView] = useState<string>('inicio');
   const [selectedPersonaId, setSelectedPersonaId] = useState<number | null>(null);
+  const [selectedRegionId, setSelectedRegionId] = useState<string>('palmares');
+  const [personaReturnView, setPersonaReturnView] = useState<string>('memorias');
   const [mobileSidebarOpen, setMobileSidebarOpen] = useState<boolean>(false);
 
   const handleNavigate = (view: string, params?: any) => {
@@ -36,20 +40,39 @@ const MainApp: React.FC = () => {
     window.scrollTo({ top: 0, behavior: 'smooth' });
   };
 
-  const handleSelectPersona = (id: number) => {
+  const handleSelectPersona = (id: number, returnView: string = 'memorias') => {
     setActiveMemoriaId(id);
     setSelectedPersonaId(id);
+    setPersonaReturnView(returnView);
     setCurrentView('persona_detalle');
     window.scrollTo({ top: 0, behavior: 'smooth' });
   };
 
+  const handleSelectRegion = (regionId: string) => {
+    setSelectedRegionId(regionId);
+    setCurrentView('region_detalle');
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  };
+
   if (!currentUser) {
-    return <LoginView onSuccess={() => setCurrentView('regiones')} />;
+    return <LoginView onSuccess={() => setCurrentView('inicio')} />;
   }
 
   return (
-    <div className="min-h-screen bg-[#faf7f2] text-[#261b12] flex flex-col font-sans">
-      {/* Sidebar Lateral */}
+    <div className="min-h-screen bg-[#f7f7f3] text-[#1d2b28] flex flex-col font-sans">
+      <a
+        href="#contenido"
+        className="sr-only focus:not-sr-only focus:absolute focus:top-2 focus:left-2 focus:z-[60] focus:px-4 focus:py-2 focus:bg-white focus:border focus:border-[#2f5d50] focus:rounded focus:text-sm focus:font-semibold"
+      >
+        Saltar al contenido principal
+      </a>
+
+      <Navbar
+        currentView={currentView}
+        onNavigate={handleNavigate}
+        onOpenMobile={() => setMobileSidebarOpen(true)}
+      />
+
       <Sidebar
         currentView={currentView}
         onNavigate={handleNavigate}
@@ -57,141 +80,90 @@ const MainApp: React.FC = () => {
         onCloseMobile={() => setMobileSidebarOpen(false)}
       />
 
-      {/* Contenedor Principal (Con padding lateral para el Sidebar en desktop) */}
-      <div className="lg:pl-72 flex-1 flex flex-col min-w-0">
-        {/* Topbar Institucional Cálido (Header de Contexto y Acciones) */}
-        <header className="bg-white border-b border-[#e3d9cb] sticky top-0 z-30 shadow-xs">
-          <div className="max-w-7xl mx-auto px-4 sm:px-6 h-16 flex items-center justify-between gap-4">
-            {/* Toggle de Sidebar Móvil & Migas de Pan */}
-            <div className="flex items-center space-x-3 truncate">
-              <button
-                onClick={() => setMobileSidebarOpen(true)}
-                className="lg:hidden p-2 rounded hover:bg-[#f4ede2] text-[#442a17] transition border border-[#d8ccba]"
-                aria-label="Abrir menú de navegación"
-              >
-                <Menu className="w-5 h-5" />
-              </button>
+      <main
+        id="contenido"
+        className="flex-1 w-full max-w-7xl mx-auto px-4 sm:px-6 py-6 sm:py-10"
+      >
+        {currentView === 'inicio' && (
+          <HomeView onNavigate={handleNavigate} onSelectRegion={handleSelectRegion} />
+        )}
 
-              <div className="flex items-center space-x-2 text-xs sm:text-sm text-[#665546] truncate">
-                <span className="font-bold text-[#261b12] font-serif">Archivo</span>
-                <ChevronRight className="w-4 h-4 text-[#baa995]" />
-                <span className="font-medium text-[#c05600] truncate">
-                  {currentView === 'regiones' && 'Regiones & Territorios'}
-                  {currentView === 'memorias' && 'Archivo de Personas'}
-                  {currentView === 'persona_detalle' && 'Expediente Biográfico'}
-                  {currentView === 'guarda_memorias' && 'Escribe tu Historia'}
-                  {currentView === 'registro_contrato' && 'Registro & Contrato'}
-                  {currentView === 'carga' && 'Carga de Relatos'}
-                  {currentView === 'validacion' && 'Mesa de Curaduría'}
-                  {currentView === 'buscador' && 'Búsqueda Documental'}
-                  {currentView === 'admin' && 'Gobernanza Institucional'}
-                </span>
-              </div>
-            </div>
+        {currentView === 'sobre_nosotros' && (
+          <SobreNosotrosView onNavigate={handleNavigate} />
+        )}
 
-            {/* Perfil del Operador y Estado */}
-            <div className="flex items-center space-x-3 text-xs sm:text-sm flex-shrink-0">
-              <div className="hidden sm:flex items-center gap-2 px-3 py-1.5 rounded bg-[#fcf8f3] text-[#442a17] border border-[#d8ccba]">
-                <UserCheck className="w-4 h-4 text-[#c05600]" />
-                <span>Perfil: <strong>{activeRole}</strong></span>
-              </div>
+        {currentView === 'contacto' && <ContactoView onNavigate={handleNavigate} />}
 
-              <div className="text-right hidden md:block">
-                <div className="font-bold text-[#261b12] text-xs sm:text-sm truncate max-w-[170px]">
-                  {currentUser.full_name}
-                </div>
-                <div className="text-[11px] text-[#665546] truncate max-w-[170px]">
-                  {currentUser.email}
-                </div>
-              </div>
+        {currentView === 'preguntas' && (
+          <PreguntasFrecuentesView onNavigate={handleNavigate} />
+        )}
 
-              <div className="w-9 h-9 rounded bg-[#442a17] text-[#fef6ee] flex items-center justify-center font-bold text-sm uppercase border border-[#2a1a0f] shadow-xs">
-                {currentUser.full_name[0]}
-              </div>
-            </div>
-          </div>
-        </header>
+        {LEGAL_VIEWS.includes(currentView) && (
+          <LegalView documentId={currentView} onNavigate={handleNavigate} />
+        )}
 
-        {/* Zona de Vistas Dinámicas */}
-        <main className="flex-1 p-4 sm:p-8 max-w-7xl w-full mx-auto">
-          {currentView === 'regiones' && (
-            <RegionesView
-              onSelectPersona={handleSelectPersona}
-              onNavigate={handleNavigate}
-            />
-          )}
+        {currentView === 'regiones' && (
+          <RegionesView
+            onSelectRegion={handleSelectRegion}
+            onNavigate={handleNavigate}
+          />
+        )}
 
-          {currentView === 'persona_detalle' && selectedPersonaId && (
-            <PersonaDetalleView
-              memoriaId={selectedPersonaId}
-              onBack={() => setCurrentView('regiones')}
-              onNavigateCarga={(id) => handleNavigate('carga', { memoriaId: id })}
-            />
-          )}
+        {currentView === 'region_detalle' && (
+          <RegionDetalleView
+            regionId={selectedRegionId}
+            onBack={() => handleNavigate('regiones')}
+            onSelectPersona={(id) => handleSelectPersona(id, 'region_detalle')}
+            onNavigate={handleNavigate}
+          />
+        )}
 
-          {currentView === 'memorias' && (
-            <MemoriasView
-              onNavigate={handleNavigate}
-              onSelectPersona={handleSelectPersona}
-            />
-          )}
+        {currentView === 'persona_detalle' && selectedPersonaId && (
+          <PersonaDetalleView
+            memoriaId={selectedPersonaId}
+            onBack={() => handleNavigate(personaReturnView)}
+            onNavigateCarga={(id) => handleNavigate('carga', { memoriaId: id })}
+          />
+        )}
 
-          {currentView === 'guarda_memorias' && (
-            <GuardaMemoriasView onNavigate={handleNavigate} />
-          )}
+        {currentView === 'memorias' && (
+          <MemoriasView
+            onNavigate={handleNavigate}
+            onSelectPersona={handleSelectPersona}
+          />
+        )}
 
-          {currentView === 'registro_contrato' && (
-            <RegistroMemoriaContratoView
-              onSuccessNavigate={handleSelectPersona}
-              onNavigateCarga={(id) => handleNavigate('carga', { memoriaId: id })}
-            />
-          )}
+        {currentView === 'guarda_memorias' && (
+          <GuardaMemoriasView onNavigate={handleNavigate} />
+        )}
 
-          {currentView === 'consentimiento' && (
-            <ConsentimientoView onNavigate={handleNavigate} />
-          )}
+        {currentView === 'registro_contrato' && (
+          <RegistroMemoriaContratoView
+            onSuccessNavigate={handleSelectPersona}
+            onNavigateCarga={(id) => handleNavigate('carga', { memoriaId: id })}
+          />
+        )}
 
-          {currentView === 'carga' && (
-            <CargaRelatosView onNavigate={handleNavigate} />
-          )}
+        {currentView === 'consentimiento' && (
+          <ConsentimientoView onNavigate={handleNavigate} />
+        )}
 
-          {currentView === 'validacion' && (
-            <ValidacionView onNavigate={handleNavigate} />
-          )}
+        {currentView === 'carga' && (
+          <CargaRelatosView onNavigate={handleNavigate} />
+        )}
 
-          {currentView === 'buscador' && (
-            <BuscadorView onNavigate={handleNavigate} />
-          )}
+        {currentView === 'validacion' && (
+          <ValidacionView onNavigate={handleNavigate} />
+        )}
 
-          {currentView === 'admin' && (
-            <AdminView />
-          )}
-        </main>
+        {currentView === 'buscador' && (
+          <BuscadorView onNavigate={handleNavigate} />
+        )}
 
-        {/* Pie Institucional Formal */}
-        <footer className="bg-white border-t border-[#e3d9cb] py-5 text-xs text-[#665546] mt-auto">
-          <div className="max-w-7xl mx-auto px-4 sm:px-6 flex flex-col sm:flex-row items-center justify-between gap-3 text-center sm:text-left">
-            <div>
-              <span className="font-bold text-[#261b12] font-serif text-sm">Fundación Legado Vivo</span>
-              <span className="mx-2 text-[#baa995]">•</span>
-              <span className="font-medium text-[#442a17]">Palmares, Alajuela, Costa Rica</span>
-              <span className="mx-2 text-[#baa995]">•</span>
-              <span>Custodia y Preservación del Patrimonio Oral</span>
-            </div>
+        {currentView === 'admin' && <AdminView />}
+      </main>
 
-            <div className="flex items-center space-x-3 text-xs text-[#665546]">
-              <span className="flex items-center gap-1.5 font-medium">
-                <ShieldCheck className="w-4 h-4 text-[#1b6e39]" />
-                <span>Integridad Criptográfica SHA-256</span>
-              </span>
-              <span className="text-[#baa995]">•</span>
-              <span className="text-[#8c6239] font-medium">
-                Rigor Ético & Consentimiento
-              </span>
-            </div>
-          </div>
-        </footer>
-      </div>
+      <Footer onNavigate={handleNavigate} />
     </div>
   );
 };

@@ -1,5 +1,5 @@
 import re
-from typing import Dict, Any, List
+from typing import Dict, Any, List, Optional
 from app.ai.base import TranscriptionInterface, ImageAnalysisInterface, LLMNarratorInterface, VoiceInterface
 
 class MockTranscriptionService(TranscriptionInterface):
@@ -95,9 +95,20 @@ class MockLLMNarratorService(LLMNarratorInterface):
         - Si no tiene información en los fragmentos validados: responde EXACTAMENTE 'no cuento con esa información'
           sin llamar al modelo ni inventar.
         """
+        identidad = (
+            "Soy el asistente de inteligencia artificial que acompaña y da voz a la memoria de "
+            f"{memoria_titular}. "
+        )
+        respuesta_sin_datos = (
+            f"{identidad}Con mucho gusto le atiendo, aunque debo serle sincera: "
+            "no cuento con esa información en los relatos validados de esta memoria. "
+            "Si gusta, pregúnteme por su niñez, su familia, su oficio o las tradiciones de su comunidad; "
+            "con gusto reviso lo que sí quedó registrado."
+        )
+
         if not knowledge_fragments:
             return {
-                "respuesta": "Soy el asistente de inteligencia artificial de Memoria Viva. No cuento con esa información en la base de conocimiento validada de esta memoria.",
+                "respuesta": respuesta_sin_datos,
                 "fuentes": [],
                 "encontrado": False,
                 "es_ia": True
@@ -125,7 +136,7 @@ class MockLLMNarratorService(LLMNarratorInterface):
 
         if not matched_fragments or (words and matched_fragments[0][0] == 0):
             return {
-                "respuesta": "Soy el asistente de inteligencia artificial de Memoria Viva. No cuento con esa información en la base de conocimiento validada de esta memoria.",
+                "respuesta": respuesta_sin_datos,
                 "fuentes": [],
                 "encontrado": False,
                 "es_ia": True
@@ -141,10 +152,11 @@ class MockLLMNarratorService(LLMNarratorInterface):
         fuente_cita = f"[Aporte #{aporte_id} - {autor}, {fecha}]"
 
         respuesta = (
-            f"Soy el asistente de inteligencia artificial de Memoria Viva y consulto la memoria de {memoria_titular}. "
-            f"De acuerdo con los testimonios validados:\n\n"
-            f"\"{texto}\"\n\n"
-            f"Fuente primaria consultada: {fuente_cita}."
+            f"Qué gusto que me pregunte por eso. {identidad}"
+            "Le cuento con cariño lo que quedó registrado en su memoria:\n\n"
+            f"“{texto}”\n\n"
+            f"Así lo relató {autor}, y puede consultarlo en {fuente_cita}. "
+            "Si desea, puedo buscar otro pasaje relacionado o contarle más sobre este recuerdo."
         )
 
         return {
@@ -165,13 +177,56 @@ class MockLLMNarratorService(LLMNarratorInterface):
         }
 
 class MockVoiceService(VoiceInterface):
-    def get_voice_config(self) -> Dict[str, Any]:
+    PERFILES = [
+        {
+            "id": "serena",
+            "label": "Serena y pausada",
+            "rate": 0.84,
+            "pitch": 0.96,
+            "style": "Tono reposado, claro y muy cercano."
+        },
+        {
+            "id": "calida",
+            "label": "Cálida y cercana",
+            "rate": 0.88,
+            "pitch": 1.02,
+            "style": "Tono amable, conversacional y respetuoso."
+        },
+        {
+            "id": "luminosa",
+            "label": "Luminosa y expresiva",
+            "rate": 0.9,
+            "pitch": 1.06,
+            "style": "Tono alegre, natural y con calidez costarricense."
+        }
+    ]
+
+    def get_voice_config(
+        self,
+        memoria_id: Optional[int] = None,
+        titular: str = ""
+    ) -> Dict[str, Any]:
+        perfil = self.PERFILES[(memoria_id or 0) % len(self.PERFILES)]
         return {
             "lang": "es-CR",
-            "fallback_lang": "es-ES",
-            "rate": 0.9,  # Pausado y claro para personas mayores
-            "pitch": 1.0,
-            "volume": 1.0,
-            "engine": "browser_web_speech_api"
+            "fallback_langs": ["es-419", "es-US", "es-MX", "es-ES"],
+            "rate": perfil["rate"],
+            "pitch": perfil["pitch"],
+            "volume": 0.95,
+            "engine": "browser_web_speech_api",
+            "profile": perfil["id"],
+            "profile_label": perfil["label"],
+            "style": perfil["style"],
+            "preferred_voice_names": [
+                "Sabina",
+                "Helena",
+                "Laura",
+                "Mónica",
+                "Monica",
+                "Paulina",
+                "Google español",
+                "Microsoft"
+            ],
+            "persona": titular
         }
 

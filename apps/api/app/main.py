@@ -20,10 +20,11 @@ Base.metadata.create_all(bind=engine)
 @asynccontextmanager
 async def lifespan(app: FastAPI):
     # Inicialización de datos semilla si la base de datos está vacía
-    from seed.init_seed import run_seed
+    from seed.init_seed import run_seed, run_region_seed
     db = SessionLocal()
     try:
         run_seed(db)
+        run_region_seed(db)
     except Exception as e:
         print(f"Aviso durante seed en inicio: {e}")
     finally:

@@ -2,6 +2,8 @@ import React, { useState, useEffect } from 'react';
 import { useAuth } from '../context/AuthContext';
 import { Memoria, UserRole } from '../types';
 import { api } from '../services/api';
+import { SafeImage } from '../components/SafeImage';
+import { getPortrait } from '../data/portraits';
 import {
   BookOpen,
   Plus,
@@ -25,15 +27,6 @@ interface MemoriasViewProps {
   onNavigate: (tab: string, memoriaId?: number) => void;
   onSelectPersona?: (memoriaId: number) => void;
 }
-
-const PORTRAIT_MAP: Record<string, string> = {
-  'José Ángel González Chaves': 'https://images.unsplash.com/photo-1544717305-2782549b5136?auto=format&fit=crop&w=600&q=80',
-  'Don Chepe': 'https://images.unsplash.com/photo-1544717305-2782549b5136?auto=format&fit=crop&w=600&q=80',
-  'Carmen María Rojas Vargas': 'https://images.unsplash.com/photo-1566616213894-2d4e1baee5d8?auto=format&fit=crop&w=600&q=80',
-  'Doña Carmen': 'https://images.unsplash.com/photo-1566616213894-2d4e1baee5d8?auto=format&fit=crop&w=600&q=80',
-};
-
-const DEFAULT_PORTRAIT = 'https://images.unsplash.com/photo-1455390582262-044cdead277a?auto=format&fit=crop&w=600&q=80';
 
 export const MemoriasView: React.FC<MemoriasViewProps> = ({ onNavigate, onSelectPersona }) => {
   const { activeRole, activeMemoriaId, setActiveMemoriaId } = useAuth();
@@ -118,16 +111,16 @@ export const MemoriasView: React.FC<MemoriasViewProps> = ({ onNavigate, onSelect
   return (
     <div className="space-y-6">
       {/* Encabezado Institucional Cálido */}
-      <div className="bg-white p-6 sm:p-7 rounded border border-[#d8ccba] shadow-2xs flex flex-col md:flex-row md:items-center justify-between gap-4">
+      <div className="bg-white p-6 sm:p-7 rounded border border-[#d5ddd6] shadow-2xs flex flex-col md:flex-row md:items-center justify-between gap-4">
         <div>
-          <div className="flex items-center space-x-2 text-xs font-bold text-[#c05600] uppercase tracking-wider font-serif">
+          <div className="flex items-center space-x-2 text-xs font-bold text-[#2f5d50] uppercase tracking-wider font-serif">
             <Building2 className="w-4 h-4" />
             <span>Archivo General de Personas & Expedientes Históricos</span>
           </div>
-          <h1 className="text-2xl sm:text-3xl font-bold font-serif text-[#261b12] mt-1.5">
-            Custodia del Acervo Humano de Palmares
+          <h1 className="text-2xl sm:text-3xl font-bold font-serif text-[#1d2b28] mt-1.5">
+            Custodia del Acervo Humano Regional
           </h1>
-          <p className="text-sm sm:text-base text-[#442a17] mt-1 leading-relaxed">
+          <p className="text-sm sm:text-base text-[#344a43] mt-1 leading-relaxed">
             Consulte las biografías de vida, relatos agrícolas y documentos preservados bajo consentimiento informado.
           </p>
         </div>
@@ -147,25 +140,25 @@ export const MemoriasView: React.FC<MemoriasViewProps> = ({ onNavigate, onSelect
       </div>
 
       {/* Barra de Filtros Accesible para Adultos Mayores */}
-      <div className="bg-white p-4 rounded border border-[#d8ccba] flex flex-col md:flex-row items-stretch md:items-center justify-between gap-3 shadow-2xs">
+      <div className="bg-white p-4 rounded border border-[#d5ddd6] flex flex-col md:flex-row items-stretch md:items-center justify-between gap-3 shadow-2xs">
         <div className="flex flex-col sm:flex-row flex-1 items-stretch sm:items-center gap-3 w-full">
           <div className="relative flex-1">
-            <Search className="w-5 h-5 text-[#8c6239] absolute left-3.5 top-3.5" />
+            <Search className="w-5 h-5 text-[#4f6b62] absolute left-3.5 top-3.5" />
             <input
               type="text"
               value={searchTerm}
               onChange={e => setSearchTerm(e.target.value)}
               placeholder="Buscar por nombre, apodo, distrito o vivencia..."
-              className="w-full min-h-[48px] pl-11 pr-4 text-sm sm:text-base border border-[#d8ccba] rounded bg-[#ffffff] text-[#261b12] focus:border-[#c05600] focus:ring-1 focus:ring-[#c05600]"
+              className="w-full min-h-[48px] pl-11 pr-4 text-sm sm:text-base border border-[#d5ddd6] rounded bg-[#ffffff] text-[#1d2b28] focus:border-[#2f5d50] focus:ring-1 focus:ring-[#2f5d50]"
             />
           </div>
 
           <div className="flex items-center space-x-2">
-            <Filter className="w-5 h-5 text-[#8c6239] hidden sm:block" />
+            <Filter className="w-5 h-5 text-[#4f6b62] hidden sm:block" />
             <select
               value={filterVisibilidad}
               onChange={e => setFilterVisibilidad(e.target.value)}
-              className="min-h-[48px] px-3.5 text-sm font-medium border border-[#d8ccba] rounded bg-white text-[#261b12] w-full sm:w-auto"
+              className="min-h-[48px] px-3.5 text-sm font-medium border border-[#d5ddd6] rounded bg-white text-[#1d2b28] w-full sm:w-auto"
             >
               <option value="todos">Todas las visibilidades</option>
               <option value="publico">Público</option>
@@ -176,13 +169,13 @@ export const MemoriasView: React.FC<MemoriasViewProps> = ({ onNavigate, onSelect
         </div>
 
         {/* Selector de Modo de Vista */}
-        <div className="flex items-center justify-end space-x-1 border border-[#d8ccba] rounded p-1 bg-[#fcf8f3] self-end md:self-auto">
+        <div className="flex items-center justify-end space-x-1 border border-[#d5ddd6] rounded p-1 bg-[#fafaf7] self-end md:self-auto">
           <button
             onClick={() => setViewMode('grid')}
             className={`min-h-[40px] px-3 rounded text-xs font-bold flex items-center gap-1.5 transition ${
               viewMode === 'grid'
-                ? 'bg-[#c05600] text-white shadow-xs'
-                : 'text-[#442a17] hover:bg-[#f4ede2]'
+                ? 'bg-[#2f5d50] text-white shadow-xs'
+                : 'text-[#344a43] hover:bg-[#eef1eb]'
             }`}
           >
             <LayoutGrid className="w-4 h-4" />
@@ -192,8 +185,8 @@ export const MemoriasView: React.FC<MemoriasViewProps> = ({ onNavigate, onSelect
             onClick={() => setViewMode('table')}
             className={`min-h-[40px] px-3 rounded text-xs font-bold flex items-center gap-1.5 transition ${
               viewMode === 'table'
-                ? 'bg-[#c05600] text-white shadow-xs'
-                : 'text-[#442a17] hover:bg-[#f4ede2]'
+                ? 'bg-[#2f5d50] text-white shadow-xs'
+                : 'text-[#344a43] hover:bg-[#eef1eb]'
             }`}
           >
             <TableIcon className="w-4 h-4" />
@@ -204,15 +197,15 @@ export const MemoriasView: React.FC<MemoriasViewProps> = ({ onNavigate, onSelect
 
       {/* Contenido Principal */}
       {isLoading ? (
-        <div className="bg-white p-12 rounded border border-[#d8ccba] text-center text-[#665546]">
-          <div className="animate-spin w-8 h-8 border-3 border-[#c05600] border-t-transparent rounded-full mx-auto mb-3" />
+        <div className="bg-white p-12 rounded border border-[#d5ddd6] text-center text-[#5a6b64]">
+          <div className="animate-spin w-8 h-8 border-3 border-[#2f5d50] border-t-transparent rounded-full mx-auto mb-3" />
           <p className="font-serif text-base">Consultando expedientes autorizados...</p>
         </div>
       ) : filteredMemorias.length === 0 ? (
-        <div className="bg-white p-12 rounded border border-[#d8ccba] text-center text-[#665546]">
-          <BookOpen className="w-12 h-12 text-[#bfae97] mx-auto mb-3" />
-          <h3 className="text-xl font-bold font-serif text-[#261b12]">No se encontraron expedientes</h3>
-          <p className="text-sm text-[#665546] max-w-md mx-auto mt-1">
+        <div className="bg-white p-12 rounded border border-[#d5ddd6] text-center text-[#5a6b64]">
+          <BookOpen className="w-12 h-12 text-[#aebbb3] mx-auto mb-3" />
+          <h3 className="text-xl font-bold font-serif text-[#1d2b28]">No se encontraron expedientes</h3>
+          <p className="text-sm text-[#5a6b64] max-w-md mx-auto mt-1">
             No existen personas que coincidan con la búsqueda o no se cuenta con autorización para visualizarlas bajo el perfil actual.
           </p>
         </div>
@@ -220,47 +213,44 @@ export const MemoriasView: React.FC<MemoriasViewProps> = ({ onNavigate, onSelect
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
           {filteredMemorias.map(memoria => {
             const hasConsent = !!memoria.consentimiento?.evidencia_hash;
-            const photoUrl =
-              PORTRAIT_MAP[memoria.titular] ||
-              (memoria.alias ? PORTRAIT_MAP[memoria.alias] : null) ||
-              DEFAULT_PORTRAIT;
+            const photoUrl = getPortrait(memoria.titular, memoria.alias);
 
             return (
               <div
                 key={memoria.id}
-                className="bg-white rounded border border-[#d8ccba] shadow-2xs hover:border-[#bfae97] transition flex flex-col justify-between overflow-hidden"
+                className="bg-white rounded border border-[#d5ddd6] shadow-2xs hover:border-[#aebbb3] transition flex flex-col justify-between overflow-hidden"
               >
                 <div>
                   {/* Cabecera de la Tarjeta con Foto y Datos Principales */}
-                  <div className="p-5 sm:p-6 flex items-start gap-4 border-b border-[#f4ede2]">
-                    <img
+                  <div className="p-5 sm:p-6 flex items-start gap-4 border-b border-[#eef1eb]">
+                    <SafeImage
                       src={photoUrl}
                       alt={memoria.titular}
-                      className="w-20 h-20 sm:w-24 sm:h-24 rounded object-cover border-2 border-[#d8ccba] flex-shrink-0 shadow-xs"
+                      className="w-20 h-20 sm:w-24 sm:h-24 rounded object-cover border-2 border-[#d5ddd6] flex-shrink-0 shadow-xs"
                     />
 
                     <div className="min-w-0 flex-1">
                       <div className="flex items-center justify-between gap-2 mb-1">
-                        <span className="text-xs text-[#8c6239] font-serif font-bold uppercase tracking-wider">
+                        <span className="text-xs text-[#4f6b62] font-serif font-bold uppercase tracking-wider">
                           Expediente #{memoria.id}
                         </span>
                         
-                        <span className="text-xs text-[#665546] font-medium bg-[#fcf8f3] px-2 py-0.5 rounded border border-[#e3d9cb] capitalize">
+                        <span className="text-xs text-[#5a6b64] font-medium bg-[#fafaf7] px-2 py-0.5 rounded border border-[#dde3dc] capitalize">
                           {memoria.visibilidad}
                         </span>
                       </div>
 
-                      <h3 className="text-lg sm:text-xl font-bold font-serif text-[#261b12] leading-tight truncate">
+                        <h3 className="text-lg sm:text-xl font-bold font-serif text-[#1d2b28] leading-tight line-clamp-2">
                         {memoria.titular}
                       </h3>
 
                       {memoria.alias && (
-                        <div className="text-sm font-semibold text-[#c05600] mt-0.5">
+                        <div className="text-sm font-semibold text-[#2f5d50] mt-0.5">
                           "{memoria.alias}"
                         </div>
                       )}
 
-                      <div className="text-xs text-[#665546] mt-1 truncate">
+                      <div className="text-xs text-[#5a6b64] mt-1 truncate">
                         {memoria.lugar_origen}
                       </div>
                     </div>
@@ -268,28 +258,28 @@ export const MemoriasView: React.FC<MemoriasViewProps> = ({ onNavigate, onSelect
 
                   {/* Semblanza y Estado Ético */}
                   <div className="p-5 sm:p-6 space-y-3">
-                    <p className="text-xs sm:text-sm text-[#442a17] line-clamp-3 leading-relaxed">
+                    <p className="text-xs sm:text-sm text-[#344a43] line-clamp-3 leading-relaxed">
                       {memoria.descripcion || 'Expediente histórico con vivencias orales y aportes documentales custodiados.'}
                     </p>
 
-                    <div className="p-3 bg-[#fcf8f3] rounded border border-[#e3d9cb] flex items-center justify-between text-xs text-[#442a17]">
+                    <div className="p-3 bg-[#fafaf7] rounded border border-[#dde3dc] flex items-center justify-between text-xs text-[#344a43]">
                       <div className="flex items-center gap-1.5">
                         {hasConsent ? (
                           <>
-                            <ShieldCheck className="w-4 h-4 text-[#1b6e39]" />
-                            <span className="font-semibold text-[#1b6e39]">Consentimiento Válido</span>
+                            <ShieldCheck className="w-4 h-4 text-[#2c6e4f]" />
+                            <span className="font-semibold text-[#2c6e4f]">Consentimiento Válido</span>
                           </>
                         ) : (
                           <>
-                            <ShieldAlert className="w-4 h-4 text-[#a81c1c]" />
-                            <span className="font-semibold text-[#a81c1c]">Sin Consentimiento</span>
+                            <ShieldAlert className="w-4 h-4 text-[#a34a3d]" />
+                            <span className="font-semibold text-[#a34a3d]">Sin Consentimiento</span>
                           </>
                         )}
                       </div>
 
                       <div>
-                        <span className="text-[#665546]">Aportes validados:</span>
-                        <strong className="ml-1 text-[#261b12]">
+                        <span className="text-[#5a6b64]">Aportes validados:</span>
+                        <strong className="ml-1 text-[#1d2b28]">
                           {memoria.aportes_validados || 0}
                         </strong>
                       </div>
@@ -298,7 +288,7 @@ export const MemoriasView: React.FC<MemoriasViewProps> = ({ onNavigate, onSelect
                 </div>
 
                 {/* Acciones de la Tarjeta */}
-                <div className="p-4 bg-[#faf7f2] border-t border-[#f4ede2] flex items-center justify-between gap-2">
+                <div className="p-4 bg-[#f7f7f3] border-t border-[#eef1eb] flex items-center justify-between gap-2">
                   <button
                     onClick={() => {
                       setActiveMemoriaId(memoria.id);
@@ -329,10 +319,10 @@ export const MemoriasView: React.FC<MemoriasViewProps> = ({ onNavigate, onSelect
         </div>
       ) : (
         /* Vista de Registro en Tabla Cálida */
-        <div className="bg-white rounded border border-[#d8ccba] overflow-hidden shadow-2xs">
+        <div className="bg-white rounded border border-[#d5ddd6] overflow-hidden shadow-2xs">
           <div className="overflow-x-auto">
-            <table className="w-full text-left text-sm text-[#261b12]">
-              <thead className="bg-[#fcf8f3] text-xs font-bold text-[#442a17] uppercase tracking-wider border-b border-[#d8ccba] font-serif">
+            <table className="w-full text-left text-sm text-[#1d2b28]">
+              <thead className="bg-[#fafaf7] text-xs font-bold text-[#344a43] uppercase tracking-wider border-b border-[#d5ddd6] font-serif">
                 <tr>
                   <th className="py-3.5 px-4">Titular de la Memoria</th>
                   <th className="py-3.5 px-4">Distrito / Lugar</th>
@@ -342,31 +332,31 @@ export const MemoriasView: React.FC<MemoriasViewProps> = ({ onNavigate, onSelect
                   <th className="py-3.5 px-4 text-right">Acción</th>
                 </tr>
               </thead>
-              <tbody className="divide-y divide-[#f4ede2]">
+              <tbody className="divide-y divide-[#eef1eb]">
                 {filteredMemorias.map(memoria => {
                   const hasConsent = !!memoria.consentimiento?.evidencia_hash;
                   return (
-                    <tr key={memoria.id} className="hover:bg-[#fcfaf7] transition">
+                    <tr key={memoria.id} className="hover:bg-[#fbfbf8] transition">
                       <td className="py-3.5 px-4">
-                        <div className="font-bold font-serif text-base text-[#261b12]">{memoria.titular}</div>
-                        {memoria.alias && <div className="text-xs text-[#c05600] font-semibold">"{memoria.alias}"</div>}
+                        <div className="font-bold font-serif text-base text-[#1d2b28]">{memoria.titular}</div>
+                        {memoria.alias && <div className="text-xs text-[#2f5d50] font-semibold">"{memoria.alias}"</div>}
                       </td>
-                      <td className="py-3.5 px-4 text-xs text-[#665546]">{memoria.lugar_origen}</td>
+                      <td className="py-3.5 px-4 text-xs text-[#5a6b64]">{memoria.lugar_origen}</td>
                       <td className="py-3.5 px-4">
                         {hasConsent ? (
-                          <span className="inline-flex items-center gap-1.5 text-xs font-bold text-[#1b6e39]">
+                          <span className="inline-flex items-center gap-1.5 text-xs font-bold text-[#2c6e4f]">
                             <ShieldCheck className="w-4 h-4" />
                             Acreditado
                           </span>
                         ) : (
-                          <span className="inline-flex items-center gap-1.5 text-xs font-bold text-[#a81c1c]">
+                          <span className="inline-flex items-center gap-1.5 text-xs font-bold text-[#a34a3d]">
                             <ShieldAlert className="w-4 h-4" />
                             Sin Consentimiento
                           </span>
                         )}
                       </td>
                       <td className="py-3.5 px-4">
-                        <span className="text-xs font-semibold capitalize px-2.5 py-1 rounded bg-[#fcf8f3] text-[#442a17] border border-[#e3d9cb]">
+                        <span className="text-xs font-semibold capitalize px-2.5 py-1 rounded bg-[#fafaf7] text-[#344a43] border border-[#dde3dc]">
                           {memoria.visibilidad}
                         </span>
                       </td>

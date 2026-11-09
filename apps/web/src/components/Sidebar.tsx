@@ -1,9 +1,11 @@
-import React, { useState, useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useAuth } from '../context/AuthContext';
 import { UserRole } from '../types';
 import { api } from '../services/api';
 import {
-  MapPin,
+  Building2,
+  Landmark,
+  Compass,
   Users,
   Search,
   BookOpen,
@@ -11,13 +13,15 @@ import {
   UploadCloud,
   CheckSquare,
   Shield,
-  Building2,
-  ChevronDown,
-  UserCheck,
+  X,
   ZoomIn,
   ZoomOut,
-  X,
-  Compass
+  LogOut,
+  FileText,
+  Lock,
+  Accessibility,
+  Mail,
+  MessageCircleQuestion
 } from 'lucide-react';
 
 interface SidebarProps {
@@ -26,6 +30,17 @@ interface SidebarProps {
   mobileOpen: boolean;
   onCloseMobile: () => void;
 }
+
+const allRoles: UserRole[] = ['Usuario', 'Digitalizador', 'Gestor de datos', 'Administrador'];
+
+const foundationLinks = [
+  { view: 'sobre_nosotros', label: 'Sobre nosotros', icon: Landmark },
+  { view: 'preguntas', label: 'Preguntas frecuentes', icon: MessageCircleQuestion },
+  { view: 'contacto', label: 'Contacto', icon: Mail },
+  { view: 'terminos', label: 'Acuerdo de uso', icon: FileText },
+  { view: 'privacidad', label: 'Privacidad', icon: Lock },
+  { view: 'accesibilidad', label: 'Accesibilidad', icon: Accessibility }
+];
 
 export const Sidebar: React.FC<SidebarProps> = ({
   currentView,
@@ -37,13 +52,16 @@ export const Sidebar: React.FC<SidebarProps> = ({
     currentUser,
     activeRole,
     switchRole,
+    logout,
     fontSizeScale,
     increaseFontSize,
     decreaseFontSize
   } = useAuth();
 
   const [pendientesCount, setPendientesCount] = useState<number>(0);
-  const [roleMenuOpen, setRoleMenuOpen] = useState<boolean>(false);
+
+  const displayName =
+    (currentUser?.full_name || 'Usuario').replace(/\s*\([^)]*\)\s*/g, '').trim() || 'Usuario';
 
   useEffect(() => {
     if (activeRole === 'Gestor de datos' || activeRole === 'Administrador') {
@@ -53,216 +71,149 @@ export const Sidebar: React.FC<SidebarProps> = ({
     }
   }, [activeRole, currentView]);
 
-  const allRoles: UserRole[] = ['Usuario', 'Digitalizador', 'Gestor de datos', 'Administrador'];
-
   const handleNav = (view: string) => {
     onNavigate(view);
     onCloseMobile();
   };
 
+  const isActive = (view: string) => {
+    if (view === 'regiones') return currentView === 'regiones' || currentView === 'region_detalle';
+    if (view === 'memorias') return currentView === 'memorias' || currentView === 'persona_detalle';
+    return currentView === view;
+  };
+
+  const linkClass = (view: string) =>
+    `w-full flex items-center gap-3 px-3 py-2.5 rounded text-sm font-medium transition ${
+      isActive(view)
+        ? 'bg-[#2f5d50] text-white'
+        : 'text-[#dde6e0] hover:bg-[#2b4a42] hover:text-white'
+    }`;
+
   return (
     <>
-      {/* Overlay para móvil */}
       {mobileOpen && (
         <div
-          className="fixed inset-0 bg-warm-woodDark/60 z-40 lg:hidden backdrop-blur-xs"
+          className="fixed inset-0 bg-black/40 z-50 lg:hidden"
           onClick={onCloseMobile}
+          aria-hidden="true"
         />
       )}
 
-      {/* Sidebar Principal en Tono Madera Cálida */}
       <aside
-        className={`fixed top-0 bottom-0 left-0 z-50 w-72 bg-[#26170d] text-[#f4ede2] border-r border-[#442a17] flex flex-col transition-transform duration-200 ease-in-out lg:translate-x-0 ${
+        className={`fixed top-0 bottom-0 left-0 z-[60] w-80 max-w-[85vw] bg-[#1f352f] text-[#f2f5f0] border-r border-[#35564d] flex flex-col transition-transform duration-200 ease-in-out lg:hidden ${
           mobileOpen ? 'translate-x-0' : '-translate-x-full'
         }`}
+        aria-label="Menú de navegación móvil"
       >
-        {/* Cabecera Institucional Cálida */}
-        <div className="p-5 border-b border-[#3d2514] flex items-center justify-between">
-          <div className="flex items-center space-x-3">
-            <div className="w-11 h-11 rounded bg-[#c05600] text-white flex items-center justify-center font-bold text-lg shadow-sm border border-[#e07722]/40">
-              <Building2 className="w-6 h-6 text-[#fef6ee]" />
+        <div className="p-5 border-b border-[#35564d] flex items-center justify-between gap-3">
+          <button onClick={() => handleNav('inicio')} className="flex items-center gap-3 text-left min-w-0">
+            <div className="w-10 h-10 rounded bg-[#2f5d50] text-white flex items-center justify-center flex-shrink-0">
+              <Building2 className="w-5 h-5" />
             </div>
-            <div>
-              <div className="font-bold text-base tracking-wide text-white leading-tight font-serif">
-                Memoria Viva
-              </div>
-              <div className="text-xs text-[#d6c7b5]">
+            <div className="min-w-0 leading-tight">
+              <div className="font-serif font-bold text-base text-white truncate">Memoria Viva</div>
+              <div className="text-[10px] uppercase tracking-wider text-[#aebfb7] truncate">
                 Fundación Legado Vivo
               </div>
-              <div className="text-[11px] text-[#e89b52] font-medium">
-                Palmares, Costa Rica
-              </div>
             </div>
-          </div>
+          </button>
 
           <button
             onClick={onCloseMobile}
-            className="lg:hidden p-1.5 rounded hover:bg-[#3d2514] text-[#d6c7b5] hover:text-white"
-            aria-label="Cerrar navegación"
+            className="p-2 rounded hover:bg-[#2b4a42] text-[#c7d3cd] hover:text-white transition"
+            aria-label="Cerrar menú de navegación"
           >
             <X className="w-5 h-5" />
           </button>
         </div>
 
-        {/* Selector de Perfil Sobrio */}
-        <div className="px-4 py-3 bg-[#1c1109] border-b border-[#3d2514] text-xs">
-          <div className="text-[11px] font-semibold text-[#baa995] uppercase tracking-wider mb-1.5">
-            Rol del Usuario:
-          </div>
-
-          <div className="relative">
-            <button
-              onClick={() => setRoleMenuOpen(!roleMenuOpen)}
-              className="w-full flex items-center justify-between px-3 py-2 rounded bg-[#331f11] hover:bg-[#3e2716] border border-[#52331c] text-white font-medium transition"
-            >
-              <div className="flex items-center space-x-2 truncate">
-                <UserCheck className="w-4 h-4 text-[#e89b52] flex-shrink-0" />
-                <span className="truncate font-semibold">{activeRole}</span>
-              </div>
-              <ChevronDown className="w-4 h-4 text-[#baa995]" />
-            </button>
-
-            {roleMenuOpen && (
-              <div
-                className="absolute left-0 right-0 top-full mt-1 bg-white text-[#261b12] rounded shadow-lg border border-[#e3d9cb] py-1 z-50"
-                onClick={() => setRoleMenuOpen(false)}
-              >
-                {allRoles.map(r => (
-                  <button
-                    key={r}
-                    onClick={() => switchRole(r)}
-                    className={`w-full text-left px-3 py-2.5 text-xs font-semibold flex items-center justify-between hover:bg-[#f4ede2] ${
-                      activeRole === r ? 'bg-[#fef6ee] text-[#c05600] font-bold border-l-4 border-[#c05600]' : 'text-[#442a17]'
-                    }`}
-                  >
-                    <span>{r}</span>
-                    {activeRole === r && (
-                      <span className="text-[10px] bg-[#c05600] text-white px-2 py-0.5 rounded font-normal">
-                        Activo
-                      </span>
-                    )}
-                  </button>
-                ))}
-              </div>
-            )}
-          </div>
+        <div className="px-4 py-3 bg-[#182924] border-b border-[#35564d]">
+          <label className="block text-[10px] font-semibold text-[#aebfb7] uppercase tracking-wider mb-1.5">
+            Perfil activo
+          </label>
+          <select
+            value={activeRole}
+            onChange={event => switchRole(event.target.value as UserRole)}
+            className="w-full min-h-[42px] px-3 rounded bg-[#25423b] border border-[#35564d] text-sm font-medium text-white"
+          >
+            {allRoles.map(role => (
+              <option key={role} value={role}>{role}</option>
+            ))}
+          </select>
         </div>
 
-        {/* Menú de Navegación Limpio y Formal */}
-        <nav className="flex-1 overflow-y-auto px-3 py-4 space-y-6 text-sm">
-          {/* Módulo 1: Patrimonio Cultural */}
+        <nav className="flex-1 overflow-y-auto px-3 py-4 space-y-5 text-sm">
           <div>
-            <div className="px-3 text-xs font-bold uppercase tracking-wider text-[#d2baa0] mb-2 font-serif">
-              Patrimonio & Historia
+            <div className="px-3 text-[10px] font-bold uppercase tracking-wider text-[#aebfb7] mb-1.5">
+              Navegación
             </div>
             <div className="space-y-1">
-              <button
-                onClick={() => handleNav('regiones')}
-                className={`w-full flex items-center space-x-3 px-3 py-2.5 rounded font-medium transition ${
-                  currentView === 'regiones'
-                    ? 'bg-[#c05600] text-white font-bold shadow-xs'
-                    : 'text-[#e9ddcf] hover:bg-[#382313] hover:text-white'
-                }`}
-              >
-                <Compass className="w-5 h-5 text-[#f4ba7e] flex-shrink-0" />
-                <span>Regiones & Comunidades</span>
+              <button onClick={() => handleNav('inicio')} className={linkClass('inicio')}>
+                <Landmark className="w-4 h-4 text-[#b9d3c7] flex-shrink-0" />
+                <span>Inicio</span>
               </button>
-
-              <button
-                onClick={() => handleNav('memorias')}
-                className={`w-full flex items-center space-x-3 px-3 py-2.5 rounded font-medium transition ${
-                  currentView === 'memorias' || currentView === 'persona_detalle'
-                    ? 'bg-[#c05600] text-white font-bold shadow-xs'
-                    : 'text-[#e9ddcf] hover:bg-[#382313] hover:text-white'
-                }`}
-              >
-                <Users className="w-5 h-5 text-[#f4ba7e] flex-shrink-0" />
+              <button onClick={() => handleNav('regiones')} className={linkClass('regiones')}>
+                <Compass className="w-4 h-4 text-[#b9d3c7] flex-shrink-0" />
+                <span>Regiones y Comunidades</span>
+              </button>
+              <button onClick={() => handleNav('memorias')} className={linkClass('memorias')}>
+                <Users className="w-4 h-4 text-[#b9d3c7] flex-shrink-0" />
                 <span>Archivo de Personas</span>
               </button>
-
-              <button
-                onClick={() => handleNav('buscador')}
-                className={`w-full flex items-center space-x-3 px-3 py-2.5 rounded font-medium transition ${
-                  currentView === 'buscador'
-                    ? 'bg-[#c05600] text-white font-bold shadow-xs'
-                    : 'text-[#e9ddcf] hover:bg-[#382313] hover:text-white'
-                }`}
-              >
-                <Search className="w-5 h-5 text-[#f4ba7e] flex-shrink-0" />
+              <button onClick={() => handleNav('guarda_memorias')} className={linkClass('guarda_memorias')}>
+                <BookOpen className="w-4 h-4 text-[#b9d3c7] flex-shrink-0" />
+                <span>Escribe tu Historia</span>
+              </button>
+              <button onClick={() => handleNav('buscador')} className={linkClass('buscador')}>
+                <Search className="w-4 h-4 text-[#b9d3c7] flex-shrink-0" />
                 <span>Buscador Histórico</span>
               </button>
             </div>
           </div>
 
-          {/* Módulo 2: Participación & Aporte */}
           <div>
-            <div className="px-3 text-xs font-bold uppercase tracking-wider text-[#d2baa0] mb-2 font-serif">
-              Participación Familiar
+            <div className="px-3 text-[10px] font-bold uppercase tracking-wider text-[#aebfb7] mb-1.5">
+              Fundación
             </div>
             <div className="space-y-1">
-              <button
-                onClick={() => handleNav('guarda_memorias')}
-                className={`w-full flex items-center space-x-3 px-3 py-2.5 rounded font-medium transition ${
-                  currentView === 'guarda_memorias'
-                    ? 'bg-[#c05600] text-white font-bold shadow-xs'
-                    : 'text-[#e9ddcf] hover:bg-[#382313] hover:text-white'
-                }`}
-              >
-                <BookOpen className="w-5 h-5 text-[#e5a867] flex-shrink-0" />
-                <span>Escribe tu Historia</span>
-              </button>
-
-              {['Digitalizador', 'Administrador'].includes(activeRole) && (
-                <button
-                  onClick={() => handleNav('registro_contrato')}
-                  className={`w-full flex items-center space-x-3 px-3 py-2.5 rounded font-medium transition ${
-                    currentView === 'registro_contrato'
-                      ? 'bg-[#c05600] text-white font-bold shadow-xs'
-                      : 'text-[#e9ddcf] hover:bg-[#382313] hover:text-white'
-                  }`}
-                >
-                  <FileSignature className="w-5 h-5 text-[#f4ba7e] flex-shrink-0" />
-                  <span>Registrar Persona & Contrato</span>
+              {foundationLinks.map(link => (
+                <button key={link.view} onClick={() => handleNav(link.view)} className={linkClass(link.view)}>
+                  <link.icon className="w-4 h-4 text-[#b9d3c7] flex-shrink-0" />
+                  <span>{link.label}</span>
                 </button>
-              )}
-
-              {['Digitalizador', 'Administrador'].includes(activeRole) && (
-                <button
-                  onClick={() => handleNav('carga')}
-                  className={`w-full flex items-center space-x-3 px-3 py-2.5 rounded font-medium transition ${
-                    currentView === 'carga'
-                      ? 'bg-[#c05600] text-white font-bold shadow-xs'
-                      : 'text-[#e9ddcf] hover:bg-[#382313] hover:text-white'
-                  }`}
-                >
-                  <UploadCloud className="w-5 h-5 text-[#f4ba7e] flex-shrink-0" />
-                  <span>Carga de Relatos</span>
-                </button>
-              )}
+              ))}
             </div>
           </div>
 
-          {/* Módulo 3: Curaduría (Gestor y Admin) */}
-          {['Gestor de datos', 'Administrador'].includes(activeRole) && (
+          {['Digitalizador', 'Administrador'].includes(activeRole) && (
             <div>
-              <div className="px-3 text-xs font-bold uppercase tracking-wider text-[#d2baa0] mb-2 font-serif">
-                Revisión Histórica
+              <div className="px-3 text-[10px] font-bold uppercase tracking-wider text-[#aebfb7] mb-1.5">
+                Digitalización
               </div>
               <div className="space-y-1">
-                <button
-                  onClick={() => handleNav('validacion')}
-                  className={`w-full flex items-center justify-between px-3 py-2.5 rounded font-medium transition ${
-                    currentView === 'validacion'
-                      ? 'bg-[#c05600] text-white font-bold shadow-xs'
-                      : 'text-[#e9ddcf] hover:bg-[#382313] hover:text-white'
-                  }`}
-                >
-                  <div className="flex items-center space-x-3">
-                    <CheckSquare className="w-5 h-5 text-[#f4ba7e] flex-shrink-0" />
-                    <span>Mesa de Curaduría</span>
-                  </div>
+                <button onClick={() => handleNav('registro_contrato')} className={linkClass('registro_contrato')}>
+                  <FileSignature className="w-4 h-4 text-[#b9d3c7] flex-shrink-0" />
+                  <span>Registrar Persona</span>
+                </button>
+                <button onClick={() => handleNav('carga')} className={linkClass('carga')}>
+                  <UploadCloud className="w-4 h-4 text-[#b9d3c7] flex-shrink-0" />
+                  <span>Carga de Relatos</span>
+                </button>
+              </div>
+            </div>
+          )}
+
+          {['Gestor de datos', 'Administrador'].includes(activeRole) && (
+            <div>
+              <div className="px-3 text-[10px] font-bold uppercase tracking-wider text-[#aebfb7] mb-1.5">
+                Curaduría
+              </div>
+              <div className="space-y-1">
+                <button onClick={() => handleNav('validacion')} className={linkClass('validacion')}>
+                  <CheckSquare className="w-4 h-4 text-[#b9d3c7] flex-shrink-0" />
+                  <span className="flex-1 text-left">Mesa de Curaduría</span>
                   {pendientesCount > 0 && (
-                    <span className="px-2 py-0.5 rounded bg-[#f4ba7e] text-[#26170d] font-bold text-xs">
+                    <span className="px-2 py-0.5 rounded bg-[#b9d3c7] text-[#1d2b28] font-bold text-[11px]">
                       {pendientesCount}
                     </span>
                   )}
@@ -271,56 +222,63 @@ export const Sidebar: React.FC<SidebarProps> = ({
             </div>
           )}
 
-          {/* Módulo 4: Administración */}
           {activeRole === 'Administrador' && (
             <div>
-              <div className="px-3 text-xs font-bold uppercase tracking-wider text-[#d2baa0] mb-2 font-serif">
+              <div className="px-3 text-[10px] font-bold uppercase tracking-wider text-[#aebfb7] mb-1.5">
                 Administración
               </div>
               <div className="space-y-1">
-                <button
-                  onClick={() => handleNav('admin')}
-                  className={`w-full flex items-center space-x-3 px-3 py-2.5 rounded font-medium transition ${
-                    currentView === 'admin'
-                      ? 'bg-[#c05600] text-white font-bold shadow-xs'
-                      : 'text-[#e9ddcf] hover:bg-[#382313] hover:text-white'
-                  }`}
-                >
-                  <Shield className="w-5 h-5 text-[#f4ba7e] flex-shrink-0" />
-                  <span>Usuarios & Auditoría</span>
+                <button onClick={() => handleNav('admin')} className={linkClass('admin')}>
+                  <Shield className="w-4 h-4 text-[#b9d3c7] flex-shrink-0" />
+                  <span>Usuarios y Auditoría</span>
                 </button>
               </div>
             </div>
           )}
         </nav>
 
-        {/* Pie del Sidebar: Accesibilidad de Lectura */}
-        <div className="p-4 bg-[#1c1109] border-t border-[#3d2514] text-xs space-y-2">
-          <div className="flex items-center justify-between text-[#d6c7b5]">
-            <span className="font-medium">Tamaño de letra:</span>
-            <div className="flex items-center space-x-1.5">
+        <div className="p-4 bg-[#182924] border-t border-[#35564d] space-y-3">
+          <div className="flex items-center justify-between text-xs text-[#c7d3cd]">
+            <span className="font-medium">Tamaño del texto</span>
+            <div className="flex items-center gap-1.5">
               <button
                 onClick={decreaseFontSize}
-                className="p-1.5 rounded bg-[#331f11] hover:bg-[#442a17] text-white transition"
-                title="Disminuir tamaño de letra"
+                className="p-2 rounded bg-[#25423b] hover:bg-[#2b4a42] text-white transition"
+                aria-label="Disminuir tamaño del texto"
               >
                 <ZoomOut className="w-4 h-4" />
               </button>
-              <span className="font-bold px-1.5 text-[#e89b52]">
+              <span className="font-bold px-1 text-[#b9d3c7]">
                 {Math.round(fontSizeScale * 100)}%
               </span>
               <button
                 onClick={increaseFontSize}
-                className="p-1.5 rounded bg-[#331f11] hover:bg-[#442a17] text-white transition"
-                title="Aumentar tamaño de letra"
+                className="p-2 rounded bg-[#25423b] hover:bg-[#2b4a42] text-white transition"
+                aria-label="Aumentar tamaño del texto"
               >
                 <ZoomIn className="w-4 h-4" />
               </button>
             </div>
           </div>
 
-          <div className="pt-2 border-t border-[#331f11] text-[11px] text-[#9c8976] text-center">
-            Fundación Legado Vivo • Palmares
+          <div className="pt-3 border-t border-[#35564d] flex items-center justify-between gap-3">
+            <div className="min-w-0">
+              <div className="text-xs font-semibold text-white truncate">
+                {displayName}
+              </div>
+              <div className="text-[10px] text-[#aebfb7] truncate">{currentUser?.email}</div>
+            </div>
+            <button
+              onClick={() => {
+                logout();
+                onCloseMobile();
+              }}
+              className="p-2 rounded text-[#c7d3cd] hover:bg-[#2b4a42] hover:text-white transition"
+              aria-label="Cerrar sesión"
+              title="Cerrar sesión"
+            >
+              <LogOut className="w-4 h-4" />
+            </button>
           </div>
         </div>
       </aside>

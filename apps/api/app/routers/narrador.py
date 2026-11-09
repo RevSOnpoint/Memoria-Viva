@@ -51,7 +51,7 @@ def preguntar_narrador(
     result = llm_service.ask(data.pregunta, memoria.titular, knowledge_fragments)
 
     voice_service = get_voice_service()
-    voice_cfg = voice_service.get_voice_config()
+    voice_cfg = voice_service.get_voice_config(memoria.id, memoria.titular)
 
     user_id = current_user.id if current_user else None
     log_audit(

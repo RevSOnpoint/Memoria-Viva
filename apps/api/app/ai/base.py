@@ -24,7 +24,11 @@ class LLMNarratorInterface(ABC):
 
 class VoiceInterface(ABC):
     @abstractmethod
-    def get_voice_config(self) -> Dict[str, Any]:
+    def get_voice_config(
+        self,
+        memoria_id: Optional[int] = None,
+        titular: str = ""
+    ) -> Dict[str, Any]:
         """Retorna configuración para la síntesis de voz del navegador (Web Speech API)."""
         pass
 

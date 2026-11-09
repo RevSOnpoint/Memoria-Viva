@@ -102,16 +102,26 @@ export interface FuenteCita {
   cita: string;
 }
 
+export interface NarratorVoiceConfig {
+  lang?: string;
+  fallback_langs?: string[];
+  rate?: number;
+  pitch?: number;
+  volume?: number;
+  engine?: string;
+  profile?: string;
+  profile_label?: string;
+  style?: string;
+  preferred_voice_names?: string[];
+  persona?: string;
+}
+
 export interface NarradorResponse {
   respuesta: string;
   fuentes: FuenteCita[];
   encontrado: boolean;
   es_ia: boolean;
-  voice_config?: {
-    lang: string;
-    rate: number;
-    pitch: number;
-  };
+  voice_config?: NarratorVoiceConfig;
 }
 
 export interface AuditoriaItem {

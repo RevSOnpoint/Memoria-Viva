@@ -138,27 +138,27 @@ export const CargaRelatosView: React.FC<CargaRelatosViewProps> = ({ onNavigate }
   return (
     <div className="space-y-6 max-w-4xl mx-auto">
       {/* Encabezado Institucional Cálido */}
-      <div className="bg-white p-6 sm:p-7 rounded border border-[#d8ccba] shadow-2xs flex flex-col md:flex-row md:items-center justify-between gap-4">
+      <div className="bg-white p-6 sm:p-7 rounded border border-[#d5ddd6] shadow-2xs flex flex-col md:flex-row md:items-center justify-between gap-4">
         <div>
-          <div className="flex items-center space-x-2 text-xs font-bold text-[#c05600] uppercase tracking-wider font-serif">
+          <div className="flex items-center space-x-2 text-xs font-bold text-[#2f5d50] uppercase tracking-wider font-serif">
             <Building2 className="w-4 h-4" />
             <span>Departamento de Digitalización & Ingesta Patrimonial</span>
           </div>
-          <h1 className="text-2xl sm:text-3xl font-bold font-serif text-[#261b12] mt-1.5">
+          <h1 className="text-2xl sm:text-3xl font-bold font-serif text-[#1d2b28] mt-1.5">
             Carga de Relatos & Testimonios Orales
           </h1>
-          <p className="text-sm sm:text-base text-[#442a17] mt-1 leading-relaxed">
-            Preservación inmutable con cálculo de hash criptográfico SHA-256 antes del procesamiento asistido.
+          <p className="text-sm sm:text-base text-[#344a43] mt-1 leading-relaxed">
+            Registro cuidadoso y verificación del material original antes del procesamiento asistido.
           </p>
         </div>
 
         {/* Selector de Memoria */}
         <div className="flex flex-col sm:flex-row sm:items-center space-y-1 sm:space-y-0 sm:space-x-2">
-          <label className="text-xs font-bold text-[#442a17] uppercase font-serif">Expediente Destino:</label>
+          <label className="text-xs font-bold text-[#344a43] uppercase font-serif">Expediente Destino:</label>
           <select
             value={selectedMemoria?.id || ''}
             onChange={e => handleMemoriaChange(Number(e.target.value))}
-            className="min-h-[48px] px-3.5 text-sm font-semibold border border-[#d8ccba] rounded bg-white text-[#261b12] shadow-2xs"
+            className="min-h-[48px] px-3.5 text-sm font-semibold border border-[#d5ddd6] rounded bg-white text-[#1d2b28] shadow-2xs"
           >
             {memorias.map(m => (
               <option key={m.id} value={m.id}>
@@ -171,12 +171,12 @@ export const CargaRelatosView: React.FC<CargaRelatosViewProps> = ({ onNavigate }
 
       {/* Alerta de Consentimiento Obligatorio */}
       {selectedMemoria && !hasConsent && (
-        <div className="p-5 bg-[#fdf2f2] border border-[#f0c2c2] text-[#a81c1c] rounded flex flex-col sm:flex-row items-start justify-between gap-3 shadow-2xs">
+        <div className="p-5 bg-[#f9efed] border border-[#e7cbc5] text-[#a34a3d] rounded flex flex-col sm:flex-row items-start justify-between gap-3 shadow-2xs">
           <div className="flex items-start gap-3">
-            <ShieldAlert className="w-6 h-6 text-[#a81c1c] flex-shrink-0 mt-0.5" />
+            <ShieldAlert className="w-6 h-6 text-[#a34a3d] flex-shrink-0 mt-0.5" />
             <div>
-              <h4 className="font-bold font-serif text-base text-[#a81c1c]">Bloqueo Ético de Procesamiento</h4>
-              <p className="text-xs sm:text-sm text-[#7a1414] mt-1 leading-relaxed">
+              <h4 className="font-bold font-serif text-base text-[#a34a3d]">Bloqueo Ético de Procesamiento</h4>
+              <p className="text-xs sm:text-sm text-[#853c31] mt-1 leading-relaxed">
                 El expediente de <strong>{selectedMemoria.titular}</strong> no cuenta con contrato de consentimiento informado acreditado.
                 Nuestros principios éticos prohíben estrictamente almacenar y procesar relatos sin respaldo de fe jurada.
               </p>
@@ -193,38 +193,38 @@ export const CargaRelatosView: React.FC<CargaRelatosViewProps> = ({ onNavigate }
 
       {/* Confirmación de Carga Exitosa */}
       {resultadoAporte && (
-        <div className="bg-white p-6 rounded border-2 border-[#1b6e39] shadow-2xs space-y-4">
-          <div className="flex items-center gap-2 text-[#1b6e39] font-bold font-serif text-lg">
-            <CheckCircle2 className="w-6 h-6 text-[#1b6e39]" />
+        <div className="bg-white p-6 rounded border-2 border-[#2c6e4f] shadow-2xs space-y-4">
+          <div className="flex items-center gap-2 text-[#2c6e4f] font-bold font-serif text-lg">
+            <CheckCircle2 className="w-6 h-6 text-[#2c6e4f]" />
             <span>Aporte cargado y preprocesado por el simulador asistido</span>
           </div>
 
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 text-xs sm:text-sm">
-            <div className="p-3 bg-[#fcf8f3] rounded border border-[#e3d9cb]">
-              <span className="text-[#665546] block font-serif">Título y Autor:</span>
-              <span className="font-bold text-[#261b12] text-sm">{resultadoAporte.titulo}</span>
-              <span className="text-[#442a17] block mt-0.5">Por: {resultadoAporte.autor}</span>
+            <div className="p-3 bg-[#fafaf7] rounded border border-[#dde3dc]">
+              <span className="text-[#5a6b64] block font-serif">Título y Autor:</span>
+              <span className="font-bold text-[#1d2b28] text-sm">{resultadoAporte.titulo}</span>
+              <span className="text-[#344a43] block mt-0.5">Por: {resultadoAporte.autor}</span>
             </div>
-            <div className="p-3 bg-[#fcf8f3] rounded border border-[#e3d9cb]">
-              <span className="text-[#665546] block font-serif">Hash SHA-256 Inmutable:</span>
-              <span className="font-mono text-[#261b12] break-all">{resultadoAporte.archivo_hash_sha256}</span>
+            <div className="p-3 bg-[#fafaf7] rounded border border-[#dde3dc]">
+              <span className="text-[#5a6b64] block font-serif">Código de verificación:</span>
+              <span className="font-mono text-[#1d2b28] break-all">{resultadoAporte.archivo_hash_sha256}</span>
             </div>
           </div>
 
           {resultadoAporte.procesamiento && (
-            <div className="p-4 bg-[#fcf8f3] rounded border border-[#e3d9cb] text-xs sm:text-sm">
-              <div className="font-bold text-[#442a17] font-serif flex items-center gap-2 mb-1.5">
-                <Sparkles className="w-4 h-4 text-[#c05600]" />
+            <div className="p-4 bg-[#fafaf7] rounded border border-[#dde3dc] text-xs sm:text-sm">
+              <div className="font-bold text-[#344a43] font-serif flex items-center gap-2 mb-1.5">
+                <Sparkles className="w-4 h-4 text-[#2f5d50]" />
                 <span>Texto Extraído para Curaduría:</span>
               </div>
-              <p className="text-[#261b12] italic leading-relaxed">
+              <p className="text-[#1d2b28] italic leading-relaxed">
                 "{resultadoAporte.procesamiento.texto_extraido}"
               </p>
             </div>
           )}
 
-          <div className="pt-3 border-t border-[#e3d9cb] flex flex-col sm:flex-row items-center justify-between gap-3">
-            <span className="text-xs text-[#665546]">
+          <div className="pt-3 border-t border-[#dde3dc] flex flex-col sm:flex-row items-center justify-between gap-3">
+            <span className="text-xs text-[#5a6b64]">
               Paso siguiente: El Gestor de Datos revisará y validará este testimonio en la Mesa de Curaduría.
             </span>
             <button
@@ -239,17 +239,17 @@ export const CargaRelatosView: React.FC<CargaRelatosViewProps> = ({ onNavigate }
       )}
 
       {/* Formulario Principal de Carga */}
-      <div className="bg-white p-6 sm:p-7 rounded border border-[#d8ccba] shadow-2xs space-y-5">
+      <div className="bg-white p-6 sm:p-7 rounded border border-[#d5ddd6] shadow-2xs space-y-5">
         {/* Selector de Tipo de Aporte */}
-        <div className="flex flex-col sm:flex-row sm:items-center justify-between pb-4 border-b border-[#f4ede2] gap-3">
+        <div className="flex flex-col sm:flex-row sm:items-center justify-between pb-4 border-b border-[#eef1eb] gap-3">
           <div className="flex flex-wrap items-center gap-2">
             <button
               type="button"
               onClick={() => applyPreset('texto')}
               className={`min-h-[44px] px-4 rounded text-xs sm:text-sm font-bold flex items-center gap-2 transition ${
                 tipo === 'texto'
-                  ? 'bg-[#c05600] text-white shadow-xs'
-                  : 'bg-[#fcf8f3] text-[#442a17] hover:bg-[#f4ede2] border border-[#d8ccba]'
+                  ? 'bg-[#2f5d50] text-white shadow-xs'
+                  : 'bg-[#fafaf7] text-[#344a43] hover:bg-[#eef1eb] border border-[#d5ddd6]'
               }`}
             >
               <FileText className="w-4 h-4" />
@@ -261,8 +261,8 @@ export const CargaRelatosView: React.FC<CargaRelatosViewProps> = ({ onNavigate }
               onClick={() => applyPreset('audio')}
               className={`min-h-[44px] px-4 rounded text-xs sm:text-sm font-bold flex items-center gap-2 transition ${
                 tipo === 'audio'
-                  ? 'bg-[#c05600] text-white shadow-xs'
-                  : 'bg-[#fcf8f3] text-[#442a17] hover:bg-[#f4ede2] border border-[#d8ccba]'
+                  ? 'bg-[#2f5d50] text-white shadow-xs'
+                  : 'bg-[#fafaf7] text-[#344a43] hover:bg-[#eef1eb] border border-[#d5ddd6]'
               }`}
             >
               <Mic className="w-4 h-4" />
@@ -274,8 +274,8 @@ export const CargaRelatosView: React.FC<CargaRelatosViewProps> = ({ onNavigate }
               onClick={() => applyPreset('foto')}
               className={`min-h-[44px] px-4 rounded text-xs sm:text-sm font-bold flex items-center gap-2 transition ${
                 tipo === 'foto'
-                  ? 'bg-[#c05600] text-white shadow-xs'
-                  : 'bg-[#fcf8f3] text-[#442a17] hover:bg-[#f4ede2] border border-[#d8ccba]'
+                  ? 'bg-[#2f5d50] text-white shadow-xs'
+                  : 'bg-[#fafaf7] text-[#344a43] hover:bg-[#eef1eb] border border-[#d5ddd6]'
               }`}
             >
               <Image className="w-4 h-4" />
@@ -283,7 +283,7 @@ export const CargaRelatosView: React.FC<CargaRelatosViewProps> = ({ onNavigate }
             </button>
           </div>
 
-          <span className="text-xs text-[#8c6239] font-serif font-bold">
+          <span className="text-xs text-[#4f6b62] font-serif font-bold">
             Plantillas de testimonios locales
           </span>
         </div>
@@ -291,7 +291,7 @@ export const CargaRelatosView: React.FC<CargaRelatosViewProps> = ({ onNavigate }
         <form onSubmit={handleSubmit} className="space-y-4 text-sm">
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
             <div>
-              <label className="block font-bold text-[#261b12] mb-1.5 font-serif">
+              <label className="block font-bold text-[#1d2b28] mb-1.5 font-serif">
                 Título Descriptivo del Aporte *
               </label>
               <input
@@ -300,12 +300,12 @@ export const CargaRelatosView: React.FC<CargaRelatosViewProps> = ({ onNavigate }
                 value={titulo}
                 onChange={e => setTitulo(e.target.value)}
                 placeholder="Ej: Las carretas y la molienda de dulce en Zaragoza"
-                className="w-full min-h-[48px] px-3.5 border border-[#d8ccba] rounded bg-white text-[#261b12] focus:border-[#c05600]"
+                className="w-full min-h-[48px] px-3.5 border border-[#d5ddd6] rounded bg-white text-[#1d2b28] focus:border-[#2f5d50]"
               />
             </div>
 
             <div>
-              <label className="block font-bold text-[#261b12] mb-1.5 font-serif">
+              <label className="block font-bold text-[#1d2b28] mb-1.5 font-serif">
                 Autor o Narrador del Testimonio *
               </label>
               <input
@@ -314,14 +314,14 @@ export const CargaRelatosView: React.FC<CargaRelatosViewProps> = ({ onNavigate }
                 value={autor}
                 onChange={e => setAutor(e.target.value)}
                 placeholder="Nombre del informante"
-                className="w-full min-h-[48px] px-3.5 border border-[#d8ccba] rounded bg-white text-[#261b12] focus:border-[#c05600]"
+                className="w-full min-h-[48px] px-3.5 border border-[#d5ddd6] rounded bg-white text-[#1d2b28] focus:border-[#2f5d50]"
               />
             </div>
           </div>
 
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
             <div>
-              <label className="block font-bold text-[#261b12] mb-1.5 font-serif">
+              <label className="block font-bold text-[#1d2b28] mb-1.5 font-serif">
                 Fecha o Época del Hecho Histórico
               </label>
               <input
@@ -329,12 +329,12 @@ export const CargaRelatosView: React.FC<CargaRelatosViewProps> = ({ onNavigate }
                 value={fechaHecho}
                 onChange={e => setFechaHecho(e.target.value)}
                 placeholder="Ej: Cosecha de 1952 o Años 1950"
-                className="w-full min-h-[48px] px-3.5 border border-[#d8ccba] rounded bg-white text-[#261b12] focus:border-[#c05600]"
+                className="w-full min-h-[48px] px-3.5 border border-[#d5ddd6] rounded bg-white text-[#1d2b28] focus:border-[#2f5d50]"
               />
             </div>
 
             <div>
-              <label className="block font-bold text-[#261b12] mb-1.5 font-serif">
+              <label className="block font-bold text-[#1d2b28] mb-1.5 font-serif">
                 Nombre de Archivo Original
               </label>
               <input
@@ -342,15 +342,15 @@ export const CargaRelatosView: React.FC<CargaRelatosViewProps> = ({ onNavigate }
                 value={archivoNombre}
                 onChange={e => setArchivoNombre(e.target.value)}
                 placeholder={`archivo_${tipo}.dat`}
-                className="w-full min-h-[48px] px-3.5 border border-[#d8ccba] rounded bg-white text-[#261b12] focus:border-[#c05600]"
+                className="w-full min-h-[48px] px-3.5 border border-[#d5ddd6] rounded bg-white text-[#1d2b28] focus:border-[#2f5d50]"
               />
             </div>
           </div>
 
           <div>
-            <label className="block font-bold text-[#261b12] mb-1.5 font-serif">
+            <label className="block font-bold text-[#1d2b28] mb-1.5 font-serif">
               {tipo === 'texto'
-                ? 'Contenido Textual del Relato (Original Inmutable) *'
+                ? 'Contenido Textual del Relato (Original) *'
                 : tipo === 'audio'
                 ? 'Transcripción o Notas del Registro Sonoro Original *'
                 : 'Descripción y Procedencia del Documento Visual Fotográfico *'}
@@ -361,22 +361,22 @@ export const CargaRelatosView: React.FC<CargaRelatosViewProps> = ({ onNavigate }
               value={contenidoTexto}
               onChange={e => setContenidoTexto(e.target.value)}
               placeholder="Escriba el testimonio o relato tal como fue narrado originalmente sin alteraciones..."
-              className="w-full p-3.5 border border-[#d8ccba] rounded text-sm text-[#261b12] focus:border-[#c05600]"
+              className="w-full p-3.5 border border-[#d5ddd6] rounded text-sm text-[#1d2b28] focus:border-[#2f5d50]"
             />
           </div>
 
-          {/* Cálculo de Hash Criptográfico Inmutable en Vivo */}
-          <div className="p-4 bg-[#fcf8f3] rounded border border-[#d8ccba] space-y-1.5">
-            <div className="flex items-center gap-2 text-xs font-bold font-serif text-[#442a17] uppercase tracking-wider">
-              <Hash className="w-4 h-4 text-[#c05600]" />
-              <span>Garantía de Inmutabilidad SHA-256 (Se certifica sin alteraciones):</span>
+          {/* Código de verificación en vivo */}
+          <div className="p-4 bg-[#fafaf7] rounded border border-[#d5ddd6] space-y-1.5">
+            <div className="flex items-center gap-2 text-xs font-bold font-serif text-[#344a43] uppercase tracking-wider">
+              <Hash className="w-4 h-4 text-[#2f5d50]" />
+              <span>Código de verificación del relato:</span>
             </div>
-            <div className="font-mono text-xs text-[#261b12] break-all bg-white p-3 rounded border border-[#e3d9cb]">
+            <div className="font-mono text-xs text-[#1d2b28] break-all bg-white p-3 rounded border border-[#dde3dc]">
               {liveHash}
             </div>
           </div>
 
-          <div className="pt-3 border-t border-[#f4ede2] flex items-center justify-end">
+          <div className="pt-3 border-t border-[#eef1eb] flex items-center justify-end">
             <button
               type="submit"
               disabled={isSubmitting || !hasConsent}

@@ -1,4 +1,5 @@
 from fastapi import APIRouter, Depends, HTTPException, Header
+from sqlalchemy import func
 from sqlalchemy.orm import Session
 from typing import Optional, List
 from app.database import get_db
@@ -32,7 +33,8 @@ def get_current_user(
 
 @router.post("/login", response_model=UserOut)
 def login(creds: UserLogin, db: Session = Depends(get_db)):
-    user = db.query(User).filter(User.email == creds.email).first()
+    email = creds.email.strip().lower()
+    user = db.query(User).filter(func.lower(User.email) == email).first()
     if not user or user.hashed_password != creds.password:
         raise HTTPException(status_code=401, detail="Credenciales incorrectas")
     
